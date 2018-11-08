@@ -1,7 +1,7 @@
 <?php
 
 	try {
-		$conn = new PDO("mysql:host=localhost;dbname=Asiakas", "root", "");
+		$conn = new PDO("mysql:host=sql204.epizy.com;dbname=webprojekti", "epiz_22963281_webprojekti", "puveskissi666");
 		// set the PDO error mode to exception
 		$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		//echo "Connected successfully";

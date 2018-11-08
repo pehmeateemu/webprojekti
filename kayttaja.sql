@@ -56,7 +56,7 @@ INSERT INTO `kayttaja` (`KAYTTAJA_ID`, `TUNNUS`, `SALASANA`, `NIMI`, `OSOITE`, `
 (1, 'Kalle', 'kalle','KALLE TAPPINEN', 'OPISTOTIE 2', '70100', 'KUOPIO',1),
 (2, 'Ville', 'ville','VILLE VALLATON', 'MICROKATU 2', '70100', 'KUOPIO',1),
 (3, 'Kalle2', 'kalle','Kalle Östilä', 'Teku', '70100', 'Kuopio',1),
-(4, 'Keke', 'keke','Keke Amstrong', 'Viasat', '00010', 'Tsadi',0),
+(4, 'admin', 'admin','Keke Amstrong', 'Viasat', '00010', 'Tsadi',0),
 (5, 'Pasi', 'pasi','Pasi Rautiainen', 'Viaplay', '89100', 'Rovaniemi',1),
 (6, 'Mauri', 'mauri','mauri', 'Toivalantie 25', '7100', 'Siili',1);
 

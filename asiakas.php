@@ -1,10 +1,8 @@
 <?php
-	//session_start();
 	session_start();
 
 	// Tarkistetaan, onko käyttäjä jo kirjautunut järjestelmään, jos ei -> heitetään login-sivulle
 	require_once("login_utils.inc");
-	//check_session();
 	check_session();
 ?>
 <!DOCTYPE html>
@@ -89,6 +87,7 @@
 		
 		function lisaaAsiakas(lisayslauseke) {
             $.post(
+                "http://localhost:8081/pohjia/php/asiakasHandler.php",
                 lisayslauseke
             ).done(function (data, textStatus, jqXHR) {
                 hae_asiakkaat();
@@ -145,6 +144,8 @@
             <input type="text" id="osoite_lisays" name="osoite" placeholder="Osoite">
             <input type="text" id="postinro_lisays" name="postinro" placeholder="Postinumero">
             <input type="text" id="postitmp_lisays" name="postitmp" placeholder="Postitoimipaikka">
+            <select id="asty_avain_lisays" name="asty">
+                <option value=""></option>
             </select>
         </form>
     </div>

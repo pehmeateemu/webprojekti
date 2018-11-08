@@ -103,7 +103,6 @@
             ).done(function (data, textStatus, jqXHR) {
                 $.each(data, function (index, tyyppi) {
 
-                    $('#asty_avain')
                     $('#asty')
                         .append($("<option></option>")
                             .attr("value", tyyppi.Avain)

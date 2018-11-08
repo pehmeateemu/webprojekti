@@ -89,7 +89,6 @@
 		
 		function lisaaAsiakas(lisayslauseke) {
             $.post(
-                "http://localhost:8081/pohjia/php/asiakasHandler.php?lisaa=",
                 lisayslauseke
             ).done(function (data, textStatus, jqXHR) {
                 hae_asiakkaat();
@@ -105,6 +104,7 @@
                 $.each(data, function (index, tyyppi) {
 
                     $('#asty_avain')
+                    $('#asty')
                         .append($("<option></option>")
                             .attr("value", tyyppi.Avain)
                             .text(tyyppi.Lyhenne + " - " + tyyppi.Selite));

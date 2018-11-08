@@ -35,19 +35,26 @@ function createAsiakas($asiakas)
 	$result = array("status" => "ok");
 	try {
 
-		$stmt = $conn->prepare("INSERT INTO Asiakas (Nimi, Osoite, Postinro, Postitmp, Asty_avain, Luontipvm) 
-								VALUES (:n, :o, :pn, :pt, :asty, CURDATE())");
+		$stmt = $conn->prepare("INSERT INTO kayttaja (Tunnus, Salasana, Nimi, Osoite, Postinro, Postitmp, Asty) 
+								VALUES (:tunnus, :salasana, :n, :o, :pn, :pt, :asty)");
+						
+
+		$stmt->bindParam(":tunnus", $tunnus);
+		$stmt->bindParam(":salasana", $salasana);						
 		$stmt->bindParam(":n", $n);
 		$stmt->bindParam(":o", $o);
 		$stmt->bindParam(":pn", $pn);
 		$stmt->bindParam(":pt", $pt);
 		$stmt->bindParam(":asty", $asty);
-
+		
+		
+		$tunnus = $asiakas["tunnus"];
+		$salasana = $asiakas["salasana"];
 		$n = $asiakas["nimi"];
 		$o = $asiakas["osoite"];
 		$pn = $asiakas["postinro"];
 		$pt = $asiakas["postitmp"];
-		$asty = $asiakas["asty_avain"];
+		$asty = $asiakas["asty"];
 
 		$stmt->execute();            
 	}

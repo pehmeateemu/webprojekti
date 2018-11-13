@@ -35,21 +35,14 @@ function createAsiakas($asiakas)
 	$result = array("status" => "ok");
 	try {
 
-		$stmt = $conn->prepare("INSERT INTO kayttaja (Tunnus, Salasana, Nimi, Osoite, Postinro, Postitmp, Asty) 
-								VALUES (:tunnus, :salasana, :n, :o, :pn, :pt, :asty)");
-						
-
-		$stmt->bindParam(":tunnus", $tunnus);
-		$stmt->bindParam(":salasana", $salasana);						
+		$stmt = $conn->prepare("INSERT INTO Asiakas (Nimi, Osoite, Postinro, Postitmp, Asty, Luontipvm) 
+								VALUES (:n, :o, :pn, :pt, :asty, CURDATE())");
 		$stmt->bindParam(":n", $n);
 		$stmt->bindParam(":o", $o);
 		$stmt->bindParam(":pn", $pn);
 		$stmt->bindParam(":pt", $pt);
 		$stmt->bindParam(":asty", $asty);
-		
-		
-		$tunnus = $asiakas["tunnus"];
-		$salasana = $asiakas["salasana"];
+
 		$n = $asiakas["nimi"];
 		$o = $asiakas["osoite"];
 		$pn = $asiakas["postinro"];
@@ -77,7 +70,7 @@ function fetchAsiakas($name, $address, $type_key)
 	$result = array();
 	
 	try {
-		$q = "SELECT Avain, Nimi, Osoite, Postinro FROM Asiakas WHERE 1=1 ";
+		$q = "SELECT kayttaja_id, Nimi, Osoite, Postinro FROM kayttaja WHERE 1=1 ";
 		if ( !empty($name) ) $q .= " AND Nimi like '%$name%'";
 		if ( !empty($address) ) $q .= " AND Nimi like '%$address%'";
 		
@@ -86,7 +79,7 @@ function fetchAsiakas($name, $address, $type_key)
 			
 		//käydään rivit läpi 
 		while ($rivi = $stmt->fetch(PDO::FETCH_ASSOC)) { 
-			$a = $rivi["Avain"];
+			$a = $rivi["kayttaja_id"];
 			$n = $rivi["Nimi"];
 			$o = $rivi["Osoite"];
 			$p = $rivi["Postinro"];
@@ -97,7 +90,6 @@ function fetchAsiakas($name, $address, $type_key)
 		$result = array("status" => "not ok", "error" => $e->getMessage());
 		error_log("Error in fetchAsiakas: " . $e->getMessage());
 	}
-
 	return $result;
 
 }
@@ -109,7 +101,7 @@ function fetchAsiakastyyppi()
 	$result = array();
 	
 	try {
-		$q = "SELECT Avain, Lyhenne, Selite FROM Asiakastyyppi ORDER BY Lyhenne ";
+		$q = "SELECT asty FROM kayttaja ";
 		
 		$stmt = $conn->prepare($q);
 		$stmt->execute();

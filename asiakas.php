@@ -1,9 +1,9 @@
 <?php
-	//session_start();
+	session_start();
 
 	// Tarkistetaan, onko käyttäjä jo kirjautunut järjestelmään, jos ei -> heitetään login-sivulle
 	require_once("login_utils.inc");
-	//check_session();
+	check_session();
 ?>
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
@@ -87,7 +87,7 @@
 		
 		function lisaaAsiakas(lisayslauseke) {
             $.post(
-                "http://localhost:8081/pohjia/php/asiakasHandler.php?lisaa=",
+                "http://localhost:8081/pohjia/php/asiakasHandler.php",
                 lisayslauseke
             ).done(function (data, textStatus, jqXHR) {
                 hae_asiakkaat();
@@ -102,7 +102,7 @@
             ).done(function (data, textStatus, jqXHR) {
                 $.each(data, function (index, tyyppi) {
 
-                    $('#asty_avain')
+                    $('#asty')
                         .append($("<option></option>")
                             .attr("value", tyyppi.Avain)
                             .text(tyyppi.Lyhenne + " - " + tyyppi.Selite));
@@ -138,10 +138,10 @@
 	<div id="asiakkaat"></div>
 
     <div id="dialogi_lisaa" title="Lisää uusi asiakas">
-        <form id="lisayslomake">
-			<input type="hidden" name="lisaa" />
-			<input type="text" id="tunnus" name="tunnus" placeholder="Tunnus">
-			<input type="password" id="salasana" name="salasana" placeholder="Salasana"> 
+        <form id="lisayslomake">			
+                <input type="hidden" name="lisaa" />
+			    <input type="text" id="tunnus" name="tunnus" placeholder="Tunnus">
+			    <input type="password" id="salasana" name="salasana" placeholder="Salasana"> 
             <input type="text" id="nimi_lisays" name="nimi" placeholder="Nimi">
             <input type="text" id="osoite_lisays" name="osoite" placeholder="Osoite">
             <input type="text" id="postinro_lisays" name="postinro" placeholder="Postinumero">

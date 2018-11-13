@@ -13,7 +13,7 @@ function deleteAsiakas($avain)
 	$result = "OK";
 	try {
 
-		$stmt = $conn->prepare("DELETE FROM Asiakas WHERE Avain = :avain"); 
+		$stmt = $conn->prepare("DELETE FROM kayttaja WHERE kayttaja_id = :avain"); 
 
 		$key = $avain;
 		$stmt->bindParam(":avain", $key);

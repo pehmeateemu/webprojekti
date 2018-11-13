@@ -10,7 +10,7 @@
 		$a["osoite"] = parsePost("osoite");
 		$a["postinro"] = parsePost("postinro");
 		$a["postitmp"] = parsePost("postitmp");
-		$a["asty"] = 1;
+		$a["asty"] = parsePost("asty");
 		
 		$result = createAsiakas($a);
 		echo $result;
@@ -49,20 +49,22 @@
     {
 		$nimi = parseGet("nimi");
 		$osoite = parseGet("osoite");
-		$asty_avain = parseGet("asty_avain");
+		$kayttaja_id = parseGet("kayttaja_id");
 		
-		$data = fetchAsiakas($nimi, $osoite, $asty_avain);
+		$data = fetchAsiakas($nimi, $osoite, $kayttaja_id);
 		
 		// $data sisältää datan indeksoidussa taulukkossa, jossa jokainen alkio on assosiatiivinen taulukko
 		echo "<table>";
 		echo "<tr><th>Avain</th><th>Nimi</th><th>Osoite</th><th>Toiminto</th></tr>";
 		foreach($data as $row)
 		{
-			$id = $row["Avain"];
+			$id = $row["kayttaja_id"];
 			echo "<tr>";
-			echo "<td>$id</td>";
+			echo "<td>".$id."</td>";
+			//echo "<td>". $row["kayttaja_id"]. "</td">;
 			echo "<td>". $row["Nimi"]. "</td>";
-			echo "<td>". $row["Osoite"]. "</td>";
+			echo "<td>". $row["Osoite"]. "</td>";			
+			echo "<td>". $row["Postinro"]. "</td>";	
 			echo "<td><button class=\"poistaButton\" onclick=\"poista_asiakas($id);\">Poista</button></td>";
 			echo "</tr>";
 		}

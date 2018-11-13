@@ -1,14 +1,10 @@
 <?php
-	session_start();
+	//session_start();
 
 	// Tarkistetaan, onko käyttäjä jo kirjautunut järjestelmään, jos ei heitetään login-sivulle
 	require_once("login_utils.inc");
-<<<<<<< HEAD
-	check_session();
-=======
 	
 	//check_session();
->>>>>>> feature-asiakasluonti
 ?>
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
@@ -42,11 +38,7 @@
                         {
                             text: "Lisää",
                             click: function() {
-<<<<<<< HEAD
-                                if ($.trim($("#tunnus_lisays").val()) === "" || $.trim($("#salasana_lisays").val()) === "" || $.trim($("#nimi_lisays").val()) === "" || $.trim($("#osoite_lisays").val()) === "" || $.trim($("#postinro_lisays").val()) === "" || $.trim($("#postitmp_lisays").val()) === "" || $.trim($("#asty_lisays").val()) === "") {
-=======
                                 if ($.trim($("#nimi_lisays").val()) === "" || $.trim($("#osoite_lisays").val()) === "" || $.trim($("#postinro_lisays").val()) === "" || $.trim($("#postitmp_lisays").val()) === "") {
->>>>>>> feature-asiakasluonti
                                     alert('Anna arvo kaikki kenttiin!');
                                     return false;
                                 } else {
@@ -96,11 +88,7 @@
 		
 		function lisaaAsiakas(lisayslauseke) {
             $.post(
-<<<<<<< HEAD
-                "http://localhost:8081/pohjia/php/asiakasHandler.php",
-=======
                 "http://localhost:8081/pohjia/php/asiakasHandler.php?lisaa",
->>>>>>> feature-asiakasluonti
                 lisayslauseke
             ).done(function (data, textStatus, jqXHR) {
                 hae_asiakkaat();
@@ -115,7 +103,7 @@
             ).done(function (data, textStatus, jqXHR) {
                 $.each(data, function (index, tyyppi) {
 
-                    $('#asty')
+                    $('#asty_avain')
                         .append($("<option></option>")
                             .attr("value", tyyppi.Avain)
                             .text(tyyppi.Lyhenne + " - " + tyyppi.Selite));
@@ -151,26 +139,20 @@
 	<div id="asiakkaat"></div>
 
     <div id="dialogi_lisaa" title="Lisää uusi asiakas">
-        <form id="lisayslomake">			
-                <input type="hidden" name="lisaa" />
-			<input type="text" id="tunnus_lisays" name="tunnus" placeholder="Tunnus">
-			<input type="password" id="salasana_lisays" name="salasana" placeholder="Salasana"> 
+        <form id="lisayslomake">
+			<input type="hidden" name="lisaa" />
+			<input type="text" id="tunnus" name="tunnus" placeholder="Tunnus">
+			<input type="password" id="salasana" name="salasana" placeholder="Salasana"> 
             <input type="text" id="nimi_lisays" name="nimi" placeholder="Nimi">
             <input type="text" id="osoite_lisays" name="osoite" placeholder="Osoite">
             <input type="text" id="postinro_lisays" name="postinro" placeholder="Postinumero">
             <input type="text" id="postitmp_lisays" name="postitmp" placeholder="Postitoimipaikka">
-<<<<<<< HEAD
-            <select id="asty_lisays" name="asty">
-                <option value="1"></option>
-            </select>
-=======
 
->>>>>>> feature-asiakasluonti
         </form>
     </div>
     
 	
 	<body>
-    <div id="test"></div>
+
 </body>
 </html>

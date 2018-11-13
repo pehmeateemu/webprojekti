@@ -1,10 +1,10 @@
 <?php
 
 	try {
-		$conn = new PDO("mysql:host=localhost;dbname=webprojekti", "root", "");
+		$conn = new PDO("mysql:host=sql204.epizy.com;dbname=epiz_22963281_webprojekti", "epiz_22963281", "puveskissi666");
 		// set the PDO error mode to exception
 		$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-		//echo "Connected successfully";
+		echo "Connected successfully";
 		}
 	catch(PDOException $e)
 		{

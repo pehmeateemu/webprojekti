@@ -9,7 +9,11 @@
 		$a["osoite"] = parsePost("osoite");
 		$a["postinro"] = parsePost("postinro");
 		$a["postitmp"] = parsePost("postitmp");
+<<<<<<< HEAD
 		$a["asty"] = parsePost("asty");
+=======
+		$a["asty"] = 1;
+>>>>>>> feature-asiakasluonti
 		
 		$result = createAsiakas($a);
 		echo $result;

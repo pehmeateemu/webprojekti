@@ -1,9 +1,14 @@
 <?php
 	session_start();
 
-	// Tarkistetaan, onko käyttäjä jo kirjautunut järjestelmään, jos ei -> heitetään login-sivulle
+	// Tarkistetaan, onko käyttäjä jo kirjautunut järjestelmään, jos ei heitetään login-sivulle
 	require_once("login_utils.inc");
+<<<<<<< HEAD
 	check_session();
+=======
+	
+	//check_session();
+>>>>>>> feature-asiakasluonti
 ?>
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
@@ -12,7 +17,7 @@
 	<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/jquery-3.1.0.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-
+	
     <title>Asiakkaiden käsittely</title>
 	
 	<script>
@@ -37,7 +42,11 @@
                         {
                             text: "Lisää",
                             click: function() {
+<<<<<<< HEAD
                                 if ($.trim($("#tunnus_lisays").val()) === "" || $.trim($("#salasana_lisays").val()) === "" || $.trim($("#nimi_lisays").val()) === "" || $.trim($("#osoite_lisays").val()) === "" || $.trim($("#postinro_lisays").val()) === "" || $.trim($("#postitmp_lisays").val()) === "" || $.trim($("#asty_lisays").val()) === "") {
+=======
+                                if ($.trim($("#nimi_lisays").val()) === "" || $.trim($("#osoite_lisays").val()) === "" || $.trim($("#postinro_lisays").val()) === "" || $.trim($("#postitmp_lisays").val()) === "") {
+>>>>>>> feature-asiakasluonti
                                     alert('Anna arvo kaikki kenttiin!');
                                     return false;
                                 } else {
@@ -87,7 +96,11 @@
 		
 		function lisaaAsiakas(lisayslauseke) {
             $.post(
+<<<<<<< HEAD
                 "http://localhost:8081/pohjia/php/asiakasHandler.php",
+=======
+                "http://localhost:8081/pohjia/php/asiakasHandler.php?lisaa",
+>>>>>>> feature-asiakasluonti
                 lisayslauseke
             ).done(function (data, textStatus, jqXHR) {
                 hae_asiakkaat();
@@ -146,9 +159,13 @@
             <input type="text" id="osoite_lisays" name="osoite" placeholder="Osoite">
             <input type="text" id="postinro_lisays" name="postinro" placeholder="Postinumero">
             <input type="text" id="postitmp_lisays" name="postitmp" placeholder="Postitoimipaikka">
+<<<<<<< HEAD
             <select id="asty_lisays" name="asty">
                 <option value="1"></option>
             </select>
+=======
+
+>>>>>>> feature-asiakasluonti
         </form>
     </div>
     

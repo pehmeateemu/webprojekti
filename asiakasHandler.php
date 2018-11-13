@@ -64,7 +64,7 @@
 			echo "<td>". $row["Nimi"]. "</td>";
 			echo "<td>". $row["Osoite"]. "</td>";			
 			echo "<td>". $row["Postinro"]. "</td>";	
-			//echo "<td><button class=\"poistaButton\" onclick=\"poista_asiakas($id);\">Poista</button></td>";
+			echo "<td><button class=\"poistaButton\" onclick=\"poista_asiakas($id);\">Poista</button></td>";
 			echo "</tr>";
 		}
 		

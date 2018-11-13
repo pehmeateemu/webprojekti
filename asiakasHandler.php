@@ -3,6 +3,7 @@
 
 	if ( isset($_POST["lisaa"]))
 	{
+		//asd
 		$a["tunnus"] = parsePost("tunnus");
 		$a["salasana"] = parsePost("salasana");
 		$a["nimi"] = parsePost("nimi");

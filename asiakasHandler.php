@@ -3,11 +3,17 @@
 
 	if ( isset($_POST["lisaa"]))
 	{
+		$a["tunnus"] = parsePost("tunnus");
+		$a["salasana"] = parsePost("salasana");
 		$a["nimi"] = parsePost("nimi");
 		$a["osoite"] = parsePost("osoite");
 		$a["postinro"] = parsePost("postinro");
 		$a["postitmp"] = parsePost("postitmp");
+<<<<<<< HEAD
 		$a["asty"] = parsePost("asty");
+=======
+		$a["asty"] = 1;
+>>>>>>> feature-asiakasluonti
 		
 		$result = createAsiakas($a);
 		echo $result;
@@ -62,7 +68,7 @@
 			echo "<td>". $row["Nimi"]. "</td>";
 			echo "<td>". $row["Osoite"]. "</td>";			
 			echo "<td>". $row["Postinro"]. "</td>";	
-			//echo "<td><button class=\"poistaButton\" onclick=\"poista_asiakas($id);\">Poista</button></td>";
+			echo "<td><button class=\"poistaButton\" onclick=\"poista_asiakas($id);\">Poista</button></td>";
 			echo "</tr>";
 		}
 		

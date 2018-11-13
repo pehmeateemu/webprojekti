@@ -13,7 +13,7 @@ function deleteAsiakas($avain)
 	$result = "OK";
 	try {
 
-		$stmt = $conn->prepare("DELETE FROM Asiakas WHERE Avain = :avain"); 
+		$stmt = $conn->prepare("DELETE FROM kayttaja WHERE kayttaja_id = :avain"); 
 
 		$key = $avain;
 		$stmt->bindParam(":avain", $key);
@@ -36,28 +36,24 @@ function createAsiakas($asiakas)
 	try {
 
 		$stmt = $conn->prepare("INSERT INTO kayttaja (Tunnus, Salasana, Nimi, Osoite, Postinro, Postitmp, Asty) 
-								VALUES (:tunnus, :salasana, :n, :o, :pn, :pt, 1)");
-						
-
-		$stmt->bindParam(":tunnus", $tunnus);
-		$stmt->bindParam(":salasana", $salasana);						
+								VALUES (:uname, :pw, :n, :o, :pn, :pt, :asty)");
+		$stmt->bindParam(":uname", $uname);
+		$stmt->bindParam(":pw", $pw);
 		$stmt->bindParam(":n", $n);
 		$stmt->bindParam(":o", $o);
 		$stmt->bindParam(":pn", $pn);
 		$stmt->bindParam(":pt", $pt);
+		$stmt->bindParam(":asty", $asty);
 
-		
-		
-		$tunnus = $asiakas["tunnus"];
-		$salasana = $asiakas["salasana"];
+		$uname = $asiakas["tunnus"];		
+		$pw = $asiakas["salasana"];
 		$n = $asiakas["nimi"];
 		$o = $asiakas["osoite"];
 		$pn = $asiakas["postinro"];
 		$pt = $asiakas["postitmp"];
+		$asty = $asiakas["asty"];
 
-		console.log($stmt);
-
-		$stmt->execute();            
+		$stmt->execute();           
 	}
 	catch(PDOException $e) {
 		$result = array("status" => "not ok", "error" => $e->getMessage());
@@ -78,7 +74,7 @@ function fetchAsiakas($name, $address, $type_key)
 	$result = array();
 	
 	try {
-		$q = "SELECT Avain, Nimi, Osoite, Postinro FROM Asiakas WHERE 1=1 ";
+		$q = "SELECT kayttaja_id, Nimi, Osoite, Postinro FROM kayttaja WHERE 1=1 ";
 		if ( !empty($name) ) $q .= " AND Nimi like '%$name%'";
 		if ( !empty($address) ) $q .= " AND Nimi like '%$address%'";
 		
@@ -87,7 +83,7 @@ function fetchAsiakas($name, $address, $type_key)
 			
 		//käydään rivit läpi 
 		while ($rivi = $stmt->fetch(PDO::FETCH_ASSOC)) { 
-			$a = $rivi["Avain"];
+			$a = $rivi["kayttaja_id"];
 			$n = $rivi["Nimi"];
 			$o = $rivi["Osoite"];
 			$p = $rivi["Postinro"];
@@ -98,7 +94,6 @@ function fetchAsiakas($name, $address, $type_key)
 		$result = array("status" => "not ok", "error" => $e->getMessage());
 		error_log("Error in fetchAsiakas: " . $e->getMessage());
 	}
-
 	return $result;
 
 }
@@ -110,7 +105,7 @@ function fetchAsiakastyyppi()
 	$result = array();
 	
 	try {
-		$q = "SELECT Avain, Lyhenne, Selite FROM Asiakastyyppi ORDER BY Lyhenne ";
+		$q = "SELECT asty FROM kayttaja ";
 		
 		$stmt = $conn->prepare($q);
 		$stmt->execute();

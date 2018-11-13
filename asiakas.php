@@ -1,8 +1,9 @@
 <?php
 	//session_start();
 
-	// Tarkistetaan, onko käyttäjä jo kirjautunut järjestelmään, jos ei -> heitetään login-sivulle
+	// Tarkistetaan, onko käyttäjä jo kirjautunut järjestelmään, jos ei heitetään login-sivulle
 	require_once("login_utils.inc");
+	
 	//check_session();
 ?>
 <!DOCTYPE html>
@@ -12,7 +13,7 @@
 	<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/jquery-3.1.0.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-
+	
     <title>Asiakkaiden käsittely</title>
 	
 	<script>
@@ -37,7 +38,7 @@
                         {
                             text: "Lisää",
                             click: function() {
-                                if ($.trim($("#nimi_lisays").val()) === "" || $.trim($("#osoite_lisays").val()) === "" || $.trim($("#postinro_lisays").val()) === "" || $.trim($("#postitmp_lisays").val()) === "" || $.trim($("#asty_avain_lisays").val()) === "") {
+                                if ($.trim($("#nimi_lisays").val()) === "" || $.trim($("#osoite_lisays").val()) === "" || $.trim($("#postinro_lisays").val()) === "" || $.trim($("#postitmp_lisays").val()) === "") {
                                     alert('Anna arvo kaikki kenttiin!');
                                     return false;
                                 } else {
@@ -87,7 +88,7 @@
 		
 		function lisaaAsiakas(lisayslauseke) {
             $.post(
-                "http://localhost:8081/pohjia/php/asiakasHandler.php?lisaa=",
+                "http://localhost:8081/pohjia/php/asiakasHandler.php?lisaa",
                 lisayslauseke
             ).done(function (data, textStatus, jqXHR) {
                 hae_asiakkaat();
@@ -146,9 +147,7 @@
             <input type="text" id="osoite_lisays" name="osoite" placeholder="Osoite">
             <input type="text" id="postinro_lisays" name="postinro" placeholder="Postinumero">
             <input type="text" id="postitmp_lisays" name="postitmp" placeholder="Postitoimipaikka">
-            <select id="asty_avain_lisays" name="asty_avain">
-                <option value="1"></option>
-            </select>
+
         </form>
     </div>
     

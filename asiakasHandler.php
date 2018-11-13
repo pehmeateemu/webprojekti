@@ -3,11 +3,13 @@
 
 	if ( isset($_POST["lisaa"]))
 	{
+		$a["tunnus"] = parsePost("tunnus");
+		$a["salasana"] = parsePost("salasana");
 		$a["nimi"] = parsePost("nimi");
 		$a["osoite"] = parsePost("osoite");
 		$a["postinro"] = parsePost("postinro");
 		$a["postitmp"] = parsePost("postitmp");
-		$a["asty_avain"] = parsePost("asty_avain");
+		$a["asty"] = 1;
 		
 		$result = createAsiakas($a);
 		echo $result;

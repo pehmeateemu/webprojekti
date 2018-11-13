@@ -36,7 +36,7 @@ function createAsiakas($asiakas)
 	try {
 
 		$stmt = $conn->prepare("INSERT INTO kayttaja (Tunnus, Salasana, Nimi, Osoite, Postinro, Postitmp, Asty) 
-								VALUES (:tunnus, :salasana, :n, :o, :pn, :pt, :asty)");
+								VALUES (:tunnus, :salasana, :n, :o, :pn, :pt, 1)");
 						
 
 		$stmt->bindParam(":tunnus", $tunnus);
@@ -45,7 +45,7 @@ function createAsiakas($asiakas)
 		$stmt->bindParam(":o", $o);
 		$stmt->bindParam(":pn", $pn);
 		$stmt->bindParam(":pt", $pt);
-		$stmt->bindParam(":asty", $asty);
+
 		
 		
 		$tunnus = $asiakas["tunnus"];
@@ -54,7 +54,8 @@ function createAsiakas($asiakas)
 		$o = $asiakas["osoite"];
 		$pn = $asiakas["postinro"];
 		$pt = $asiakas["postitmp"];
-		$asty = $asiakas["asty"];
+
+		console.log($stmt);
 
 		$stmt->execute();            
 	}

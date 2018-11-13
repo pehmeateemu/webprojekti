@@ -10,7 +10,7 @@
 		$a["osoite"] = parsePost("osoite");
 		$a["postinro"] = parsePost("postinro");
 		$a["postitmp"] = parsePost("postitmp");
-		$a["asty"] = 1;
+		$a["asty"] = parsePost("asty");
 		
 		$result = createAsiakas($a);
 		echo $result;

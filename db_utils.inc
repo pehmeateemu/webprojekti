@@ -123,4 +123,112 @@ function fetchAsiakastyyppi()
 	return $result;
 }
 
+function fetchLaite($nimi, $merkki, $malli, $sarjanumero, $kategoria, $omistaja, $osoite, $postinro, $postitmp, $kuvaus)
+{
+	// $conn -muuttuja EI näy funktion sisällä jos sitä ei määritellä täällä global:ksi
+	global $conn;
+	$result = array();
+	
+	try {
+		$q = "SELECT laite_id, Nimi, Merkki, Malli, Sarjanumero, Kategoria, Omistaja, Osoite, Postinro, Postitmp, Kuvaus FROM laite WHERE 1=1 ";
+		if ( !empty($nimi) ) $q .= " AND Nimi like '%$nimi%'";
+		if ( !empty($merkki) ) $q .= " AND Merkki like '%$merkki%'";
+		if ( !empty($malli) ) $q .= " AND Malli like '%$malli%'";
+		if ( !empty($sarjanumero) ) $q .= " AND Sarjanumero like '%$sarjanumero%'";
+		if ( !empty($kategoria) ) $q .= " AND Kategoria like '%$kategoria%'";
+		if ( !empty($omistaja) ) $q .= " AND Omistaja like '%$omistaja%'";
+		if ( !empty($osoite) ) $q .= " AND Osoite like '%$osoite%'";
+		if ( !empty($postinro) ) $q .= " AND Postinro like '%$postinro%'";
+		if ( !empty($postitmp) ) $q .= " AND Postitmp like '%$postitmp%'";
+		if ( !empty($kuvaus) ) $q .= " AND Kuvaus like '%$kuvaus%'";
+		
+		$stmt = $conn->prepare($q);
+		$stmt->execute();
+			
+		//käydään rivit läpi 
+		while ($rivi = $stmt->fetch(PDO::FETCH_ASSOC)) { 
+			$a = $rivi["laite_id"];
+			$n = $rivi["Nimi"];
+			$me = $rivi["Merkki"];
+			$ma = $rivi["Malli"];
+			$sn = $rivi["Sarjanumero"];
+			$ka = $rivi["Kategoria"];
+			$om = $rivi["Omistaja"];
+			$o = $rivi["Osoite"];
+			$pn = $rivi["Postinro"];
+			$pt = $rivi["Postitmp"];
+			$ku = $rivi["Kuvaus"];
+			$result[] = $rivi;
+		}
+	}
+	catch(PDOException $e) {
+		$result = array("status" => "not ok", "error" => $e->getMessage());
+		error_log("Error in fetchLaite: " . $e->getMessage());
+	}
+	return $result;
+
+}
+function createlaite($laite)
+{
+	global $conn;
+	$result = array("status" => "ok");
+	try {
+
+		$stmt = $conn->prepare("INSERT INTO laite (Tila, Nimi, Merkki, Malli, Sarjanumero, Kategoria, Omistaja, Osoite, Postinro, Postitmp, Kuvaus) 
+								VALUES (:ti, :n, :me, :ma, :sn, :ka, :om, :o, :pn, :pt, :ku)");
+		$stmt->bindParam(":ti", $ti);
+		$stmt->bindParam(":n", $n);
+		$stmt->bindParam(":me", $me);
+		$stmt->bindParam(":ma", $ma);
+		$stmt->bindParam(":sn", $sn);
+		$stmt->bindParam(":ka", $ka);
+		$stmt->bindParam(":om", $om);
+		$stmt->bindParam(":o", $o);
+		$stmt->bindParam(":pn", $pn);
+		$stmt->bindParam(":pt", $pt);
+		$stmt->bindParam(":ku", $ku);
+		
+		$ti = $laite["tila"];
+		$n = $laite["nimi"];
+		$me = $laite["merkki"];
+		$ma = $laite["malli"];
+		$sn = $laite["sarjanumero"];
+		$ka = $laite["kategoria"];
+		$om = $laite["omistaja"];
+		$o = $laite["osoite"];
+		$pn = $laite["postinro"];
+		$pt = $laite["postitmp"];
+		$ku = $laite["kuvaus"];
+
+		$stmt->execute();           
+	}
+	catch(PDOException $e) {
+		$result = array("status" => "not ok", "error" => $e->getMessage());
+		// Kirjoittaa virheviestin PHP:n error lokiin (löytyy WAMP:n ikonin alta PHP -> PHP error log)
+		error_log("Error in createLaite: " . $e->getMessage());
+	}
+	
+	echo json_encode($result);
+}
+function poista_laite($id)
+{
+	global $conn;
+	$result = "OK";
+	try {
+
+		$stmt = $conn->prepare("UPDATE laite SET Tila=5 WHERE laite_id = :avain"); 
+
+		$key = $avain;
+		$stmt->bindParam(":avain", $key);
+
+		$stmt->execute();            
+	}
+	catch(PDOException $e) {
+		$result = "ERROR " . $e->getMessage();
+		error_log("Error in poista_laite: " . $e->getMessage());
+	}
+	
+	return $result;
+}
+
 ?>

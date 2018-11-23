@@ -1,16 +1,8 @@
-<?php
-	//session_start();
-
-	// Tarkistetaan, onko k‰ytt‰j‰ jo kirjautunut j‰rjestelm‰‰n, jos ei heitet‰‰n login-sivulle
-	require_once("login_utils.inc");
-	require_once("db_utils.inc");
-	//check_session();
-?>
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <?php
 	//session_start();
-	// Tarkistetaan, onko k‰ytt‰j‰ jo kirjautunut j‰rjestelm‰‰n, jos ei heitet‰‰n login-sivulle
+	// Tarkistetaan, onko k√§ytt√§j√§ jo kirjautunut j√§rjestelm√§√§n, jos ei heitet√§√§n login-sivulle
 	require_once("login_utils.inc");
 	
 	//check_session();
@@ -23,7 +15,7 @@
     <script src="https://code.jquery.com/jquery-3.1.0.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 	
-    <title>Laitteiden k‰sittely</title>
+    <title>Laitteiden k√§sittely</title>
 	
 	<script>
 		$(function(){
@@ -46,7 +38,7 @@
                     buttons: 
 					[
                         {
-                            text: "Lis‰‰",
+                            text: "Lis√§√§",
                             click: function() 
 							{
                                 if (
@@ -68,7 +60,7 @@
 								else 
 								{
                                     var lisayslauseke = $("#lisayslomake").serialize();
-                                    console.log("Lis‰yslauseke: " + lisayslauseke);
+                                    console.log("Lis√§yslauseke: " + lisayslauseke);
                                     lisaaLaite(lisayslauseke);
                                     //$("#lisayslomake")[0].reset();
                                     //$("#asty_avain_lisays").prop('selectedIndex', 0);
@@ -95,7 +87,7 @@
 		function hae_laitteet()
 		{
 			$("#laitteet").load("http://localhost:8081/pohjia/php/laiteHandler.php?hae=laite", function(){
-				$(".poistaButton").button();	// Pakko laittaa t‰nne, koska poista-buttoneita ei ole selaimessa ennenkuin data on haettu
+				$(".poistaButton").button();	// Pakko laittaa t√§nne, koska poista-buttoneita ei ole selaimessa ennenkuin data on haettu
 			});
 		}
 		
@@ -152,11 +144,11 @@
 		<br />
 	</form>
 	<button id="hae">Hae laitteet</button>
-	<button id="lisaa">Lis‰‰ uusi laite</button>
+	<button id="lisaa">Lis√§√§ uusi laite</button>
 	
 	<div id="laitteet"></div>
 
-    <div id="dialogi_lisaa" title="Lis‰‰ uusi laite">
+    <div id="dialogi_lisaa" title="Lis√§√§ uusi laite">
         <form id="lisayslomake">			
             <input type="hidden" name="lisaa" />
             <input type="text" id="nimi_lisays" name="nimi" placeholder="Nimi" size="32">

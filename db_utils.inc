@@ -231,4 +231,29 @@ function poista_laite($id)
 	return $result;
 }
 
+function fetchLogin($tunnus, $ss)
+{
+	// $conn -muuttuja EI näy funktion sisällä jos sitä ei määritellä täällä global:ksi
+	global $conn;
+	$result = array();
+	
+	try {
+		$q = "SELECT * FROM kayttaja WHERE TUNNUS='$tunnus' AND SALASANA = '$ss'";
+		
+		$stmt = $conn->prepare($q);
+		$stmt->execute();
+			
+		//käydään rivit läpi 
+		while ($rivi = $stmt->fetch(PDO::FETCH_ASSOC)) { 
+			$result[] = $rivi;
+		}
+	}
+	catch(PDOException $e) {
+		$result = array("status" => "not ok", "error" => $e->getMessage());
+		error_log("Error in fetchAsiakas: " . $e->getMessage());
+	}
+	return $result;
+
+}
+
 ?>

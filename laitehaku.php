@@ -32,6 +32,9 @@
 			$("#lisaa").click(function(){
 				$("#dialogi_lisaa").dialog("open");
 			});
+			$("#poista").click(function(){
+				poista_laite($(this).closest('tr').find('td:nth-child(1)').val());
+			});
 			
 			$("#dialogi_lisaa").dialog({
                     autoOpen: false,

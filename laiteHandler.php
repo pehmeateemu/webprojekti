@@ -25,8 +25,8 @@ if ( isset($_POST["lisaa"]))
 
 	if ( isset($_GET["poista"]))
 	{
-		$avain = parseGet("poista");
-		$result = poista_laite($avain);
+		$laite_id = parseGet("poista");
+		$result = poista_laite($laite_id);
 		echo $result;
 	}
 
@@ -49,9 +49,10 @@ if ( isset($_GET["hae"]) )
 		// $data sis‰lt‰‰ datan indeksoidussa taulukkossa, jossa jokainen alkio on assosiatiivinen taulukko
 		echo "<table id=\"laitteet\">";
 		echo "<tr><th>ID</th><th>Nimi</th><th>Merkki</th><th>Malli</th><th>Sarjanumero</th><th>Kategoria</th><th>Omistaja</th><th>Toimipaikka</th><th>Kuvaus</th></tr>";
-
+		
 		foreach($data as $row)
 		{
+			$id = $row["laite_id"];
 			echo "<tr>";
 			echo "<td>". $row["laite_id"]. "</td>";
 			echo "<td>". $row["Nimi"]. "</td>";
@@ -62,7 +63,7 @@ if ( isset($_GET["hae"]) )
 			echo "<td>". $row["Omistaja"]. "</td>";
 			echo "<td>". $row["Postitmp"]. "</td>";
 			echo "<td>". $row["Kuvaus"]. "</td>";
-			echo "<td><button class=\"poistaButton\" onclick=\"poista_laite();\">Poista</button></td>";
+			echo "<td> <button class=\"poistaButton\" onclick=\"poista_laite($id)\">Poista </button> </td>";
 			echo "</tr>";
 		}
 		

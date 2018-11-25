@@ -23,6 +23,12 @@
 			
 			$("#hae").button();
 			$("#lisaa").button();
+            $("#logout").button();
+		
+            
+            $("#logout").click(function(){
+                location.href="logout.php";
+			});
 		
 			$("#hae").click(function(){
 				hae_asiakkaat();
@@ -135,6 +141,7 @@
 	</form>
 	<button id="hae">Hae asiakkaat</button>
 	<button id="lisaa">Lisää uusi asiakas</button>
+    <button id="logout">Kirjaudu ulos</button>
 	
 	<div id="asiakkaat"></div>
 

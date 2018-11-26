@@ -23,6 +23,7 @@
 			
 			$("#hae").button();
 			$("#lisaa").button();
+			$("#muokkaa").button();
 			$("#poista").button();
 		
 			$("#hae").click(function(){
@@ -32,10 +33,29 @@
 			$("#lisaa").click(function(){
 				$("#dialogi_lisaa").dialog("open");
 			});
+			
+			$("#muokkaa").click(function(){
+				//	$("#laite_id_muokkaus").val($(this).closest('tr').find('td:nth-child(1)').val());
+				//	$("#nimi_muokkaus").val($(this).closest('tr').find('td:nth-child(2)').val());
+				//	$("#merkki_muokkaus").val($(this).closest('tr').find('td:nth-child(3)').val());
+				//	$("#malli_muokkaus").val($(this).closest('tr').find('td:nth-child(4)').val());
+				//	$("#sarjanumero_muokkaus").val($(this).closest('tr').find('td:nth-child(5)').val());
+				//	$("#kategoria_muokkaus").val($(this).closest('tr').find('td:nth-child(6)').val());
+				//	$("#omistaja_muokkaus").val($(this).closest('tr').find('td:nth-child(7)').val());
+				//	$("#osoite_muokkaus").val($(this).closest('tr').find('td:nth-child(8)').val());
+				//	$("#postinro_muokkaus").val($(this).closest('tr').find('td:nth-child(9)').val());
+				//	$("#postitmp_muokkaus").val($(this).closest('tr').find('td:nth-child(10)').val());
+				//	$("#kuvaus_muokkaus").val($(this).closest('tr').find('td:nth-child(11)').val());
+				//	$("#tila_muokkaus").val($(this).closest('tr').find('td:nth-child(12)').val());
+				$("#dialogi_muokkaa").dialog("open");	
+			});
+
+
 			$("#poista").click(function(){
-				poista_laite($(this).closest('tr').find('td:nth-child(1)').val());
+				poistaLaite($(this).closest('tr').find('td:nth-child(1)').val());
 			});
 			
+
 			$("#dialogi_lisaa").dialog({
                     autoOpen: false,
                     buttons: 
@@ -85,21 +105,76 @@
                     modal: true,
                     resizable: false
             });
+
+			$("#dialogi_muokkaa").dialog({
+                    autoOpen: false,
+                    buttons: 
+					[
+                        {
+                            text: "Tallenna muutokset",
+                            click: function() 
+							{
+                                if (
+										$.trim($("#nimi_muokkaus").val()) === "" || 
+										$.trim($("#merkki_muokkaus").val()) === "" || 
+										$.trim($("#malli_muokkaus").val()) === "" || 
+										$.trim($("#sarjanumero_muokkaus").val()) === "" || 
+										$.trim($("#kategoria_muokkaus").val()) === "" || 
+										$.trim($("#omistaja_muokkaus").val()) === "" || 
+										$.trim($("#osoite_muokkaus").val()) === "" ||
+										$.trim($("#postinro_muokkaus").val()) === "" || 
+										$.trim($("#postitmp_muokkaus").val()) === "" || 
+										$.trim($("#kuvaus_muokkaus").val()) === "" || 
+										$.trim($("#tila_muokkaus").val()) === ""
+									)
+									{
+										alert('Anna arvo kaikki kenttiin!');
+										return false; 
+									} 
+
+								else 
+								{
+                                    var muokkauslauseke = $("#muokkauslomake").serialize();
+                                    console.log("muokkauslauseke: " + muokkauslauseke);
+                                    tallennaLaite(muokkauslauseke);
+                                    //$("#lisayslomake")[0].reset();
+                                    //$("#asty_avain_lisays").prop('selectedIndex', 0);
+                                    $(this).dialog("close");
+                                }
+                            },
+                        },
+                        {
+                            text: "Peruuta",
+                            click: function() {
+                                //$("#lisayslomake")[0].reset();
+                                //$("#asty_avain_lisays").prop('selectedIndex', 0);
+                                $(this).dialog("close");
+                            },
+                        }
+                    ],
+                    closeOnEscape: false,
+                    draggable: false,
+                    modal: true,
+                    resizable: false
+            });
+
 		});
 		
 		function hae_laitteet()
 		{
 			$("#laitteet").load("http://localhost:8081/pohjia/php/laiteHandler.php?hae=laite", function(){
+				$(".muokkaaButton").button();
 				$(".poistaButton").button();	// Pakko laittaa tänne, koska poista-buttoneita ei ole selaimessa ennenkuin data on haettu
 			});
 		}
 		
-		function poista_laite(avain)
+		function poistaLaite(avain)
 		{
 		    $.get(
                 "http://localhost:8081/pohjia/php/laiteHandler.php?poista=" + avain
             )
 			.done(function (data, textStatus, jqXHR) {
+
 				hae_laitteet();
             })
 			.fail(function (jqXHR, textStatus, errorThrown) {
@@ -116,9 +191,45 @@
             }).fail(function (jqXHR, textStatus, errorThrown) {
                 console.log("lisaaLaite: status=" + textStatus + ", " + errorThrown);
             });
+			}
+		function muokkaaLaite(avain)
+		{
+			$.get(
+			"http://localhost:8081/pohjia/php/laiteHandler.php?muokkaa=" + avain
+			).done(function (data, textStatus, jqXHR) {
+					
+					console.log(avain, data);
+					
+					//$("#laite_id_muokkaus").val();
+					//$("#nimi_muokkaus").val();
+					//$("#merkki_muokkaus").val(data["Merkki"].val());
+					//$("#malli_muokkaus").val(data["malli"]);
+					//$("#sarjanumero_muokkaus").val(data["sarjanumero"]);
+					//$("#kategoria_muokkaus").val(data["kategoria"]);
+					//$("#omistaja_muokkaus").val(data["omistaja"]);
+					//$("#osoite_muokkaus").val(data["osoite"]);
+					//$("#postinro_muokkaus").val(data["postinro"]);
+					//$("#postitmp_muokkaus").val(data["postitmp"]);
+					//$("#kuvaus_muokkaus").val(data["kuvaus"]);
+					//$("#tila_muokkaus").val(data["tila"]);
+					
+					$("#dialogi_muokkaa").dialog("open");
+				}).fail(function (jqXHR, textStatus, errorThrown) {
+					console.log("muokkaaLaite: status=" + textStatus + ", " + errorThrown);
+					
+				});
+		}
+		function tallennaLaite(muokkauslauseke) 
+		{
+			$.post("http://localhost:8081/pohjia/php/laiteHandler.php?tallenna",
+                muokkauslauseke
+            ).done(function (data, textStatus, jqXHR) {
+                hae_laitteet();
+            }).fail(function (jqXHR, textStatus, errorThrown) {
+                console.log("muokkaaLaite: status=" + textStatus + ", " + errorThrown);
+            });
 
-
-    }
+		}
 	</script>
 </head>
 <body>	
@@ -169,7 +280,30 @@
             </select>
         </form>
 		
+		    </div>
+
+
+		<div id="dialogi_muokkaa" title="Muokkaa laitteen tietoja">
+        <form id="muokkauslomake">			
+			<label type="hidden" id="laite_id_muokkaus" name="laite_id"></label>
+            <input type="hidden" name="tallenna" />
+            <input type="text" id="nimi_muokkaus" name="nimi" placeholder="Nimi" size="32">
+            <input type="text" id="merkki_muokkaus" name="merkki" placeholder="Merkki" size="32">
+            <input type="text" id="malli_muokkaus" name="malli" placeholder="Malli" size="32">
+            <input type="text" id="sarjanumero_muokkaus" name="sarjanumero" placeholder="Sarjanumero" size="32">
+			<input type="text" id="kategoria_muokkaus" name="kategoria" placeholder="Kategoria" size="32">
+            <input type="text" id="omistaja_muokkaus" name="omistaja" placeholder="Omistaja" size="32">
+            <input type="text" id="osoite_muokkaus" name="osoite" placeholder="Osoite" size="32">
+            <input type="text" id="postinro_muokkaus" name="postinro" placeholder="Postinumero" size="32">
+            <input type="text" id="postitmp_muokkaus" name="postitmp" placeholder="Postitoimipaikka" size="32">
+			<textarea form="lisayslomake" class="formInput" id="kuvaus_muokkaus" name="kuvaus" placeholder="Kuvaus" cols="30" rows="4" style="resize:none"></textarea>
+			<select id="tila_muokkaus" name="tila">
+            <option value="1"></option>
+            </select>
+        </form>
+		
     </div>
+
 
 </body>
 </html>

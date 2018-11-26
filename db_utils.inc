@@ -67,6 +67,37 @@ function createAsiakas($asiakas)
 /*
 	Funktio hakee datan Asiakas-taulusta. Parametrina tulee mahdolliset hakuehdot.
 */
+function fetchAsiakasID($kayttaja_id)
+{
+	// $conn -muuttuja EI näy funktion sisällä jos sitä ei määritellä täällä global:ksi
+	global $conn;
+	$result = array();
+	
+	try {
+		$q = "SELECT TUNNUS, SALASANA, NIMI, OSOITE, POSTINRO, POSTITMP, ASTY FROM kayttaja WHERE kayttaja_id = '$kayttaja_id'";	
+	
+		$stmt = $conn->prepare($q);
+		$stmt->execute();
+			
+		//käydään rivit läpi 
+		while ($rivi = $stmt->fetch(PDO::FETCH_ASSOC)) { 
+			$uname = $asiakas["tunnus"];		
+			$pw = $asiakas["salasana"];
+			$n = $asiakas["nimi"];
+			$o = $asiakas["osoite"];
+			$pn = $asiakas["postinro"];
+			$pt = $asiakas["postitmp"];
+			$asty = $asiakas["asty"];
+			$result[] = $rivi;
+		}
+	}
+	catch(PDOException $e) {
+		$result = array("status" => "not ok", "error" => $e->getMessage());
+		error_log("Error in fetchAsiakasID: " . $e->getMessage());
+	}
+	return $result;
+
+}
 function fetchAsiakas($name, $address, $type_key)
 {
 	// $conn -muuttuja EI näy funktion sisällä jos sitä ei määritellä täällä global:ksi

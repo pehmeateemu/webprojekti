@@ -15,14 +15,23 @@
 		$result = createAsiakas($a);
 		echo $result;
 	}
-	
+
 	if ( isset($_GET["poista"]))
 	{
 		$avain = parseGet("poista");
 		$result = deleteAsiakas($avain);
 		echo $result;
 	}
+
+	if ( isset($_GET["haeMuutokseen"]) )
+    {
+		$kayttaja_id = parseGet("kayttaja_id");		
+		$result = fetchAsiakasID($kayttaja_id);
+		echo $result;
+
+	}
 	
+
 	if ( isset($_GET["hae_asiakas_json"]) )
 	{
 		header("Access-Control-Allow-Origin: *");
@@ -65,6 +74,7 @@
 			echo "<td>". $row["Nimi"]. "</td>";
 			echo "<td>". $row["Osoite"]. "</td>";			
 			echo "<td>". $row["Postinro"]. "</td>";	
+			echo "<td> <button class=\"muokkaaButton\"onclick=\"muokkaa_asiakas($id)\">Muokkaa </button> </td>";
 			echo "<td><button class=\"poistaButton\" onclick=\"poista_asiakas($id);\">Poista</button></td>";
 			echo "</tr>";
 		}

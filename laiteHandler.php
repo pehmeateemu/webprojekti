@@ -24,18 +24,20 @@ if ( isset($_POST["lisaa"]))
 	}
 
 	if ( isset($_GET["muokkaa"]))
-	{		
+	{	
+		
 		$laite_id = parseGet("muokkaa");
-		$laite = editLaite($laite_id);
+		$data = editLaite($laite_id);
+			
+			print_r($data);
 
-			echo json_encode($laite);
 	}
 
 	if ( isset($_GET["poista"]))
 	{
 		$laite_id = parseGet("poista");
 		$result = poistaLaite($laite_id);
-		echo $result;
+		echo json_encode($result);
 	}
 
 if ( isset($_POST["tallenna"]))

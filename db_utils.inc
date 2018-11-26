@@ -130,27 +130,28 @@ function editLaite($laite_id)
 	$result = array();
 	
 	try {
-		$q = "SELECT laite_id, Nimi, Merkki, Malli, Sarjanumero, Kategoria, Omistaja, Osoite, Postinro, Postitmp, Kuvaus, Tila FROM laite WHERE laite_id like '%$laite_id%'";
+		$q = "SELECT laite_id, Nimi, Merkki, Malli, Sarjanumero, Kategoria, Omistaja, Osoite, Postinro, Postitmp, Kuvaus, Tila FROM laite WHERE laite_id LIKE '%$laite_id%'";
 		
 		$stmt = $conn->prepare($q);
 		$stmt->execute();
 			
 		//käydään rivit läpi 
 		while ($rivi = $stmt->fetch(PDO::FETCH_ASSOC)) { 
-			if ($rivi["laite_id"] === $laite_id) {
-			$a = $rivi["laite_id"];
-			$n = $rivi["Nimi"];
-			$me = $rivi["Merkki"];
-			$ma = $rivi["Malli"];
-			$sn = $rivi["Sarjanumero"];
-			$ka = $rivi["Kategoria"];
-			$om = $rivi["Omistaja"];
-			$o = $rivi["Osoite"];
-			$pn = $rivi["Postinro"];
-			$pt = $rivi["Postitmp"];
-			$ku = $rivi["Kuvaus"];
-			$ti = $rivi["Tila"];
-			$result[] = $rivi;
+			if ($rivi["laite_id"] == $laite_id) {
+
+			$result = array(
+			$rivi["laite_id"],
+			$rivi["Tila"],
+			$rivi["Nimi"],
+			$rivi["Merkki"],
+			$rivi["Malli"], 
+			$rivi["Sarjanumero"], 
+			$rivi["Kategoria"],
+			$rivi["Omistaja"],
+			$rivi["Osoite"], 
+			$rivi["Postinro"],
+			$rivi["Postitmp"], 
+			$rivi["Kuvaus"]);
 			}
 			
 		}
@@ -161,7 +162,7 @@ function editLaite($laite_id)
 		error_log("Error in fetchLaite: " . $e->getMessage());
 	}
 	return $result;
-	exit();
+
 }
 
 function fetchLaite($laite_id, $nimi, $merkki, $malli, $sarjanumero, $kategoria, $omistaja, $osoite, $postinro, $postitmp, $kuvaus, $tila)
@@ -189,18 +190,6 @@ function fetchLaite($laite_id, $nimi, $merkki, $malli, $sarjanumero, $kategoria,
 			
 		//käydään rivit läpi 
 		while ($rivi = $stmt->fetch(PDO::FETCH_ASSOC)) { 
-			$a = $rivi["laite_id"];
-			$n = $rivi["Nimi"];
-			$me = $rivi["Merkki"];
-			$ma = $rivi["Malli"];
-			$sn = $rivi["Sarjanumero"];
-			$ka = $rivi["Kategoria"];
-			$om = $rivi["Omistaja"];
-			$o = $rivi["Osoite"];
-			$pn = $rivi["Postinro"];
-			$pt = $rivi["Postitmp"];
-			$ku = $rivi["Kuvaus"];
-			$ti = $rivi["Tila"];
 			$result[] = $rivi;
 		}
 	}

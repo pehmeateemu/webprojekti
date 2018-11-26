@@ -27,8 +27,22 @@
     {
 		$kayttaja_id = parseGet("kayttaja_id");		
 		$result = fetchAsiakasID($kayttaja_id);
-		echo $result;
+		$data = json_decode($result); 
+		echo $data;
 
+	}
+	if ( isset($_POST["tallenna"]))
+	{
+		$a["tunnus"] = parsePost("tunnus");
+		$a["salasana"] = parsePost("salasana");
+		$a["nimi"] = parsePost("nimi");
+		$a["osoite"] = parsePost("osoite");
+		$a["postinro"] = parsePost("postinro");
+		$a["postitmp"] = parsePost("postitmp");
+		$a["asty"] = parsePost("asty");
+
+		$result = updateAsiakas($m);
+		echo $result;
 	}
 	
 

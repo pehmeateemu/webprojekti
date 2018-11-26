@@ -75,7 +75,7 @@ if ( isset($_GET["hae"]) )
 		
 		$data = fetchLaite($laite_id, $nimi, $merkki, $malli, $sarjanumero, $kategoria, $omistaja, $osoite, $postinro, $postitmp, $kuvaus, $tila);
 		
-		// $data sisältää datan indeksoidussa taulukkossa, jossa jokainen alkio on assosiatiivinen taulukko
+		// $data sisï¿½ltï¿½ï¿½ datan indeksoidussa taulukkossa, jossa jokainen alkio on assosiatiivinen taulukko
 		echo "<table id=\"laitteet\">";
 		echo "<tr><th>ID</th><th>Nimi</th><th>Merkki</th><th>Malli</th><th>Sarjanumero</th><th>Kategoria</th><th>Omistaja</th><th>Osoite</th><th>Postinumero</th><th>Toimipaikka</th><th>Kuvaus</th></tr>";
 		

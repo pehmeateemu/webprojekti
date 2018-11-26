@@ -97,6 +97,35 @@ function fetchAsiakasID($kayttaja_id)
 	}
 	return $result;
 
+}function updateAsiakas($kayttaja_id)
+{
+	// $conn -muuttuja EI näy funktion sisällä jos sitä ei määritellä täällä global:ksi
+	global $conn;
+	$result = array();
+	
+	try {
+		$q = "UPDATE kayttaja
+	  		SET
+				TUNNUS = 'adgfdafg',
+				SALASANA = 'xcvbxcvb',
+				NIMI = 'xzcvasdf',
+				OSOITE = 'rttrert',
+				POSTINRO = '12345',
+				POSTITMP = 'werrwerwerwer',
+				ASTY = 1
+			WHERE
+				KAYTTAJA_ID = '$kayttaja_id'";	
+	
+		$stmt = $conn->prepare($q);
+		$stmt->execute();
+
+	}
+	catch(PDOException $e) {
+		$result = array("status" => "not ok", "error" => $e->getMessage());
+		error_log("Error in updateAsiakas: " . $e->getMessage());
+	}
+	return $result;
+
 }
 function fetchAsiakas($name, $address, $type_key)
 {

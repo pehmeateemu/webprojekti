@@ -35,18 +35,6 @@
 			});
 			
 			$("#muokkaa").click(function(){
-				//	$("#laite_id_muokkaus").val($(this).closest('tr').find('td:nth-child(1)').val());
-				//	$("#nimi_muokkaus").val($(this).closest('tr').find('td:nth-child(2)').val());
-				//	$("#merkki_muokkaus").val($(this).closest('tr').find('td:nth-child(3)').val());
-				//	$("#malli_muokkaus").val($(this).closest('tr').find('td:nth-child(4)').val());
-				//	$("#sarjanumero_muokkaus").val($(this).closest('tr').find('td:nth-child(5)').val());
-				//	$("#kategoria_muokkaus").val($(this).closest('tr').find('td:nth-child(6)').val());
-				//	$("#omistaja_muokkaus").val($(this).closest('tr').find('td:nth-child(7)').val());
-				//	$("#osoite_muokkaus").val($(this).closest('tr').find('td:nth-child(8)').val());
-				//	$("#postinro_muokkaus").val($(this).closest('tr').find('td:nth-child(9)').val());
-				//	$("#postitmp_muokkaus").val($(this).closest('tr').find('td:nth-child(10)').val());
-				//	$("#kuvaus_muokkaus").val($(this).closest('tr').find('td:nth-child(11)').val());
-				//	$("#tila_muokkaus").val($(this).closest('tr').find('td:nth-child(12)').val());
 				$("#dialogi_muokkaa").dialog("open");	
 			});
 
@@ -197,28 +185,19 @@
 			$.get(
 			"http://localhost:8081/pohjia/php/laiteHandler.php?muokkaa=" + avain
 			).done(function (data, textStatus, jqXHR) {
-					
-					console.log(avain, data);
-					
-					//$("#laite_id_muokkaus").val();
-					//$("#nimi_muokkaus").val();
-					//$("#merkki_muokkaus").val(data["Merkki"].val());
-					//$("#malli_muokkaus").val(data["malli"]);
-					//$("#sarjanumero_muokkaus").val(data["sarjanumero"]);
-					//$("#kategoria_muokkaus").val(data["kategoria"]);
-					//$("#omistaja_muokkaus").val(data["omistaja"]);
-					//$("#osoite_muokkaus").val(data["osoite"]);
-					//$("#postinro_muokkaus").val(data["postinro"]);
-					//$("#postitmp_muokkaus").val(data["postitmp"]);
-					//$("#kuvaus_muokkaus").val(data["kuvaus"]);
-					//$("#tila_muokkaus").val(data["tila"]);
-					
+					console.log(data);
+					$.each(JSON.parse(data), function (i, elem){
+					alert(elem.type);
+					});
+					document.getElementById("nimi_muokkaus").value=data[2];
 					$("#dialogi_muokkaa").dialog("open");
-				}).fail(function (jqXHR, textStatus, errorThrown) {
-					console.log("muokkaaLaite: status=" + textStatus + ", " + errorThrown);
-					
-				});
+			}).fail(function (jqXHR, textStatus, errorThrown) {
+					console.log("muokkaaLaite: status=" + textStatus + ", " + errorThrown);					
+			});
 		}
+			function taytaLomake(laite) 
+			{
+			}
 		function tallennaLaite(muokkauslauseke) 
 		{
 			$.post("http://localhost:8081/pohjia/php/laiteHandler.php?tallenna",
@@ -287,16 +266,16 @@
         <form id="muokkauslomake">			
 			<label type="hidden" id="laite_id_muokkaus" name="laite_id"></label>
             <input type="hidden" name="tallenna" />
-            <input type="text" id="nimi_muokkaus" name="nimi" placeholder="Nimi" size="32">
-            <input type="text" id="merkki_muokkaus" name="merkki" placeholder="Merkki" size="32">
-            <input type="text" id="malli_muokkaus" name="malli" placeholder="Malli" size="32">
-            <input type="text" id="sarjanumero_muokkaus" name="sarjanumero" placeholder="Sarjanumero" size="32">
-			<input type="text" id="kategoria_muokkaus" name="kategoria" placeholder="Kategoria" size="32">
-            <input type="text" id="omistaja_muokkaus" name="omistaja" placeholder="Omistaja" size="32">
-            <input type="text" id="osoite_muokkaus" name="osoite" placeholder="Osoite" size="32">
-            <input type="text" id="postinro_muokkaus" name="postinro" placeholder="Postinumero" size="32">
-            <input type="text" id="postitmp_muokkaus" name="postitmp" placeholder="Postitoimipaikka" size="32">
-			<textarea form="lisayslomake" class="formInput" id="kuvaus_muokkaus" name="kuvaus" placeholder="Kuvaus" cols="30" rows="4" style="resize:none"></textarea>
+            <input type="text" id="nimi_muokkaus" name="nimimuokkaus" placeholder="Nimi" size="32">
+            <input type="text" id="merkki_muokkaus" name="merkkimuokkaus" placeholder="Merkki" size="32">
+            <input type="text" id="malli_muokkaus" name="mallimuokkaus" placeholder="Malli" size="32">
+            <input type="text" id="sarjanumero_muokkaus" name="sarjanumeromuokkaus" placeholder="Sarjanumero" size="32">
+			<input type="text" id="kategoria_muokkaus" name="kategoriamuokkaus" placeholder="Kategoria" size="32">
+            <input type="text" id="omistaja_muokkaus" name="omistajamuokkaus" placeholder="Omistaja" size="32">
+            <input type="text" id="osoite_muokkaus" name="osoitemuokkaus" placeholder="Osoite" size="32">
+            <input type="text" id="postinro_muokkaus" name="postinromuokkaus" placeholder="Postinumero" size="32">
+            <input type="text" id="postitmp_muokkaus" name="postitmpmuokkaus" placeholder="Postitoimipaikka" size="32">
+			<textarea form="muokkauslomake" class="formInput" id="kuvaus_muokkaus" name="kuvausmuokkaus" placeholder="Kuvaus" cols="30" rows="4" style="resize:none"></textarea>
 			<select id="tila_muokkaus" name="tila">
             <option value="1"></option>
             </select>

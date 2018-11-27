@@ -38,14 +38,61 @@
 				$("#dialogi_lisaa").dialog("open");
 			});
 			
+   
+            $("#dialogi_muokkaa").dialog({
+                    autoOpen: false,
+                    buttons: 
+					[
+                        {
+                            text: "Tallenna muutokset",
+                            click: function() 
+							{
+                                if (
+										$.trim($("#tunnus_muokkaa").val()) === "" || 
+										$.trim($("#salasana_muokkaa").val()) === "" || 
+										$.trim($("#nimi_muokkaa").val()) === "" || 
+										$.trim($("#osoite_muokkaa").val()) === "" || 
+										$.trim($("#postinro_muokkaa").val()) === "" || 
+										$.trim($("#postitmp_muokkaa").val()) === "" || 
+										$.trim($("#asty_muokkaa").val()) === "")
+									{
+										alert('Anna arvo kaikki kenttiin!');
+										return false; 
+									} 
+
+								else 
+								{
+                                    var muokkauslauseke = $("#muokkauslomake").serialize();
+                                    console.log("muokkauslauseke: " + muokkauslauseke);
+                                    tallennaAsiakas(muokkauslauseke);
+                                    $(this).dialog("close");
+                                }
+                            },
+                        },
+                        {
+                            text: "Peruuta",
+                            click: function() {
+                                //$("#lisayslomake")[0].reset();
+                                //$("#asty_avain_lisays").prop('selectedIndex', 0);
+                                $(this).dialog("close");
+                            },
+                        }
+                    ],
+                    closeOnEscape: false,
+                    draggable: false,
+                    modal: true,
+                    resizable: false
+            });
+
 			$("#dialogi_lisaa").dialog({
                     autoOpen: false,
                     buttons: [
                         {
                             text: "Lisää",
                             click: function() {
-                                if ($.trim($("#tunnus_lisays").val()) === "" || $.trim($("#salasana_lisays").val()) === "" || $.trim($("#nimi_lisays").val()) === "" || $.trim($("#osoite_lisays").val()) === "" || $.trim($("#postinro_lisays").val()) === "" || $.trim($("#postitmp_lisays").val()) === "" || $.trim($("#asty_lisays").val()) === "") {
-                                    alert('Anna arvo kaikki kenttiin!');
+                                if ($.trim($("#tunnus_lisays").val()) === "" || $.trim($("#salasana_lisays").val()) === "" || $.trim($("#nimi_lisays").val()) === "" || $.trim($("#osoite_lisays").val()) === "" || $.trim($("#postinro_lisays").val()) === "" || $.trim($("#postitmp_lisays").val()) === "" || $.trim($("#asty_lisays").val()) === "" || $.trim($("#salasana_lisays").val()) != $.trim($("#salasana_tarkistus").val())) {
+                                   
+								   alert('Anna arvo kaikki kenttiin!');
                                     return false;
                                 } else {
                                     var lisayslauseke = $("#lisayslomake").serialize();
@@ -78,7 +125,8 @@
 		{
 			$("#asiakkaat").load("http://localhost:8081/pohjia/php/asiakasHandler.php?hae=asiakas", function(){
 				$(".poistaButton").button();	// Pakko laittaa tänne, koska poista-buttoneita ei ole selaimessa ennenkuin data on haettu
-			});
+                $(".muokkaaButton").button();
+            });
 		}
 		
 		function poista_asiakas(avain)
@@ -102,6 +150,74 @@
                 console.log("lisaaAsiakas: status=" + textStatus + ", " + errorThrown);
             });
         }
+
+        function muokkaa_asiakas(avain)
+		{
+            $.get(
+			"http://localhost:8081/pohjia/php/laiteHandler.php?haeMuutokseen=" + avain
+			).done(function (data, textStatus, jqXHR) {
+					if (data != ""){
+                        console.log("Jotain löytyy");
+                    }else
+                    {
+                        console.log("Ja data oli niin tyhjää. Niin tyhjää");
+                    }
+                    if(data["tunnus"] != ""){
+                        console.log("Tunnus ei tyhjä");
+                    }else
+                    {
+                        console.log("Ja data oli niin tyhjää. Niin tyhjää");
+                    }
+                    if(data["salasana"] != ""){
+                        console.log("salasana ei tyhjä");
+                    }else
+                    {
+                        console.log("Ja data oli niin tyhjää. Niin tyhjää");
+                    }
+                    if(data["tunnus"] != null){
+                        console.log("Tunnus ei tyhjä");
+                    }else
+                    {
+                        console.log("Ja data oli niin tyhjää. Niin tyhjää");
+                    }
+                    if(data["tunnus"] == "undefined"){
+                        console.log("Tunnus ei tyhjä");
+                    }else
+                    {
+                        console.log("Ja data oli niin tyhjää. Niin tyhjää");
+                    }
+
+
+					console.log(avain, data);
+                    
+					document.getElementById("tunnus_muokkaa").value=data["tunnus"];
+					document.getElementById("salasana_muokkaa").value=data["salasana"];
+					document.getElementById("nimi_muokkaa").value=data["nimi"];
+					document.getElementById("osoite_muokkaa").value=data["osoite"];
+					document.getElementById("postinro_muokkaa").value=data["postinro"];
+					document.getElementById("postitmp_muokkaa").value=data["postitmp"];
+                    
+
+					
+					$("#dialogi_muokkaa").dialog("open");
+				}).fail(function (jqXHR, textStatus, errorThrown) {
+					console.log("muokkaaAsiakas: status=" + textStatus + ", " + errorThrown);
+					
+				});
+            
+		}
+        function tallennaAsiakas(muokkauslauseke) 
+		{
+			$.post("http://localhost:8081/pohjia/php/asiakasHandler.php?tallenna",
+                muokkauslauseke
+            ).done(function (data, textStatus, jqXHR) {
+				hae_asiakkaat();
+
+            }).fail(function (jqXHR, textStatus, errorThrown) {
+                console.log("tallennaAsiakas: status=" + textStatus + ", " + errorThrown);
+            });
+
+		}
 
 		function haeAsiakastyypit() {
             $.get(
@@ -151,6 +267,7 @@
                 <input type="hidden" name="lisaa" />
 			<input type="text" id="tunnus_lisays" name="tunnus" placeholder="Tunnus">
 			<input type="password" id="salasana_lisays" name="salasana" placeholder="Salasana"> 
+			<input type="password" id="salasana_tarkistus" name="salasana2" placeholder="Salasana"> 
             <input type="text" id="nimi_lisays" name="nimi" placeholder="Nimi">
             <input type="text" id="osoite_lisays" name="osoite" placeholder="Osoite">
             <input type="text" id="postinro_lisays" name="postinro" placeholder="Postinumero">
@@ -160,7 +277,22 @@
             </select>
         </form>
     </div>
-    
+
+    <div id="dialogi_muokkaa" title="Muokkaa asiakastietoja">
+    <form id='muokkauslomake'>
+            <input type='hidden' name='tallenna' />
+			<input type='text' id='id_muokkaa' name='mid' placeholder='ID'>
+			<input type='text' id='tunnus_muokkaa' name='mtunnus' placeholder='Tunnus'>
+			<input type='password' id='salasana_muokkaa' name='msalasana' placeholder='Salasana'> 
+            <input type='text' id='nimi_muokkaa' name='mnimi' placeholder='Nimi'>
+            <input type='text' id='osoite_muokkaa' name='mosoite' placeholder='Osoite'>
+            <input type='text' id='postinro_muokkaa' name='mpostinro' placeholder='Postinumero'>
+            <input type='text' id='postitmp_muokkaa' name='mpostitmp' placeholder='Postitoimipaikka'>
+            <select id='asty_muokkaa' name='asty'>
+                <option value='1'></option>
+            </select>
+        </form>
+    </div>
 	
 	<body>
 

@@ -3,7 +3,7 @@
 
 	if ( isset($_POST["lisaa"]))
 	{
-		//asd
+	
 		$a["tunnus"] = parsePost("tunnus");
 		$a["salasana"] = parsePost("salasana");
 		$a["nimi"] = parsePost("nimi");
@@ -15,14 +15,38 @@
 		$result = createAsiakas($a);
 		echo $result;
 	}
-	
+
 	if ( isset($_GET["poista"]))
 	{
 		$avain = parseGet("poista");
 		$result = deleteAsiakas($avain);
 		echo $result;
 	}
+
+	if ( isset($_GET["haeMuutokseen"]) )
+    {
+		$kayttaja_id = parseGet("kayttaja_id");		
+		$result = fetchAsiakasID($kayttaja_id);
+		$data = json_decode($result); 
+		echo $data;
+
+	}
+	if ( isset($_POST["tallenna"]))
+	{
+		$m["kayttaja_id"] = parsePost("mid");
+		$m["tunnus"] = parsePost("mtunnus");
+		$m["salasana"] = parsePost("msalasana");
+		$m["nimi"] = parsePost("mnimi");
+		$m["osoite"] = parsePost("mosoite");
+		$m["postinro"] = parsePost("mpostinro");
+		$m["postitmp"] = parsePost("mpostitmp");
+		$m["asty"] = parsePost("masty");
+
+		$result = updateAsiakas($m);
+		echo $result;
+	}
 	
+
 	if ( isset($_GET["hae_asiakas_json"]) )
 	{
 		header("Access-Control-Allow-Origin: *");
@@ -65,6 +89,7 @@
 			echo "<td>". $row["Nimi"]. "</td>";
 			echo "<td>". $row["Osoite"]. "</td>";			
 			echo "<td>". $row["Postinro"]. "</td>";	
+			echo "<td> <button class=\"muokkaaButton\"onclick=\"muokkaa_asiakas($id)\">Muokkaa </button> </td>";
 			echo "<td><button class=\"poistaButton\" onclick=\"poista_asiakas($id);\">Poista</button></td>";
 			echo "</tr>";
 		}

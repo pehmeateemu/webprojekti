@@ -186,10 +186,6 @@
 			"http://localhost:8081/pohjia/php/laiteHandler.php?muokkaa=" + avain
 			).done(function (data, textStatus, jqXHR) {
 					console.log(data);
-					$.each(JSON.parse(data), function (i, elem){
-					alert(elem.type);
-					});
-					document.getElementById("nimi_muokkaus").value=data[2];
 					$("#dialogi_muokkaa").dialog("open");
 			}).fail(function (jqXHR, textStatus, errorThrown) {
 					console.log("muokkaaLaite: status=" + textStatus + ", " + errorThrown);					
@@ -212,7 +208,9 @@
 	</script>
 </head>
 <body>	
-	
+	<a href="http://localhost:8081/pohjia/php/asiakas.php">Tiedot</a>
+	<a href="http://localhost:8081/pohjia/php/laitehaku.php">Laitteet</a>
+	<a href="http://localhost:8081/pohjia/php/logout.php">Kirjaudu ulos</a>
 	<p>Anna hakuehdot</p>
 	<form>
 		<table>

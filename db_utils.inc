@@ -7,6 +7,30 @@
 require_once("db.inc");
 require_once("utils.inc");
 
+function fetchLogin($tunnus, $ss)
+{
+	// $conn -muuttuja EI näy funktion sisällä jos sitä ei määritellä täällä global:ksi
+	global $conn;
+	$result = array();
+	
+	try {
+		$q = "SELECT * FROM kayttaja WHERE TUNNUS='$tunnus' AND SALASANA = '$ss'";
+		
+		$stmt = $conn->prepare($q);
+		$stmt->execute();
+			
+		//käydään rivit läpi 
+		while ($rivi = $stmt->fetch(PDO::FETCH_ASSOC)) { 
+			$result[] = $rivi;
+		}
+	}
+	catch(PDOException $e) {
+		$result = array("status" => "not ok", "error" => $e->getMessage());
+		error_log("Error in fetchAsiakas: " . $e->getMessage());
+	}
+	return $result;
+}
+
 function deleteAsiakas($avain)
 {
 	global $conn;
@@ -139,29 +163,17 @@ function editLaite($laite_id)
 		while ($rivi = $stmt->fetch(PDO::FETCH_ASSOC)) { 
 			if ($rivi["laite_id"] == $laite_id) {
 
-			$result = array(
-			$rivi["laite_id"],
-			$rivi["Tila"],
-			$rivi["Nimi"],
-			$rivi["Merkki"],
-			$rivi["Malli"], 
-			$rivi["Sarjanumero"], 
-			$rivi["Kategoria"],
-			$rivi["Omistaja"],
-			$rivi["Osoite"], 
-			$rivi["Postinro"],
-			$rivi["Postitmp"], 
-			$rivi["Kuvaus"]);
+			$result = $rivi;
 			}
 			
 		}
-		
+
 	}
 	catch(PDOException $e) {
 		$result = array("status" => "not ok", "error" => $e->getMessage());
 		error_log("Error in fetchLaite: " . $e->getMessage());
 	}
-	return $result;
+	print_r($result);
 
 }
 
@@ -308,27 +320,4 @@ function poistaLaite($laite_id)
 	return $result;
 }
 
-function fetchLogin($tunnus, $ss)
-{
-	// $conn -muuttuja EI näy funktion sisällä jos sitä ei määritellä täällä global:ksi
-	global $conn;
-	$result = array();
-	
-	try {
-		$q = "SELECT * FROM kayttaja WHERE TUNNUS='$tunnus' AND SALASANA = '$ss'";
-		
-		$stmt = $conn->prepare($q);
-		$stmt->execute();
-			
-		//käydään rivit läpi 
-		while ($rivi = $stmt->fetch(PDO::FETCH_ASSOC)) { 
-			$result[] = $rivi;
-		}
-	}
-	catch(PDOException $e) {
-		$result = array("status" => "not ok", "error" => $e->getMessage());
-		error_log("Error in fetchAsiakas: " . $e->getMessage());
-	}
-	return $result;
-}
 ?>

@@ -245,7 +245,7 @@ function editLaite($laite_id)
 		while ($rivi = $stmt->fetch(PDO::FETCH_ASSOC)) { 
 			if ($rivi["laite_id"] == $laite_id) {
 
-			$result = $rivi;
+			$result[] = $rivi;
 			}
 			
 		}
@@ -255,7 +255,7 @@ function editLaite($laite_id)
 		$result = array("status" => "not ok", "error" => $e->getMessage());
 		error_log("Error in fetchLaite: " . $e->getMessage());
 	}
-	print_r($result);
+	echo json_encode($result);
 
 }
 

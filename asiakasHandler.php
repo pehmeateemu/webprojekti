@@ -3,7 +3,7 @@
 
 	if ( isset($_POST["lisaa"]))
 	{
-		//asd
+	
 		$a["tunnus"] = parsePost("tunnus");
 		$a["salasana"] = parsePost("salasana");
 		$a["nimi"] = parsePost("nimi");
@@ -33,13 +33,14 @@
 	}
 	if ( isset($_POST["tallenna"]))
 	{
-		$a["tunnus"] = parsePost("tunnus");
-		$a["salasana"] = parsePost("salasana");
-		$a["nimi"] = parsePost("nimi");
-		$a["osoite"] = parsePost("osoite");
-		$a["postinro"] = parsePost("postinro");
-		$a["postitmp"] = parsePost("postitmp");
-		$a["asty"] = parsePost("asty");
+		$m["kayttaja_id"] = parsePost("mid");
+		$m["tunnus"] = parsePost("mtunnus");
+		$m["salasana"] = parsePost("msalasana");
+		$m["nimi"] = parsePost("mnimi");
+		$m["osoite"] = parsePost("mosoite");
+		$m["postinro"] = parsePost("mpostinro");
+		$m["postitmp"] = parsePost("mpostitmp");
+		$m["asty"] = parsePost("masty");
 
 		$result = updateAsiakas($m);
 		echo $result;

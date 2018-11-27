@@ -79,16 +79,20 @@ function fetchAsiakasID($kayttaja_id)
 		$stmt = $conn->prepare($q);
 		$stmt->execute();
 			
-		//käydään rivit läpi 
+
 		while ($rivi = $stmt->fetch(PDO::FETCH_ASSOC)) { 
-			$uname = $asiakas["tunnus"];		
-			$pw = $asiakas["salasana"];
-			$n = $asiakas["nimi"];
-			$o = $asiakas["osoite"];
-			$pn = $asiakas["postinro"];
-			$pt = $asiakas["postitmp"];
-			$asty = $asiakas["asty"];
-			$result[] = $rivi;
+			if ($rivi["laite_id"] == $laite_id) {
+
+			$result = array(
+			$rivi["tunnus"],
+			$rivi["salasana"],
+			$rivi["nimi"],
+			$rivi["osoite"],
+			$rivi["postinro"], 
+			$rivi["postitmp"], 
+			$rivi["asty"]);
+			}
+			
 		}
 	}
 	catch(PDOException $e) {
@@ -97,26 +101,42 @@ function fetchAsiakasID($kayttaja_id)
 	}
 	return $result;
 
-}function updateAsiakas($kayttaja_id)
+}function updateAsiakas($asiakas)
 {
 	// $conn -muuttuja EI näy funktion sisällä jos sitä ei määritellä täällä global:ksi
 	global $conn;
-	$result = array();
+	$result = array("status" => "ok");
 	
 	try {
-		$q = "UPDATE kayttaja
+		$stmt = $conn->prepare("UPDATE kayttaja
 	  		SET
-				TUNNUS = 'adgfdafg',
-				SALASANA = 'xcvbxcvb',
-				NIMI = 'xzcvasdf',
-				OSOITE = 'rttrert',
-				POSTINRO = '12345',
-				POSTITMP = 'werrwerwerwer',
+				TUNNUS = :uname,
+				SALASANA = :pw,
+				NIMI = :n,
+				OSOITE = :o,
+				POSTINRO = :pn,
+				POSTITMP = :pt,
 				ASTY = 1
 			WHERE
-				KAYTTAJA_ID = '$kayttaja_id'";	
-	
-		$stmt = $conn->prepare($q);
+				KAYTTAJA_ID = :kid");	
+		
+		$stmt->bindParam(":kid", $kid);
+		$stmt->bindParam(":uname", $uname);
+		$stmt->bindParam(":pw", $pw);
+		$stmt->bindParam(":n", $n);
+		$stmt->bindParam(":o", $o);
+		$stmt->bindParam(":pn", $pn);
+		$stmt->bindParam(":pt", $pt);
+
+		
+		$kid = $asiakas["kayttaja_id"];	
+		$uname = $asiakas["tunnus"];		
+		$pw = $asiakas["salasana"];
+		$n = $asiakas["nimi"];
+		$o = $asiakas["osoite"];
+		$pn = $asiakas["postinro"];
+		$pt = $asiakas["postitmp"];
+
 		$stmt->execute();
 
 	}
@@ -124,6 +144,8 @@ function fetchAsiakasID($kayttaja_id)
 		$result = array("status" => "not ok", "error" => $e->getMessage());
 		error_log("Error in updateAsiakas: " . $e->getMessage());
 	}
+	echo json_encode($result);
+
 	return $result;
 
 }

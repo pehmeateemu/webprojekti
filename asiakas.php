@@ -38,10 +38,7 @@
 				$("#dialogi_lisaa").dialog("open");
 			});
 			
-            $("#muokkaa").click(function(){
-				$("#dialogi_muokkaa").dialog("open");	
-			});
-
+   
             $("#dialogi_muokkaa").dialog({
                     autoOpen: false,
                     buttons: 
@@ -67,9 +64,7 @@
 								{
                                     var muokkauslauseke = $("#muokkauslomake").serialize();
                                     console.log("muokkauslauseke: " + muokkauslauseke);
-                                    //tallennaLaite(muokkauslauseke);       KAAAAAAAAAIPAAAAAAAAAA MUUUUUUUTIOOOOOOOOOSTAAAAAAAAAAAAA
-                                    //$("#lisayslomake")[0].reset();
-                                    //$("#asty_avain_lisays").prop('selectedIndex', 0);
+                                    tallennaAsiakas(muokkauslauseke);
                                     $(this).dialog("close");
                                 }
                             },
@@ -95,8 +90,9 @@
                         {
                             text: "Lisää",
                             click: function() {
-                                if ($.trim($("#tunnus_lisays").val()) === "" || $.trim($("#salasana_lisays").val()) === "" || $.trim($("#nimi_lisays").val()) === "" || $.trim($("#osoite_lisays").val()) === "" || $.trim($("#postinro_lisays").val()) === "" || $.trim($("#postitmp_lisays").val()) === "" || $.trim($("#asty_lisays").val()) === "") {
-                                    alert('Anna arvo kaikki kenttiin!');
+                                if ($.trim($("#tunnus_lisays").val()) === "" || $.trim($("#salasana_lisays").val()) === "" || $.trim($("#nimi_lisays").val()) === "" || $.trim($("#osoite_lisays").val()) === "" || $.trim($("#postinro_lisays").val()) === "" || $.trim($("#postitmp_lisays").val()) === "" || $.trim($("#asty_lisays").val()) === "" || $.trim($("#salasana_lisays").val()) != $.trim($("#salasana_tarkistus").val())) {
+                                   
+								   alert('Anna arvo kaikki kenttiin!');
                                     return false;
                                 } else {
                                     var lisayslauseke = $("#lisayslomake").serialize();
@@ -195,11 +191,11 @@
 					console.log(avain, data);
                     
 					document.getElementById("tunnus_muokkaa").value=data["tunnus"];
-					document.getElementById("salasana_muokkaa").value=data["tunnus"];
-					document.getElementById("nimi_muokkaa").value=data["tunnus"];
-					document.getElementById("osoite_muokkaa").value=data["tunnus"];
-					document.getElementById("postinro_muokkaa").value=data["tunnus"];
-					document.getElementById("postitmp_muokkaa").value=data["tunnus"];
+					document.getElementById("salasana_muokkaa").value=data["salasana"];
+					document.getElementById("nimi_muokkaa").value=data["nimi"];
+					document.getElementById("osoite_muokkaa").value=data["osoite"];
+					document.getElementById("postinro_muokkaa").value=data["postinro"];
+					document.getElementById("postitmp_muokkaa").value=data["postitmp"];
                     
 
 					
@@ -212,10 +208,11 @@
 		}
         function tallennaAsiakas(muokkauslauseke) 
 		{
-			$.post("http://localhost:8081/pohjia/php/laiteHandler.php?tallenna",
+			$.post("http://localhost:8081/pohjia/php/asiakasHandler.php?tallenna",
                 muokkauslauseke
             ).done(function (data, textStatus, jqXHR) {
-                hae_laitteet();
+				hae_asiakkaat();
+
             }).fail(function (jqXHR, textStatus, errorThrown) {
                 console.log("tallennaAsiakas: status=" + textStatus + ", " + errorThrown);
             });
@@ -269,6 +266,7 @@
                 <input type="hidden" name="lisaa" />
 			<input type="text" id="tunnus_lisays" name="tunnus" placeholder="Tunnus">
 			<input type="password" id="salasana_lisays" name="salasana" placeholder="Salasana"> 
+			<input type="password" id="salasana_tarkistus" name="salasana2" placeholder="Salasana"> 
             <input type="text" id="nimi_lisays" name="nimi" placeholder="Nimi">
             <input type="text" id="osoite_lisays" name="osoite" placeholder="Osoite">
             <input type="text" id="postinro_lisays" name="postinro" placeholder="Postinumero">
@@ -282,6 +280,7 @@
     <div id="dialogi_muokkaa" title="Muokkaa asiakastietoja">
     <form id='muokkauslomake'>
             <input type='hidden' name='tallenna' />
+			<input type='text' id='id_muokkaa' name='mid' placeholder='ID'>
 			<input type='text' id='tunnus_muokkaa' name='mtunnus' placeholder='Tunnus'>
 			<input type='password' id='salasana_muokkaa' name='msalasana' placeholder='Salasana'> 
             <input type='text' id='nimi_muokkaa' name='mnimi' placeholder='Nimi'>

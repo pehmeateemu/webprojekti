@@ -128,7 +128,9 @@
 	</script>
 </head>
 <body>	
-	
+	<a href="http://localhost:8081/pohjia/php/asiakas.php">Tiedot</a>
+	<a href="http://localhost:8081/pohjia/php/laitehaku.php">Laitteet</a>
+	<a href="http://localhost:8081/pohjia/php/logout.php">Kirjaudu ulos</a>
 	<p>Anna hakuehdot</p>
 	<form>
 		NIMI
@@ -141,7 +143,6 @@
 	</form>
 	<button id="hae">Hae asiakkaat</button>
 	<button id="lisaa">Lisää uusi asiakas</button>
-    <button id="logout">Kirjaudu ulos</button>
 	
 	<div id="asiakkaat"></div>
 

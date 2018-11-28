@@ -337,14 +337,30 @@ function createlaite($laite)
 	echo json_encode($result);
 }
 
-function tallennaLaite($laite)
+function updateLaite($laite)
 {
 	global $conn;
 	$result = array("status" => "ok");
 	try {
 
-		$stmt = $conn->prepare("UPDATE laite SET Tila = :ti, Nimi = :n, Merkki = :me, Malli = :me, Sarjanumero = :sn, Kategoria = :ka, Omistaja = :om, Osoite = :o, Postinro = :pn, Postitmp = :pn, Kuvaus = :ku WHERE laite_id = :id");
-		$stmt->bindParam(":ti", $ti);
+				$stmt = $conn->prepare("UPDATE laite
+	  		SET
+				Tila = 1,
+				Nimi = :n, 
+				Merkki = :me, 
+				Malli = :ma, 
+				Sarjanumero = :sn, 
+				Kategoria = :ka, 
+				Omistaja = :om, 
+				Osoite = :o, 
+				Postinro = :pn, 
+				Postitmp = :pt, 
+				Kuvaus = :ku 
+			WHERE 
+				laite_id = :id");	
+
+		$stmt->bindParam(":id", $id);		
+		//$stmt->bindParam(":ti", $ti);
 		$stmt->bindParam(":n", $n);
 		$stmt->bindParam(":me", $me);
 		$stmt->bindParam(":ma", $ma);
@@ -355,10 +371,9 @@ function tallennaLaite($laite)
 		$stmt->bindParam(":pn", $pn);
 		$stmt->bindParam(":pt", $pt);
 		$stmt->bindParam(":ku", $ku);
-		$stmt->bindParam(":id", $id);
 		
 		$id = $laite["laite_id"];
-		$ti = $laite["tila"];
+		//$ti = $laite["tila"];
 		$n = $laite["nimi"];
 		$me = $laite["merkki"];
 		$ma = $laite["malli"];
@@ -370,15 +385,17 @@ function tallennaLaite($laite)
 		$pt = $laite["postitmp"];
 		$ku = $laite["kuvaus"];
 
-		$stmt->execute();           
+		$stmt->execute();          
 	}
 	catch(PDOException $e) {
 		$result = array("status" => "not ok", "error" => $e->getMessage());
 		// Kirjoittaa virheviestin PHP:n error lokiin (löytyy WAMP:n ikonin alta PHP -> PHP error log)
 		error_log("Error in muokkaaLaite: " . $e->getMessage());
 	}
+	global $conn;
+	$result = array("status" => "ok");
 	
-	echo json_encode($result);
+
 }
 
 function poistaLaite($laite_id)

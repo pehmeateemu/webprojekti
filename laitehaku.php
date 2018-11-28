@@ -27,7 +27,8 @@
 			$("#poista").button();
 		
 			$("#hae").click(function(){
-				hae_laitteet();
+				haku = $("#haku").serialize();
+				hae_laitteet(haku);
 			});
 			
 			$("#lisaa").click(function(){
@@ -148,9 +149,9 @@
 
 		});
 		
-		function hae_laitteet()
+		function hae_laitteet(haku)
 		{
-			$("#laitteet").load("http://localhost:8081/pohjia/php/laiteHandler.php?hae=laite", function(){
+			$("#laitteet").load("http://localhost:8081/pohjia/php/laiteHandler.php?hae=" + haku, function(){
 				$(".muokkaaButton").button();
 				$(".poistaButton").button();	// Pakko laittaa tänne, koska poista-buttoneita ei ole selaimessa ennenkuin data on haettu
 			});
@@ -186,14 +187,26 @@
 			"http://localhost:8081/pohjia/php/laiteHandler.php?muokkaa=" + avain
 			).done(function (data, textStatus, jqXHR) {
 					console.log(data);
+					var laite = $.parseJSON(data);
+					document.getElementById("nimi_muokkaus").value=laite[0]['Nimi'];
+					document.getElementById("merkki_muokkaus").value=laite[0]['Merkki'];
+					document.getElementById("malli_muokkaus").value=laite[0]['Malli'];
+					document.getElementById("sarjanumero_muokkaus").value=laite[0]['Sarjanumero'];
+					document.getElementById("kategoria_muokkaus").value=laite[0]['Kategoria'];
+					document.getElementById("omistaja_muokkaus").value=laite[0]['Omistaja'];
+					document.getElementById("osoite_muokkaus").value=laite[0]['Osoite'];
+					document.getElementById("postinro_muokkaus").value=laite[0]['Postinro'];
+					document.getElementById("postitmp_muokkaus").value=laite[0]['Postitmp'];
+					document.getElementById("kuvaus_muokkaus").value=laite[0]['Kuvaus'];
+					document.getElementById("laite_id_muokkaus").value=laite[0]['laite_id'];
+					document.getElementById("tila_muokkaus").value=laite[0]['Tila'];
+					console.log(laite[0]);
 					$("#dialogi_muokkaa").dialog("open");
 			}).fail(function (jqXHR, textStatus, errorThrown) {
 					console.log("muokkaaLaite: status=" + textStatus + ", " + errorThrown);					
 			});
 		}
-			function taytaLomake(laite) 
-			{
-			}
+
 		function tallennaLaite(muokkauslauseke) 
 		{
 			$.post("http://localhost:8081/pohjia/php/laiteHandler.php?tallenna",
@@ -212,25 +225,25 @@
 	<a href="http://localhost:8081/pohjia/php/laitehaku.php">Laitteet</a>
 	<a href="http://localhost:8081/pohjia/php/logout.php">Kirjaudu ulos</a>
 	<p>Anna hakuehdot</p>
-	<form>
+	<form id="haku">
 		<table>
 		<tr><th>Nimi</th><th>Merkki</th><th>Malli</th></tr>
 		<tr>
-		<td><input type="text" name="nimi" /> </td>
-		<td><input type="text" name="merkki" /> </td>
-		<td><input type="text" name="malli" /> </td></tr>
+		<td><input type="text" name="hnimi" /> </td>
+		<td><input type="text" name="hmerkki" /> </td>
+		<td><input type="text" name="hmalli" /> </td></tr>
 
 		<tr><th>Sarjanumero</th><th>Kategoria</th><th>Omistaja</th></tr>
 		<tr>
-		<td><input type="text" name="sarjanumero" /> </td>
-		<td><input type="text" name="kategoria" /> </td>
-		<td><input type="text" name="omistaja" /> </td></tr>
+		<td><input type="text" name="hsarjanumero" /> </td>
+		<td><input type="text" name="hkategoria" /> </td>
+		<td><input type="text" name="homistaja" /> </td></tr>
 
 		<tr><th>Osoite</th><th>Postinumero</th><th>Toimipaikka</th></tr>
 		<tr>
-		<td><input type="text" name="osoite" /> </td>
-		<td><input type="text" name="postinro" /> </td>
-		<td><input type="text" name="postitmp" /> </td></tr>
+		<td><input type="text" name="hosoite" /> </td>
+		<td><input type="text" name="hpostinro" /> </td>
+		<td><input type="text" name="hpostitmp" /> </td></tr>
 		</table>
 		<br />
 	</form>
@@ -262,20 +275,23 @@
 
 		<div id="dialogi_muokkaa" title="Muokkaa laitteen tietoja">
         <form id="muokkauslomake">			
-			<label type="hidden" id="laite_id_muokkaus" name="laite_id"></label>
+			<input type="text" id="laite_id_muokkaus" name="mlaite_id"></label>
             <input type="hidden" name="tallenna" />
-            <input type="text" id="nimi_muokkaus" name="nimimuokkaus" placeholder="Nimi" size="32">
-            <input type="text" id="merkki_muokkaus" name="merkkimuokkaus" placeholder="Merkki" size="32">
-            <input type="text" id="malli_muokkaus" name="mallimuokkaus" placeholder="Malli" size="32">
-            <input type="text" id="sarjanumero_muokkaus" name="sarjanumeromuokkaus" placeholder="Sarjanumero" size="32">
-			<input type="text" id="kategoria_muokkaus" name="kategoriamuokkaus" placeholder="Kategoria" size="32">
-            <input type="text" id="omistaja_muokkaus" name="omistajamuokkaus" placeholder="Omistaja" size="32">
-            <input type="text" id="osoite_muokkaus" name="osoitemuokkaus" placeholder="Osoite" size="32">
-            <input type="text" id="postinro_muokkaus" name="postinromuokkaus" placeholder="Postinumero" size="32">
-            <input type="text" id="postitmp_muokkaus" name="postitmpmuokkaus" placeholder="Postitoimipaikka" size="32">
-			<textarea form="muokkauslomake" class="formInput" id="kuvaus_muokkaus" name="kuvausmuokkaus" placeholder="Kuvaus" cols="30" rows="4" style="resize:none"></textarea>
+            <input type="text" id="nimi_muokkaus" name="mnimi" placeholder="Nimi" size="32">
+            <input type="text" id="merkki_muokkaus" name="mmerkki" placeholder="Merkki" size="32">
+            <input type="text" id="malli_muokkaus" name="mmalli" placeholder="Malli" size="32">
+            <input type="text" id="sarjanumero_muokkaus" name="msarjanumero" placeholder="Sarjanumero" size="32">
+			<input type="text" id="kategoria_muokkaus" name="mkategoria" placeholder="Kategoria" size="32">
+            <input type="text" id="omistaja_muokkaus" name="momistaja" placeholder="Omistaja" size="32">
+            <input type="text" id="osoite_muokkaus" name="mosoite" placeholder="Osoite" size="32">
+            <input type="text" id="postinro_muokkaus" name="mpostinro" placeholder="Postinumero" size="32">
+            <input type="text" id="postitmp_muokkaus" name="mpostitmp" placeholder="Postitoimipaikka" size="32">
+			<textarea form="muokkauslomake" class="formInput" id="kuvaus_muokkaus" name="mkuvaus" placeholder="Kuvaus" cols="30" rows="4" style="resize:none"></textarea>
 			<select id="tila_muokkaus" name="tila">
-            <option value="1"></option>
+            <option value="1">VAPAA</option>
+			<option value="2">VARATTU</option>
+			<option value="3">LAINASSA</option>
+			<option value="5">POISTETTU</option>
             </select>
         </form>
 		

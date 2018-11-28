@@ -42,38 +42,38 @@ if ( isset($_POST["lisaa"]))
 
 if ( isset($_POST["tallenna"]))
 	{
-		$m["laite_id"] = parsePost("laite_id");
-		$m["tila"] = parsePost("tila");
-		$m["nimi"] = parsePost("nimi");
-		$m["merkki"] = parsePost("merkki");
-		$m["malli"] = parsePost("malli");
-		$m["sarjanumero"] = parsePost("sarjanumero");
-		$m["kategoria"] = parsePost("kategoria");
-		$m["omistaja"] = parsePost("omistaja");
-		$m["osoite"] = parsePost("osoite");
-		$m["postinro"] = parsePost("postinro");
-		$m["postitmp"] = parsePost("postitmp");
-		$m["kuvaus"] = parsePost("kuvaus");
+		$m["laite_id"] = parsePost("mlaite_id");
+		$m["tila"] = parsePost("mtila");
+		$m["nimi"] = parsePost("mnimi");
+		$m["merkki"] = parsePost("mmerkki");
+		$m["malli"] = parsePost("mmalli");
+		$m["sarjanumero"] = parsePost("msarjanumero");
+		$m["kategoria"] = parsePost("mkategoria");
+		$m["omistaja"] = parsePost("momistaja");
+		$m["osoite"] = parsePost("mosoite");
+		$m["postinro"] = parsePost("mpostinro");
+		$m["postitmp"] = parsePost("mpostitmp");
+		$m["kuvaus"] = parsePost("mkuvaus");
 
-		$result = muokkaaLaite($m);
+		$result = updateLaite($m);
 		echo $result;
 	}
 
 
 if ( isset($_GET["hae"]) )
     {
-		$laite_id = parseGet("laite_id");
-		$nimi = parseGet("nimi");
-		$merkki = parseGet("merkki");
-		$malli = parseGet("malli");
-		$sarjanumero = parseGet("sarjanumero");
-		$kategoria = parseGet("kategoria");
-		$omistaja = parseGet("omistaja");
-		$osoite = parseGet("osoite");
-		$postinro = parseGet("postinro");
-		$postitmp = parseGet("postitmp");
-		$kuvaus = parseGet("kuvaus");
-		$tila = parseGet("tila");
+		$laite_id = parseGet("hlaite_id");
+		$nimi = parseGet("hnimi");
+		$merkki = parseGet("hmerkki");
+		$malli = parseGet("hmalli");
+		$sarjanumero = parseGet("hsarjanumero");
+		$kategoria = parseGet("hkategoria");
+		$omistaja = parseGet("homistaja");
+		$osoite = parseGet("hosoite");
+		$postinro = parseGet("hpostinro");
+		$postitmp = parseGet("hpostitmp");
+		$kuvaus = parseGet("hkuvaus");
+		$tila = parseGet("htila");
 		
 		$data = fetchLaite($laite_id, $nimi, $merkki, $malli, $sarjanumero, $kategoria, $omistaja, $osoite, $postinro, $postitmp, $kuvaus, $tila);
 		

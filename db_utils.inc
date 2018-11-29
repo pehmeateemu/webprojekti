@@ -259,25 +259,33 @@ function editLaite($laite_id)
 
 }
 
-function fetchLaite($laite_id, $nimi, $merkki, $malli, $sarjanumero, $kategoria, $omistaja, $osoite, $postinro, $postitmp, $kuvaus, $tila)
+function fetchLaite($hlaite)
 {
 	// $conn -muuttuja EI näy funktion sisällä jos sitä ei määritellä täällä global:ksi
 	global $conn;
 	$result = array();
-	
+	$n = $hlaite["nimi"];
+	$me = $hlaite["merkki"];
+	$ma = $hlaite["malli"];
+	$sn = $hlaite["sarjanumero"];
+	$ka = $hlaite["kategoria"];
+	$om = $hlaite["omistaja"];
+	$os = $hlaite["osoite"];
+	$pn = $hlaite["postinro"];
+	$pt = $hlaite["postitmp"];
+	$ku = $hlaite["kuvaus"];
 	try {
 		$q = "SELECT laite_id, Nimi, Merkki, Malli, Sarjanumero, Kategoria, Omistaja, Osoite, Postinro, Postitmp, Kuvaus, Tila FROM laite WHERE 1=1 ";
-		if( !empty($laite_id) ) $q .= "AND laite_id like '%$laite_id%'";
-		if ( !empty($nimi) ) $q .= " AND Nimi like '%$nimi%'";
-		if ( !empty($merkki) ) $q .= " AND Merkki like '%$merkki%'";
-		if ( !empty($malli) ) $q .= " AND Malli like '%$malli%'";
-		if ( !empty($sarjanumero) ) $q .= " AND Sarjanumero like '%$sarjanumero%'";
-		if ( !empty($kategoria) ) $q .= " AND Kategoria like '%$kategoria%'";
-		if ( !empty($omistaja) ) $q .= " AND Omistaja like '%$omistaja%'";
-		if ( !empty($osoite) ) $q .= " AND Osoite like '%$osoite%'";
-		if ( !empty($postinro) ) $q .= " AND Postinro like '%$postinro%'";
-		if ( !empty($postitmp) ) $q .= " AND Postitmp like '%$postitmp%'";
-		if ( !empty($kuvaus) ) $q .= " AND Kuvaus like '%$kuvaus%'";
+		if ( !empty($n) ) $q .= " AND Nimi like '%$n%'";
+		if ( !empty($me) ) $q .= " AND Merkki like '%$me%'";
+		if ( !empty($ma) ) $q .= " AND Malli like '%$ma%'";
+		if ( !empty($sn) ) $q .= " AND Sarjanumero like '%$sn%'";
+		if ( !empty($ka) ) $q .= " AND Kategoria like '%$ka%'";
+		if ( !empty($om) ) $q .= " AND Omistaja like '%$om%'";
+		if ( !empty($os) ) $q .= " AND Osoite like '%$os%'";
+		if ( !empty($pn) ) $q .= " AND Postinro like '%$pn%'";
+		if ( !empty($pt) ) $q .= " AND Postitmp like '%$pt%'";
+		if ( !empty($ku) ) $q .= " AND Kuvaus like '%$ku%'";
 		
 		$stmt = $conn->prepare($q);
 		$stmt->execute();

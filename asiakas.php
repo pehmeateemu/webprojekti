@@ -3,10 +3,13 @@
 
 	// Tarkistetaan, onko käyttäjä jo kirjautunut järjestelmään, jos ei heitetään login-sivulle
     require_once("login_utils.inc");
-    echo "<p> Kirjautuneena: ".$_SESSION['tunnus'] ."</p>";
+    
+    $tunnus = $_SESSION['tunnus'];
+    echo "<p> Kirjautuneena: ".$tunnus ."</p>";
     echo "<pre>";
     print_r($_SESSION);
     echo "</pre>";
+
 	
 	check_session();
 ?>
@@ -41,6 +44,10 @@
 			
 			$("#lisaa").click(function(){
 				$("#dialogi_lisaa").dialog("open");
+			});
+            $("#muokkaa").click(function(){                
+                $tunnus = "<?php echo $_SESSION['tunnus'];?>";
+				muokkaa_asiakas($tunnus);
 			});
 			
    
@@ -157,10 +164,10 @@
             });
         }
 
-        function muokkaa_asiakas(avain)
+        function muokkaa_asiakas(tunnus)
 		{
 			$.get(
-			"http://localhost:8081/pohjia/php/asiakasHandler.php?muokkaa=" + avain
+			"http://localhost:8081/pohjia/php/asiakasHandler.php?muokkaa=" + tunnus
 			).done(function (data, textStatus, jqXHR) {
 					//console.log(data);
 					var asiakas = $.parseJSON(data);
@@ -232,6 +239,7 @@
 	</form>
 	<button id="hae">Hae asiakkaat</button>
 	<button id="lisaa">Lisää uusi asiakas</button>
+    <button id="muokkaa">Muokkaa omia tietoja</button>
 	
 	<div id="asiakkaat"></div>
 

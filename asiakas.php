@@ -167,7 +167,8 @@
 					document.getElementById("osoite_muokkaus").value=asiakas[0]['Osoite'];
 					document.getElementById("postinro_muokkaus").value=asiakas[0]['Postinro'];
 					document.getElementById("postitmp_muokkaus").value=asiakas[0]['Postitmp'];
-					console.log(asiakas[0]);
+					document.getElementById("asty_muokkaus").value=asiakas[0]['asty'];
+					//console.log(asiakas[0]);
 					$("#dialogi_muokkaa").dialog("open");
 			}).fail(function (jqXHR, textStatus, errorThrown) {
 					console.log("muokkaaLaite: status=" + textStatus + ", " + errorThrown);					
@@ -212,7 +213,7 @@
 	</script>
 </head>
 <body>	
-	<a href="http://localhost:8081/pohjia/php/asiakas.php">Tiedot</a>
+	<a href="http://localhost:8081/pohjia/php/asiakas.php?avain=4">Tiedot</a>
 	<a href="http://localhost:8081/pohjia/php/laitehaku.php">Laitteet</a>
 	<a href="http://localhost:8081/pohjia/php/logout.php">Kirjaudu ulos</a>
 	<p>Anna hakuehdot</p>

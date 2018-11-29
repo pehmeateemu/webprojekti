@@ -18,9 +18,17 @@
 		header("Location: asiakas.php");
 		exit();
 	}
-	else if($result == true){
+	else if($result == true && $tunnus != "admin"){
 		$_SESSION["login"] = 1;
-		
+		$_SESSION["ulevel"] = 0;
+		$_SESSION["tunnus"] = $tunnus;
+		header("Location: asiakas.php");
+		exit();
+	}
+		else if($result == true && $tunnus == "admin"){
+		$_SESSION["login"] = 1;
+		$_SESSION["ulevel"] = 1;
+		$_SESSION["tunnus"] = $tunnus;
 		header("Location: asiakas.php");
 		exit();
 	}

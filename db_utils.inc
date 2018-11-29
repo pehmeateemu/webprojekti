@@ -98,34 +98,29 @@ function fetchAsiakasID($kayttaja_id)
 	$result = array();
 	
 	try {
-		$q = "SELECT TUNNUS, SALASANA, NIMI, OSOITE, POSTINRO, POSTITMP, ASTY FROM kayttaja WHERE kayttaja_id = '$kayttaja_id'";	
-	
+		$q = "SELECT kayttaja_id, Nimi, Osoite, Postinro, Postitmp, Tunnus, Salasana FROM kayttaja WHERE kayttaja_id LIKE '%$kayttaja_id%'";
+		
 		$stmt = $conn->prepare($q);
 		$stmt->execute();
 			
-
+		//käydään rivit läpi 
 		while ($rivi = $stmt->fetch(PDO::FETCH_ASSOC)) { 
-			if ($rivi["laite_id"] == $laite_id) {
+			if ($rivi["kayttaja_id"] == $kayttaja_id) {
 
-			$result = array(
-			$rivi["tunnus"],
-			$rivi["salasana"],
-			$rivi["nimi"],
-			$rivi["osoite"],
-			$rivi["postinro"], 
-			$rivi["postitmp"], 
-			$rivi["asty"]);
+			$result[] = $rivi;
 			}
 			
 		}
+
 	}
 	catch(PDOException $e) {
 		$result = array("status" => "not ok", "error" => $e->getMessage());
-		error_log("Error in fetchAsiakasID: " . $e->getMessage());
+		error_log("Error in fetchLaite: " . $e->getMessage());
 	}
-	return $result;
+	echo json_encode($result);
 
-}function updateAsiakas($asiakas)
+}
+function updateAsiakas($asiakas)
 {
 	// $conn -muuttuja EI näy funktion sisällä jos sitä ei määritellä täällä global:ksi
 	global $conn;
@@ -173,26 +168,25 @@ function fetchAsiakasID($kayttaja_id)
 	return $result;
 
 }
-function fetchAsiakas($name, $address, $type_key)
+function fetchAsiakas($haku)
 {
 	// $conn -muuttuja EI näy funktion sisällä jos sitä ei määritellä täällä global:ksi
 	global $conn;
 	$result = array();
-	
+	$n = $haku["nimi"];
+	$os = $haku["osoite"];
+	$tn = $haku["kayttaja_id"];
+
 	try {
-		$q = "SELECT kayttaja_id, Nimi, Osoite, Postinro FROM kayttaja WHERE 1=1 ";
-		if ( !empty($name) ) $q .= " AND Nimi like '%$name%'";
-		if ( !empty($address) ) $q .= " AND Nimi like '%$address%'";
+		$q = "SELECT kayttaja_id, Nimi, Osoite, Postinro, Postitmp, Tunnus FROM kayttaja WHERE 1=1 ";
+		if ( !empty($n) ) $q .= " AND Nimi like '%$n%'";
+		//if ($_SESSION["ulevel"] == 0) $q .= " AND Tunnus like '%$tn%'";
 		
 		$stmt = $conn->prepare($q);
 		$stmt->execute();
 			
 		//käydään rivit läpi 
 		while ($rivi = $stmt->fetch(PDO::FETCH_ASSOC)) { 
-			$a = $rivi["kayttaja_id"];
-			$n = $rivi["Nimi"];
-			$o = $rivi["Osoite"];
-			$p = $rivi["Postinro"];
 			$result[] = $rivi;
 		}
 	}

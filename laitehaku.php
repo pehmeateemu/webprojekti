@@ -275,7 +275,7 @@
 
 		<div id="dialogi_muokkaa" title="Muokkaa laitteen tietoja">
         <form id="muokkauslomake">			
-			<input type="text" id="laite_id_muokkaus" name="mlaite_id"></label>
+			<input type="text" id="laite_id_muokkaus" name="mlaite_id" readonly="readonly"></label>
             <input type="hidden" name="tallenna" />
             <input type="text" id="nimi_muokkaus" name="mnimi" placeholder="Nimi" size="32">
             <input type="text" id="merkki_muokkaus" name="mmerkki" placeholder="Merkki" size="32">

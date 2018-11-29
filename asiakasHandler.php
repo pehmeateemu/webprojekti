@@ -23,12 +23,11 @@
 		echo $result;
 	}
 
-	if ( isset($_GET["haeMuutokseen"]) )
+	if ( isset($_GET["muokkaa"]) )
     {
-		$kayttaja_id = parseGet("kayttaja_id");		
+		$kayttaja_id = parseGet("muokkaa");		
 		$result = fetchAsiakasID($kayttaja_id);
-		$data = json_decode($result); 
-		echo $data;
+		print_r($result);
 
 	}
 	if ( isset($_POST["tallenna"]))
@@ -71,12 +70,11 @@
 	
 	if ( isset($_GET["hae"]) )
     {
-		$nimi = parseGet("nimi");
-		$osoite = parseGet("osoite");
-		$kayttaja_id = parseGet("kayttaja_id");
-		
-		$data = fetchAsiakas($nimi, $osoite, $kayttaja_id);
-		
+		$haku["nimi"] = parseGet("hnimi");
+		$haku["osoite"] = parseGet("osoite");
+		$haku["kayttaja_id"] = parseGet("kayttaja_id");
+		$data = fetchAsiakas($haku);
+		//print_r($data);
 		// $data sisältää datan indeksoidussa taulukkossa, jossa jokainen alkio on assosiatiivinen taulukko
 		echo "<table>";
 		echo "<tr><th>Avain</th><th>Nimi</th><th>Osoite</th><th>Toiminto</th></tr>";

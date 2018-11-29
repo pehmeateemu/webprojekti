@@ -23,6 +23,7 @@
 			
 			$("#hae").button();
 			$("#lisaa").button();
+			$("#muokkaa").button();
             $("#logout").button();
 		
             
@@ -48,13 +49,13 @@
                             click: function() 
 							{
                                 if (
-										$.trim($("#tunnus_muokkaa").val()) === "" || 
-										$.trim($("#salasana_muokkaa").val()) === "" || 
-										$.trim($("#nimi_muokkaa").val()) === "" || 
-										$.trim($("#osoite_muokkaa").val()) === "" || 
-										$.trim($("#postinro_muokkaa").val()) === "" || 
-										$.trim($("#postitmp_muokkaa").val()) === "" || 
-										$.trim($("#asty_muokkaa").val()) === "")
+										$.trim($("#tunnus_muokkaus").val()) === "" || 
+										$.trim($("#salasana_muokkaus").val()) === "" || 
+										$.trim($("#nimi_muokkaus").val()) === "" || 
+										$.trim($("#osoite_muokkaus").val()) === "" || 
+										$.trim($("#postinro_muokkaus").val()) === "" || 
+										$.trim($("#postitmp_muokkaus").val()) === "" || 
+										$.trim($("#asty_muokkaus").val()) === "")
 									{
 										alert('Anna arvo kaikki kenttiin!');
 										return false; 
@@ -123,7 +124,8 @@
 		
 		function hae_asiakkaat()
 		{
-			$("#asiakkaat").load("http://localhost:8081/pohjia/php/asiakasHandler.php?hae=asiakas", function(){
+		haku = $("#haku").serialize();
+			$("#asiakkaat").load("http://localhost:8081/pohjia/php/asiakasHandler.php?hae=asiakas", haku, function(){
 				$(".poistaButton").button();	// Pakko laittaa tänne, koska poista-buttoneita ei ole selaimessa ennenkuin data on haettu
                 $(".muokkaaButton").button();
             });
@@ -153,59 +155,25 @@
 
         function muokkaa_asiakas(avain)
 		{
-            $.get(
-			"http://localhost:8081/pohjia/php/laiteHandler.php?haeMuutokseen=" + avain
+			$.get(
+			"http://localhost:8081/pohjia/php/asiakasHandler.php?muokkaa=" + avain
 			).done(function (data, textStatus, jqXHR) {
-					if (data != ""){
-                        console.log("Jotain löytyy");
-                    }else
-                    {
-                        console.log("Ja data oli niin tyhjää. Niin tyhjää");
-                    }
-                    if(data["tunnus"] != ""){
-                        console.log("Tunnus ei tyhjä");
-                    }else
-                    {
-                        console.log("Ja data oli niin tyhjää. Niin tyhjää");
-                    }
-                    if(data["salasana"] != ""){
-                        console.log("salasana ei tyhjä");
-                    }else
-                    {
-                        console.log("Ja data oli niin tyhjää. Niin tyhjää");
-                    }
-                    if(data["tunnus"] != null){
-                        console.log("Tunnus ei tyhjä");
-                    }else
-                    {
-                        console.log("Ja data oli niin tyhjää. Niin tyhjää");
-                    }
-                    if(data["tunnus"] == "undefined"){
-                        console.log("Tunnus ei tyhjä");
-                    }else
-                    {
-                        console.log("Ja data oli niin tyhjää. Niin tyhjää");
-                    }
-
-
-					console.log(avain, data);
-                    
-					document.getElementById("tunnus_muokkaa").value=data["tunnus"];
-					document.getElementById("salasana_muokkaa").value=data["salasana"];
-					document.getElementById("nimi_muokkaa").value=data["nimi"];
-					document.getElementById("osoite_muokkaa").value=data["osoite"];
-					document.getElementById("postinro_muokkaa").value=data["postinro"];
-					document.getElementById("postitmp_muokkaa").value=data["postitmp"];
-                    
-
-					
+					//console.log(data);
+					var asiakas = $.parseJSON(data);
+					document.getElementById("id_muokkaus").value=asiakas[0]['kayttaja_id'];
+					document.getElementById("tunnus_muokkaus").value=asiakas[0]['Tunnus'];
+					document.getElementById("salasana_muokkaus").value=asiakas[0]['Salasana'];
+					document.getElementById("nimi_muokkaus").value=asiakas[0]['Nimi'];
+					document.getElementById("osoite_muokkaus").value=asiakas[0]['Osoite'];
+					document.getElementById("postinro_muokkaus").value=asiakas[0]['Postinro'];
+					document.getElementById("postitmp_muokkaus").value=asiakas[0]['Postitmp'];
+					console.log(asiakas[0]);
 					$("#dialogi_muokkaa").dialog("open");
-				}).fail(function (jqXHR, textStatus, errorThrown) {
-					console.log("muokkaaAsiakas: status=" + textStatus + ", " + errorThrown);
-					
-				});
-            
+			}).fail(function (jqXHR, textStatus, errorThrown) {
+					console.log("muokkaaLaite: status=" + textStatus + ", " + errorThrown);					
+			});
 		}
+            
         function tallennaAsiakas(muokkauslauseke) 
 		{
 			$.post("http://localhost:8081/pohjia/php/asiakasHandler.php?tallenna",
@@ -248,9 +216,9 @@
 	<a href="http://localhost:8081/pohjia/php/laitehaku.php">Laitteet</a>
 	<a href="http://localhost:8081/pohjia/php/logout.php">Kirjaudu ulos</a>
 	<p>Anna hakuehdot</p>
-	<form>
+	<form id="haku">
 		NIMI
-		<input type="text" name="nimi" /> 
+		<input type="text" id="nhimi" name="hnimi" /> 
 		<select id="asty_avain" name="Asty_avain">
 			<option value=""></option>
         </select>
@@ -273,7 +241,7 @@
             <input type="text" id="postinro_lisays" name="postinro" placeholder="Postinumero">
             <input type="text" id="postitmp_lisays" name="postitmp" placeholder="Postitoimipaikka">
             <select id="asty_lisays" name="asty">
-                <option value="1"></option>
+                <option value="0"></option>
             </select>
         </form>
     </div>
@@ -281,15 +249,16 @@
     <div id="dialogi_muokkaa" title="Muokkaa asiakastietoja">
     <form id='muokkauslomake'>
             <input type='hidden' name='tallenna' />
-			<input type='text' id='id_muokkaa' name='mid' placeholder='ID'>
-			<input type='text' id='tunnus_muokkaa' name='mtunnus' placeholder='Tunnus'>
-			<input type='password' id='salasana_muokkaa' name='msalasana' placeholder='Salasana'> 
-            <input type='text' id='nimi_muokkaa' name='mnimi' placeholder='Nimi'>
-            <input type='text' id='osoite_muokkaa' name='mosoite' placeholder='Osoite'>
-            <input type='text' id='postinro_muokkaa' name='mpostinro' placeholder='Postinumero'>
-            <input type='text' id='postitmp_muokkaa' name='mpostitmp' placeholder='Postitoimipaikka'>
-            <select id='asty_muokkaa' name='asty'>
-                <option value='1'></option>
+			<input type='text' id='id_muokkaus' name='mid' placeholder='ID'>
+			<input type='text' id='tunnus_muokkaus' name='mtunnus' placeholder='Tunnus'>
+			<input type='password' id='salasana_muokkaus' name='msalasana' placeholder='Salasana'> 
+            <input type='text' id='nimi_muokkaus' name='mnimi' placeholder='Nimi'>
+            <input type='text' id='osoite_muokkaus' name='mosoite' placeholder='Osoite'>
+            <input type='text' id='postinro_muokkaus' name='mpostinro' placeholder='Postinumero'>
+            <input type='text' id='postitmp_muokkaus' name='mpostitmp' placeholder='Postitoimipaikka'>
+            <select id='asty_muokkaus' name='masty'>
+                <option value="0">Käyttäjä</option>
+				<option value="1">Admin</option>
             </select>
         </form>
     </div>

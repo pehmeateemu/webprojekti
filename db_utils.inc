@@ -7,16 +7,20 @@
 require_once("db.inc");
 require_once("utils.inc");
 
-function fetchLogin($tunnus, $ss)
+function fetchLogin($login)
 {
 	// $conn -muuttuja EI näy funktion sisällä jos sitä ei määritellä täällä global:ksi
 	global $conn;
 	$result = array();
 	
 	try {
-		$q = "SELECT * FROM kayttaja WHERE TUNNUS='$tunnus' AND SALASANA = '$ss'";
-		
-		$stmt = $conn->prepare($q);
+		$stmt = $conn->prepare("SELECT Tunnus AND kayttaja_id FROM kayttaja WHERE Tunnus = :tu AND Salasana = :ss");
+		$stmt->bindParam(":tu", $tunnus);
+		$stmt->bindParam(":ss", $ss);
+
+		$tunnus = $login["tunnus"];
+		$ss = $login["ss"];
+
 		$stmt->execute();
 			
 		//käydään rivit läpi 
@@ -98,7 +102,7 @@ function fetchAsiakasID($kayttaja_id)
 	$result = array();
 	
 	try {
-		$q = "SELECT kayttaja_id, Nimi, Osoite, Postinro, Postitmp, Tunnus, Salasana FROM kayttaja WHERE kayttaja_id LIKE '%$kayttaja_id%'";
+		$q = "SELECT kayttaja_id, Nimi, Osoite, Postinro, Postitmp, Tunnus, Salasana, asty FROM kayttaja WHERE kayttaja_id LIKE '%$kayttaja_id%'";
 		
 		$stmt = $conn->prepare($q);
 		$stmt->execute();
@@ -135,7 +139,7 @@ function updateAsiakas($asiakas)
 				OSOITE = :o,
 				POSTINRO = :pn,
 				POSTITMP = :pt,
-				ASTY = 1
+				ASTY = :at 
 			WHERE
 				KAYTTAJA_ID = :kid");	
 		
@@ -146,6 +150,7 @@ function updateAsiakas($asiakas)
 		$stmt->bindParam(":o", $o);
 		$stmt->bindParam(":pn", $pn);
 		$stmt->bindParam(":pt", $pt);
+		$stmt-bindParam(":at", $at);
 
 		
 		$kid = $asiakas["kayttaja_id"];	
@@ -155,6 +160,7 @@ function updateAsiakas($asiakas)
 		$o = $asiakas["osoite"];
 		$pn = $asiakas["postinro"];
 		$pt = $asiakas["postitmp"];
+		$at = $asiakas["asty"];
 
 		$stmt->execute();
 

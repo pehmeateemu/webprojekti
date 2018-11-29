@@ -7,20 +7,14 @@
 require_once("db.inc");
 require_once("utils.inc");
 
-function fetchLogin($login)
+function fetchLogin($tunnus, $ss)
 {
 	// $conn -muuttuja EI näy funktion sisällä jos sitä ei määritellä täällä global:ksi
 	global $conn;
 	$result = array();
 	
 	try {
-		$stmt = $conn->prepare("SELECT Tunnus AND kayttaja_id FROM kayttaja WHERE Tunnus = :tu AND Salasana = :ss");
-		$stmt->bindParam(":tu", $tunnus);
-		$stmt->bindParam(":ss", $ss);
-
-		$tunnus = $login["tunnus"];
-		$ss = $login["ss"];
-
+		$stmt = $conn->prepare("SELECT Tunnus, kayttaja_id FROM kayttaja WHERE Tunnus = '$tunnus' AND Salasana = '$ss'");
 		$stmt->execute();
 			
 		//käydään rivit läpi 
@@ -53,7 +47,7 @@ function deleteAsiakas($avain)
 		error_log("Error in deleteAsiakas: " . $e->getMessage());
 	}
 	
-	return $result;
+	echo json_encode($result);
 }
 
 
@@ -95,21 +89,21 @@ function createAsiakas($asiakas)
 /*
 	Funktio hakee datan Asiakas-taulusta. Parametrina tulee mahdolliset hakuehdot.
 */
-function fetchAsiakasID($kayttaja_id)
+function fetchAsiakasID($tunnus)
 {
 	// $conn -muuttuja EI näy funktion sisällä jos sitä ei määritellä täällä global:ksi
 	global $conn;
 	$result = array();
 	
 	try {
-		$q = "SELECT kayttaja_id, Nimi, Osoite, Postinro, Postitmp, Tunnus, Salasana, asty FROM kayttaja WHERE kayttaja_id LIKE '%$kayttaja_id%'";
+		$q = "SELECT kayttaja_id, Nimi, Osoite, Postinro, Postitmp, Tunnus, Salasana, asty FROM kayttaja WHERE tunnus LIKE '%$tunnus%'";
 		
 		$stmt = $conn->prepare($q);
 		$stmt->execute();
 			
 		//käydään rivit läpi 
 		while ($rivi = $stmt->fetch(PDO::FETCH_ASSOC)) { 
-			if ($rivi["kayttaja_id"] == $kayttaja_id) {
+			if ($rivi["Tunnus"] == $tunnus) {
 
 			$result[] = $rivi;
 			}
@@ -133,15 +127,15 @@ function updateAsiakas($asiakas)
 	try {
 		$stmt = $conn->prepare("UPDATE kayttaja
 	  		SET
-				TUNNUS = :uname,
-				SALASANA = :pw,
-				NIMI = :n,
-				OSOITE = :o,
-				POSTINRO = :pn,
-				POSTITMP = :pt,
-				ASTY = :at 
+				tunnus = :uname,
+				salasana = :pw,
+				nimi = :n,
+				osoite = :o,
+				postinro = :pn,
+				postitmp = :pt,
+				asty = :ast 
 			WHERE
-				KAYTTAJA_ID = :kid");	
+				kayttaja_id = :kid");	
 		
 		$stmt->bindParam(":kid", $kid);
 		$stmt->bindParam(":uname", $uname);
@@ -150,7 +144,7 @@ function updateAsiakas($asiakas)
 		$stmt->bindParam(":o", $o);
 		$stmt->bindParam(":pn", $pn);
 		$stmt->bindParam(":pt", $pt);
-		$stmt-bindParam(":at", $at);
+		$stmt->bindParam(":ast", $ast);
 
 		
 		$kid = $asiakas["kayttaja_id"];	
@@ -160,7 +154,7 @@ function updateAsiakas($asiakas)
 		$o = $asiakas["osoite"];
 		$pn = $asiakas["postinro"];
 		$pt = $asiakas["postitmp"];
-		$at = $asiakas["asty"];
+		$ast = $asiakas["asty"];
 
 		$stmt->execute();
 

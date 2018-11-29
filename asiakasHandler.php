@@ -25,9 +25,9 @@
 
 	if ( isset($_GET["muokkaa"]) )
     {
-		$kayttaja_id = parseGet("muokkaa");		
-		$result = fetchAsiakasID($kayttaja_id);
-		print_r($result);
+		$tunnus = parseGet("muokkaa");		
+		$result = fetchAsiakasID($tunnus);
+		echo($result);
 
 	}
 	if ( isset($_POST["tallenna"]))

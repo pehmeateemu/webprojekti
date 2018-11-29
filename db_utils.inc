@@ -144,7 +144,7 @@ function updateAsiakas($asiakas)
 		$stmt->bindParam(":o", $o);
 		$stmt->bindParam(":pn", $pn);
 		$stmt->bindParam(":pt", $pt);
-		$stmt-bindParam(":ast", $ast);
+		$stmt->bindParam(":ast", $ast);
 
 		
 		$kid = $asiakas["kayttaja_id"];	

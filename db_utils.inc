@@ -7,20 +7,14 @@
 require_once("db.inc");
 require_once("utils.inc");
 
-function fetchLogin($login)
+function fetchLogin($tunnus, $ss)
 {
 	// $conn -muuttuja EI näy funktion sisällä jos sitä ei määritellä täällä global:ksi
 	global $conn;
 	$result = array();
 	
 	try {
-		$stmt = $conn->prepare("SELECT Tunnus AND kayttaja_id FROM kayttaja WHERE Tunnus = :tu AND Salasana = :ss");
-		$stmt->bindParam(":tu", $tunnus);
-		$stmt->bindParam(":ss", $ss);
-
-		$tunnus = $login["tunnus"];
-		$ss = $login["ss"];
-
+		$stmt = $conn->prepare("SELECT Tunnus, kayttaja_id FROM kayttaja WHERE Tunnus = '$tunnus' AND Salasana = '$ss'");
 		$stmt->execute();
 			
 		//käydään rivit läpi 
@@ -53,7 +47,7 @@ function deleteAsiakas($avain)
 		error_log("Error in deleteAsiakas: " . $e->getMessage());
 	}
 	
-	return $result;
+	echo json_encode($result);
 }
 
 

@@ -1,10 +1,14 @@
 <?php
-	//session_start();
+	session_start();
 
 	// Tarkistetaan, onko käyttäjä jo kirjautunut järjestelmään, jos ei heitetään login-sivulle
-	require_once("login_utils.inc");
+    require_once("login_utils.inc");
+    
+    echo "<pre>";
+    print_r($_SESSION);
+    echo "</pre>";
 	
-	//check_session();
+	check_session();
 ?>
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">

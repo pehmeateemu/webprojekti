@@ -26,9 +26,8 @@
 			$("#muokkaa").button();
 			$("#poista").button();
 		
-			$("#hae").click(function(){
-				haku = $("#haku").serialize();
-				hae_laitteet(haku);
+			$("#hae").click(function(){				
+				hae_laitteet();
 			});
 			
 			$("#lisaa").click(function(){
@@ -149,9 +148,10 @@
 
 		});
 		
-		function hae_laitteet(haku)
+		function hae_laitteet()
 		{
-			$("#laitteet").load("http://localhost:8081/pohjia/php/laiteHandler.php?hae=" + haku, function(){
+			haku = $("#haku").serialize();
+			$("#laitteet").load("http://localhost:8081/pohjia/php/laiteHandler.php?hae", haku, function(){
 				$(".muokkaaButton").button();
 				$(".poistaButton").button();	// Pakko laittaa tänne, koska poista-buttoneita ei ole selaimessa ennenkuin data on haettu
 			});
@@ -229,21 +229,21 @@
 		<table>
 		<tr><th>Nimi</th><th>Merkki</th><th>Malli</th></tr>
 		<tr>
-		<td><input type="text" name="hnimi" /> </td>
-		<td><input type="text" name="hmerkki" /> </td>
-		<td><input type="text" name="hmalli" /> </td></tr>
+		<td><input type="text" id="nimi_haku" name="hnimi" /> </td>
+		<td><input type="text" id="merkki_haku" name="hmerkki" /> </td>
+		<td><input type="text" id="malli_haku" name="hmalli" /> </td></tr>
 
 		<tr><th>Sarjanumero</th><th>Kategoria</th><th>Omistaja</th></tr>
 		<tr>
-		<td><input type="text" name="hsarjanumero" /> </td>
-		<td><input type="text" name="hkategoria" /> </td>
-		<td><input type="text" name="homistaja" /> </td></tr>
+		<td><input type="text" id="sarjanumero_haku" name="hsarjanumero" /> </td>
+		<td><input type="text" id="kategoria_haku" name="hkategoria" /> </td>
+		<td><input type="text" id="omistaja_haku" name="homistaja" /> </td></tr>
 
 		<tr><th>Osoite</th><th>Postinumero</th><th>Toimipaikka</th></tr>
 		<tr>
-		<td><input type="text" name="hosoite" /> </td>
-		<td><input type="text" name="hpostinro" /> </td>
-		<td><input type="text" name="hpostitmp" /> </td></tr>
+		<td><input type="text" id="osoite_haku" name="hosoite" /> </td>
+		<td><input type="text" id="postinro_haku" name="hpostinro" /> </td>
+		<td><input type="text" id="postitmp_haku" name="hpostitmp" /> </td></tr>
 		</table>
 		<br />
 	</form>

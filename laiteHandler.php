@@ -62,20 +62,20 @@ if ( isset($_POST["tallenna"]))
 
 if ( isset($_GET["hae"]) )
     {
-		$laite_id = parseGet("hlaite_id");
-		$nimi = parseGet("hnimi");
-		$merkki = parseGet("hmerkki");
-		$malli = parseGet("hmalli");
-		$sarjanumero = parseGet("hsarjanumero");
-		$kategoria = parseGet("hkategoria");
-		$omistaja = parseGet("homistaja");
-		$osoite = parseGet("hosoite");
-		$postinro = parseGet("hpostinro");
-		$postitmp = parseGet("hpostitmp");
-		$kuvaus = parseGet("hkuvaus");
-		$tila = parseGet("htila");
-		
-		$data = fetchLaite($laite_id, $nimi, $merkki, $malli, $sarjanumero, $kategoria, $omistaja, $osoite, $postinro, $postitmp, $kuvaus, $tila);
+		$hlaite["laite_id"] = parseGet("hlaite_id");
+		$hlaite["nimi"] = parseGet("hnimi");
+		$hlaite["merkki"] = parseGet("hmerkki");
+		$hlaite["malli"] = parseGet("hmalli");
+		$hlaite["sarjanumero"] = parseGet("hsarjanumero");
+		$hlaite["kategoria"] = parseGet("hkategoria");
+		$hlaite["omistaja"] = parseGet("homistaja");
+		$hlaite["osoite"] = parseGet("hosoite");
+		$hlaite["postinro"] = parseGet("hpostinro");
+		$hlaite["postitmp"] = parseGet("hpostitmp");
+		$hlaite["kuvaus"] = parseGet("hkuvaus");
+		$hlaite["tila"] = parseGet("htila");
+		print_r($hlaite);
+		$data = fetchLaite($hlaite);
 		
 		// $data sis�lt�� datan indeksoidussa taulukkossa, jossa jokainen alkio on assosiatiivinen taulukko
 		echo "<table id=\"laitteet\">";

@@ -3,7 +3,7 @@
 
 	// Tarkistetaan, onko käyttäjä jo kirjautunut järjestelmään, jos ei heitetään login-sivulle
     require_once("login_utils.inc");
-    
+    echo "<p> Kirjautuneena: ".$_SESSION['tunnus'] ."</p>";
     echo "<pre>";
     print_r($_SESSION);
     echo "</pre>";
@@ -217,7 +217,7 @@
 	</script>
 </head>
 <body>	
-	<a href="http://localhost:8081/pohjia/php/asiakas.php?avain=4">Tiedot</a>
+	<a href="http://localhost:8081/pohjia/php/asiakas.php?">Tiedot</a>
 	<a href="http://localhost:8081/pohjia/php/laitehaku.php">Laitteet</a>
 	<a href="http://localhost:8081/pohjia/php/logout.php">Kirjaudu ulos</a>
 	<p>Anna hakuehdot</p>

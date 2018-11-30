@@ -6,9 +6,9 @@
     
     $tunnus = $_SESSION['tunnus'];
     echo "<p> Kirjautuneena: ".$tunnus ."</p>";
-    echo "<pre>";
-    print_r($_SESSION);
-    echo "</pre>";
+    //echo "<pre>";
+    //print_r($_SESSION);
+    //echo "</pre>";
 
 	
 	check_session();
@@ -147,7 +147,7 @@
 		    $.get(
                 "http://localhost:8081/pohjia/php/asiakasHandler.php?poista=" + avain
             ).done(function (data, textStatus, jqXHR) {
-				hae_asiakkaat();
+				
             }).fail(function (jqXHR, textStatus, errorThrown) {
                 console.log("poista_asiakas: status=" + textStatus + ", " + errorThrown);
             });
@@ -158,7 +158,7 @@
                 "http://localhost:8081/pohjia/php/asiakasHandler.php?lisaa",
                 lisayslauseke
             ).done(function (data, textStatus, jqXHR) {
-                hae_asiakkaat();
+                
             }).fail(function (jqXHR, textStatus, errorThrown) {
                 console.log("lisaaAsiakas: status=" + textStatus + ", " + errorThrown);
             });
@@ -191,7 +191,7 @@
 			$.post("http://localhost:8081/pohjia/php/asiakasHandler.php?tallenna",
                 muokkauslauseke
             ).done(function (data, textStatus, jqXHR) {
-				hae_asiakkaat();
+				
 
             }).fail(function (jqXHR, textStatus, errorThrown) {
                 console.log("tallennaAsiakas: status=" + textStatus + ", " + errorThrown);
@@ -226,19 +226,8 @@
 <body>	
 	<a href="http://localhost:8081/pohjia/php/asiakas.php?">Tiedot</a>
 	<a href="http://localhost:8081/pohjia/php/laitehaku.php">Laitteet</a>
-	<a href="http://localhost:8081/pohjia/php/logout.php">Kirjaudu ulos</a>
-	<p>Anna hakuehdot</p>
-	<form id="haku">
-		NIMI
-		<input type="text" id="nhimi" name="hnimi" /> 
-		<select id="asty_avain" name="Asty_avain">
-			<option value=""></option>
-        </select>
+	<a href="http://localhost:8081/pohjia/php/logout.php">Kirjaudu ulos</a><br />
 
-		<br />
-	</form>
-	<button id="hae">Hae asiakkaat</button>
-	<button id="lisaa">Lisää uusi asiakas</button>
     <button id="muokkaa">Muokkaa omia tietoja</button>
 	
 	<div id="asiakkaat"></div>
@@ -269,7 +258,7 @@
             <input type='text' id='osoite_muokkaus' name='mosoite' placeholder='Osoite'>
             <input type='text' id='postinro_muokkaus' name='mpostinro' placeholder='Postinumero'>
             <input type='text' id='postitmp_muokkaus' name='mpostitmp' placeholder='Postitoimipaikka'>
-            <select id='asty_muokkaus' name='masty'>
+            <select id='asty_muokkaus' name='masty' readonly="readonly">
                 <option value="0">Käyttäjä</option>
 				<option value="1">Admin</option>
             </select>

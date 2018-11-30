@@ -2,10 +2,12 @@
 /*
 	Tässä tiedostossa on funktioita, jotka käsittelevät Asiakas-taulua.
 	Muiden taulujen funktiot kannattaa tehdä omiin tiedostoihinsa.
+
 */
 
 require_once("db.inc");
 require_once("utils.inc");
+
 
 function fetchLogin($tunnus, $ss)
 {
@@ -14,7 +16,7 @@ function fetchLogin($tunnus, $ss)
 	$result = array();
 	
 	try {
-		$stmt = $conn->prepare("SELECT Tunnus, kayttaja_id FROM kayttaja WHERE Tunnus = '$tunnus' AND Salasana = '$ss'");
+		$stmt = $conn->prepare("SELECT Tunnus, kayttaja_id, asty FROM kayttaja WHERE Tunnus = '$tunnus' AND Salasana = '$ss'");
 		$stmt->execute();
 			
 		//käydään rivit läpi 

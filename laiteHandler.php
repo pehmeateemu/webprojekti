@@ -3,7 +3,8 @@
 	header("Access-Control-Allow-Origin: *");
 	header("Access-Control-Allow-Methods: PUT, GET, POST");
 	header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
-	global $_SESSION;
+	require_once("login_utils.inc");
+	session_start();
 	//check_session();
 if ( isset($_POST["lisaa"]))
 	{
@@ -98,7 +99,8 @@ if ( isset($_GET["hae"]) )
 			echo "<td>". $row["Postitmp"]. "</td>";
 			echo "<td>". $row["Kuvaus"]. "</td>";
 			echo "<td>". $row["Tila"]. "</td>";
-			if ($_SESSION["ulevel"] = 1) {
+			
+			if ($_SESSION["asty"] == 1) {
 			echo "<td> <button class=\"muokkaaButton\"onclick=\"muokkaaLaite($id)\">Muokkaa </button> </td>";
 			echo "<td> <button class=\"poistaButton\" onclick=\"poistaLaite($id)\">Poista </button> </td>";
 			};

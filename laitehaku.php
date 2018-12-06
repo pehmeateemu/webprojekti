@@ -1,11 +1,19 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <?php
-	//session_start();
+	session_start();
+
 	// Tarkistetaan, onko käyttäjä jo kirjautunut järjestelmään, jos ei heitetään login-sivulle
-	require_once("login_utils.inc");
+    require_once("login_utils.inc");
+    
+    $tunnus = $_SESSION['tunnus'];
+   // echo "<p> Kirjautuneena: ".$tunnus ."</p>";
+   // echo "<pre>";
+   // print_r($_SESSION);
+   // echo "</pre>";
+
 	
-	//check_session();
+	check_session();
 ?>
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
@@ -248,7 +256,9 @@
 		<br />
 	</form>
 	<button id="hae">Hae laitteet</button>
-	<button id="lisaa">Lisää uusi laite</button>
+	<?php if($_SESSION["asty"] == 1) { 
+	echo '<button id="lisaa">Lisää uusi laite</button>';
+	} ?>
 	
 	<div id="laitteet"></div>
 

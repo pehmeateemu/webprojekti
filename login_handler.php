@@ -10,13 +10,19 @@
 	if($result == true){
 		$_SESSION["login"] = 1;		
 		$_SESSION["tunnus"] = $tunnus;
-		
+		if ($tunnus == "admin") {
+			$_SESSION["asty"] = 1;
+		}
+		else {
+			$_SESSION["asty"] = 0;
+		}
 		header("Location: asiakas.php");
 		exit();
+		
 	}
 	else
 	{
-		// Tunnus && ss oikein -> ohjataan pääsivulle
+		// Tunnus && ss oikein ohjataan pääsivulle
 		header("Location: login.php?virhe=1");
 		exit();
 	}

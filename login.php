@@ -102,7 +102,7 @@
             <input type="text" id="osoite_lisays" name="osoite" placeholder="Osoite">
             <input type="text" id="postinro_lisays" name="postinro" placeholder="Postinumero">
             <input type="text" id="postitmp_lisays" name="postitmp" placeholder="Postitoimipaikka">
-            <select id="asty_lisays" name="asty">
+            <select id="asty_lisays" name="asty" readonly="readonly">
                 <option value="0"></option>
             </select>
 

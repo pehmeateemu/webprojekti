@@ -6,6 +6,9 @@
     
     $tunnus = $_SESSION['tunnus'];
     echo "<p> Kirjautuneena: ".$tunnus ."</p>";
+    //echo "<pre>";
+    //print_r($_SESSION);
+    //echo "</pre>";
 
 	
 	check_session();

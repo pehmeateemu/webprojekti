@@ -8,14 +8,72 @@
     <script src="https://code.jquery.com/jquery-3.1.0.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 	
-	
+	//
     <title>Laitteiden käsittely</title>
 	
 	<script>
+		// 2-tason vaatimukset
+		// Laitteen voi varata kuka tahansa kirjautunut käyttäjä
+		// Laitteen varauksen voi PURKAA admin-käyttäjä tai laitteen varannut käyttäjä 
+		// Laitteen varausta voi MUUTTAA admin-käyttäjä tai laitteen varannut käyttäjä 
+
+		// 3-tason vaatimukset
+		// Laitetta ei voi varata, jos laite on jo varattu tai lainattu
+		// Laitteen varauksen voi poistaa vain, jos varauksesta ei ole tehty lainausta
+		// Laitteen varausta voi muuttaa vain, jos varauksesta ei ole tehty lainausta
+		// Käyttäjän täytyy nähdä helposti omat varaukset/lainat
+
+		// 4-tason vaatimukset
+		// Laitteen voi lainata vain jos siihen liittyy varaus. Lainaaminen voidaan hoitaa niin, että varauksen tila muutetaan lainatuksi. 
+		// Vain admin-käyttäjä voi merkata laitteen lainatuksi (tyypillisesti silloin kun varaaja tulee noutamaan laitetta)
+		// Jos varattu laite merkataan vahingossa lainatuksi, on se voitava purkaa (vain admin-käyttäjä), jolloin laina muuttuu takaisin varaukseksi
+		// Lainattu laite palautetaan muuttamalla lainan tila palautetuksi. Vain admin-käyttäjä voi palauttaa laitteen
+		// Kustakin laitteesta täytyy nähdä helposti ko. laitteen vanhat ja tulevat varaukset/lainaukset
+
+		// 5-tason vaatimukset
+		// Kun laite palautetaan, antaa admin-käyttäjä pvm:n, jolloin laite palautettiin -> samalla muutetaan varauksen loppumispvm:ää, jolloin laite on taas varattavissa annetusta loppupvm:stä alkaen. Eli jos käyttäjä palauttaakin laitteen ennen loppumispvm:ää
+		// Jos laite on lainattu, voi admin-käyttäjä muuttaa lainan loppumispvm:ää(varaaja soittaa admin:lleaiheesta). Lainaa voi muuttaa vain jos laitteelle ei ole varausta, joka menee uuden loppumispvm:npäälle. 
+		// Admin-käyttäjä voi merkata laitteelle esim. huoltoja, jolloin laite ei ole varattavissa. Tämä voidaan toteuttaa niin, että admin-käyttäjä voi antaa varaukselle tyypin. Ota huomioon, että admin-käyttäjän on voitava muuttaa/poistaa näitä varauksia.
+
 		$(function(){
 			
+
+
+			$("#hae").button();
+			$("#varaa").button();
+			$("#muokkaa").button();
+			$("#poista").button();
+		
+			$("#hae").click(function(){				
+				haeVaraukset();
+			});
+
 			$("#varaa").click(function(){
 				$("#dialogi_varaa").dialog("open");
+			});
+
+			$("#muokkaa").click(function() {
+				muokkaaVaraus();
+			});
+
+			$("#poista").click(function(){
+				poistaVaraus();
+			});
+
+			$( function() {
+					$( "#aloitus_lisays" ).datepicker();
+			});
+
+			$( function() {
+					$( "#lopetus_lisays" ).datepicker();
+			});
+
+			$( function() {
+					$( "#aloitus_muokkaus" ).datepicker();
+			});
+
+			$( function() {
+					$( "#lopetus_muokkaus" ).datepicker();
 			});
 
 			$("#dialogi_varaa").dialog({
@@ -27,16 +85,18 @@
                                 if ($.trim($("#laite_lisays").val()) === "" ||
 									$.trim($("#asiakas_lisays").val()) === "" ||
 									$.trim($("#aloitus_lisays").val()) === "" ||
-									$.trim($("#lopetus_lisays").val()) === "" ) {
-                                   
-								   alert('Anna arvo kaikki kenttiin!');
-                                    return false;
+									$.trim($("#lopetus_lisays").val()) === "" ) 
+								{                                   
+									   alert('Anna arvo kaikki kenttiin!');
+									   return false;
 								}
-								else if (Date.parse($("#aloitus_lisays").val()) >= Date.parse($("#lopetus_lisays").val())) {
+								else if (Date.parse($("#aloitus_lisays").val()) >= Date.parse($("#lopetus_lisays").val())) 
+								{
 									alert('Alkamispvm ei voi olla sama tai suurempi kuin loppumispvm!');
-									return false;
-								
-                                } else {
+									return false;								
+                                } 
+								else 
+								{
                                     var varauslauseke = $("#varauslomake").serialize();
                                     console.log("Varauslauseke: " + varauslauseke);
                                     lisaaVaraus(varauslauseke);
@@ -61,6 +121,7 @@
                     resizable: false
             });
 		});
+
 		function lisaaVaraus(lisayslauseke) {
             $.post(
                 "http://localhost:8081/pohjia/php/varausHandler.php?varaa",
@@ -71,21 +132,7 @@
             });
         }
 		
-		$( function() {
-				$( "#aloitus_lisays" ).datepicker();
-		});
 
-		$( function() {
-				$( "#lopetus_lisays" ).datepicker();
-		});
-
-		$( function() {
-				$( "#aloitus_muokkaus" ).datepicker();
-		});
-
-		$( function() {
-				$( "#lopetus_muokkaus" ).datepicker();
-		});
 
 	</script>
 </head>
@@ -93,15 +140,15 @@
 	
 	
 	
-	<button id="varaa">Varaus</button>
+	<button id="varaa">Varaa laite</button>
 
 
 	<div id="dialogi_varaa" title="Varaa laite">
 	
         <form id="varauslomake">			
             <input type="hidden" name="teevaraus" />
-			<input type="text" id="laite_lisays" name="laite" placeholder="Laite" value="j" readonly="readonly">
-			<input type="password" id="asiakas_lisays" name="asiakas" placeholder="Asiakas" value="j" readonly="readonly"> 
+			<input type="text" id="laite_lisays" name="laite" placeholder="Laite" readonly="readonly">
+			<input type="password" id="asiakas_lisays" name="asiakas" placeholder="Asiakas" readonly="readonly"> 
 			<input type="text" id="aloitus_lisays" name="aloitus" placeholder="Varauksen alkamispvm"> 
             <input type="text" id="lopetus_lisays" name="lopetus" placeholder="Varauksen loppumispvm">
             <select id="tila_lisays" name="tila" readonly="readonly">

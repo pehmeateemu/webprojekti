@@ -488,6 +488,7 @@ function fetchVaraus($laite_id)
 		$result = array("status" => "not ok", "error" => $e->getMessage());
 		error_log("Error in fetchVaraus: " . $e->getMessage());
 	}
+	
 		return $result;
 }
 

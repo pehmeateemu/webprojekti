@@ -57,6 +57,7 @@ session_start();
 			echo "<td>". $row["aloituspvm"]. "</td>";
 			echo "<td>". $row["lopetuspvm"]. "</td>";
 			//tulostellaan tilan mukaiset tekstit ja napit
+
 			if ($row["varaus_tila"] == 0) {echo "<td> Varaus </td> <td> <button class=\"lainaaButton\" onclick=\"lainaaVaraus($id)\">Lainaa </button></td> <td> <button class=\"muokkaaButton\" onclick=\"muokkaaVaraus($id)\">Muokkaa</button></td>";}
 			if ($row["varaus_tila"] == 1) {echo "<td> Lainaus </td>"; if ($_SESSION["asty"] == 0) { echo  "<td> <button class=\"palautaButton\" onclick=\"palautaLainaus($id)\">Palauta </button></td> <td> <button class=\"muokkaaButton\" onclick=\"muokkaaVaraus($id)\">Muokkaa</button></td>";}}
 			if ($row["varaus_tila"] == 2) {echo '<td> Palautettu </td>';}

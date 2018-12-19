@@ -21,31 +21,31 @@
 
 	?>
 	
-    <title>Laitteiden käsittely</title>
+    <title>Laitteiden kï¿½sittely</title>
 	
 	<script>
 		// 2-tason vaatimukset
-		// Laitteen voi varata kuka tahansa kirjautunut käyttäjä
-		// Laitteen varauksen voi PURKAA admin-käyttäjä tai laitteen varannut käyttäjä 
-		// Laitteen varausta voi MUUTTAA admin-käyttäjä tai laitteen varannut käyttäjä 
+		// Laitteen voi varata kuka tahansa kirjautunut kï¿½yttï¿½jï¿½
+		// Laitteen varauksen voi PURKAA admin-kï¿½yttï¿½jï¿½ tai laitteen varannut kï¿½yttï¿½jï¿½ 
+		// Laitteen varausta voi MUUTTAA admin-kï¿½yttï¿½jï¿½ tai laitteen varannut kï¿½yttï¿½jï¿½ 
 
 		// 3-tason vaatimukset
 		// Laitetta ei voi varata, jos laite on jo varattu tai lainattu
 		// Laitteen varauksen voi poistaa vain, jos varauksesta ei ole tehty lainausta
 		// Laitteen varausta voi muuttaa vain, jos varauksesta ei ole tehty lainausta
-		// Käyttäjän täytyy nähdä helposti omat varaukset/lainat
+		// Kï¿½yttï¿½jï¿½n tï¿½ytyy nï¿½hdï¿½ helposti omat varaukset/lainat
 
 		// 4-tason vaatimukset
-		// Laitteen voi lainata vain jos siihen liittyy varaus. Lainaaminen voidaan hoitaa niin, että varauksen tila muutetaan lainatuksi. 
-		// Vain admin-käyttäjä voi merkata laitteen lainatuksi (tyypillisesti silloin kun varaaja tulee noutamaan laitetta)
-		// Jos varattu laite merkataan vahingossa lainatuksi, on se voitava purkaa (vain admin-käyttäjä), jolloin laina muuttuu takaisin varaukseksi
-		// Lainattu laite palautetaan muuttamalla lainan tila palautetuksi. Vain admin-käyttäjä voi palauttaa laitteen
-		// Kustakin laitteesta täytyy nähdä helposti ko. laitteen vanhat ja tulevat varaukset/lainaukset
+		// Laitteen voi lainata vain jos siihen liittyy varaus. Lainaaminen voidaan hoitaa niin, ettï¿½ varauksen tila muutetaan lainatuksi. 
+		// Vain admin-kï¿½yttï¿½jï¿½ voi merkata laitteen lainatuksi (tyypillisesti silloin kun varaaja tulee noutamaan laitetta)
+		// Jos varattu laite merkataan vahingossa lainatuksi, on se voitava purkaa (vain admin-kï¿½yttï¿½jï¿½), jolloin laina muuttuu takaisin varaukseksi
+		// Lainattu laite palautetaan muuttamalla lainan tila palautetuksi. Vain admin-kï¿½yttï¿½jï¿½ voi palauttaa laitteen
+		// Kustakin laitteesta tï¿½ytyy nï¿½hdï¿½ helposti ko. laitteen vanhat ja tulevat varaukset/lainaukset
 
 		// 5-tason vaatimukset
-		// Kun laite palautetaan, antaa admin-käyttäjä pvm:n, jolloin laite palautettiin -> samalla muutetaan varauksen loppumispvm:ää, jolloin laite on taas varattavissa annetusta loppupvm:stä alkaen. Eli jos käyttäjä palauttaakin laitteen ennen loppumispvm:ää
-		// Jos laite on lainattu, voi admin-käyttäjä muuttaa lainan loppumispvm:ää(varaaja soittaa admin:lleaiheesta). Lainaa voi muuttaa vain jos laitteelle ei ole varausta, joka menee uuden loppumispvm:npäälle. 
-		// Admin-käyttäjä voi merkata laitteelle esim. huoltoja, jolloin laite ei ole varattavissa. Tämä voidaan toteuttaa niin, että admin-käyttäjä voi antaa varaukselle tyypin. Ota huomioon, että admin-käyttäjän on voitava muuttaa/poistaa näitä varauksia.
+		// Kun laite palautetaan, antaa admin-kï¿½yttï¿½jï¿½ pvm:n, jolloin laite palautettiin -> samalla muutetaan varauksen loppumispvm:ï¿½ï¿½, jolloin laite on taas varattavissa annetusta loppupvm:stï¿½ alkaen. Eli jos kï¿½yttï¿½jï¿½ palauttaakin laitteen ennen loppumispvm:ï¿½ï¿½
+		// Jos laite on lainattu, voi admin-kï¿½yttï¿½jï¿½ muuttaa lainan loppumispvm:ï¿½ï¿½(varaaja soittaa admin:lleaiheesta). Lainaa voi muuttaa vain jos laitteelle ei ole varausta, joka menee uuden loppumispvm:npï¿½ï¿½lle. 
+		// Admin-kï¿½yttï¿½jï¿½ voi merkata laitteelle esim. huoltoja, jolloin laite ei ole varattavissa. Tï¿½mï¿½ voidaan toteuttaa niin, ettï¿½ admin-kï¿½yttï¿½jï¿½ voi antaa varaukselle tyypin. Ota huomioon, ettï¿½ admin-kï¿½yttï¿½jï¿½n on voitava muuttaa/poistaa nï¿½itï¿½ varauksia.
 
 		var laite_id = "<?php echo $_SESSION['laite_id'] ?>";
 
@@ -247,7 +247,7 @@
 				$(".lainaaButton").button();
 				$(".palautaButton").button();
 				$(".muokkaaButton").button();
-				$(".poistaButton").button();	// Pakko laittaa tänne, koska poista-buttoneita ei ole selaimessa ennenkuin data on haettu
+				$(".poistaButton").button();	// Pakko laittaa tï¿½nne, koska poista-buttoneita ei ole selaimessa ennenkuin data on haettu
 			});
 		}
 

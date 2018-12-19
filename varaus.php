@@ -2,13 +2,25 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8" />
-    <title>Sis‰‰nkirjautuminen</title>
+    <title>Varaukset</title>
 	<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 	<link rel="stylesheet" href="/resources/demos/style.css">
     <script src="https://code.jquery.com/jquery-3.1.0.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 	
-	//
+	<?php 
+
+	session_start();
+
+	require_once("login_utils.inc");
+    
+    $tunnus = $_SESSION['tunnus'];
+    echo "<p> Kirjautuneena: ".$tunnus ."</p>";
+
+	$_SESSION['laite_id'] = $_GET['laite']; 
+
+	?>
+	
     <title>Laitteiden k‰sittely</title>
 	
 	<script>
@@ -35,12 +47,16 @@
 		// Jos laite on lainattu, voi admin-k‰ytt‰j‰ muuttaa lainan loppumispvm:‰‰(varaaja soittaa admin:lleaiheesta). Lainaa voi muuttaa vain jos laitteelle ei ole varausta, joka menee uuden loppumispvm:np‰‰lle. 
 		// Admin-k‰ytt‰j‰ voi merkata laitteelle esim. huoltoja, jolloin laite ei ole varattavissa. T‰m‰ voidaan toteuttaa niin, ett‰ admin-k‰ytt‰j‰ voi antaa varaukselle tyypin. Ota huomioon, ett‰ admin-k‰ytt‰j‰n on voitava muuttaa/poistaa n‰it‰ varauksia.
 
+		var laite_id = "<?php echo $_SESSION['laite_id'] ?>";
+
+		console.log(laite_id);
 		$(function(){
 			
 
-
 			$("#hae").button();
 			$("#varaa").button();
+			$("#lainaa").button();
+			$("#palauta").button();
 			$("#muokkaa").button();
 			$("#poista").button();
 		
@@ -53,11 +69,19 @@
 			});
 
 			$("#muokkaa").click(function() {
-				muokkaaVaraus();
+				muokkaaVaraus($(this).closest('tr').find('td:nth-child(1)').val());
+			});
+
+			$("#lainaa").click(function() {
+				lainaaVaraus($(this).closest('tr').find('td:nth-child(1)').val());
+			});
+
+			$("#palauta").click(function() {
+				palautaVaraus($(this).closest('tr').find('td:nth-child(1)').val());
 			});
 
 			$("#poista").click(function(){
-				poistaVaraus();
+				poistaVaraus($(this).closest('tr').find('td:nth-child(1)').val());
 			});
 
 			$( function() {
@@ -76,7 +100,10 @@
 					$( "#lopetus_muokkaus" ).datepicker();
 			});
 
-			$("#dialogi_varaa").dialog({
+
+		
+
+				$("#dialogi_varaa").dialog({
                     autoOpen: false,
                     buttons: [
                         {
@@ -85,7 +112,8 @@
                                 if ($.trim($("#laite_lisays").val()) === "" ||
 									$.trim($("#asiakas_lisays").val()) === "" ||
 									$.trim($("#aloitus_lisays").val()) === "" ||
-									$.trim($("#lopetus_lisays").val()) === "" ) 
+									$.trim($("#lopetus_lisays").val()) === "" )
+
 								{                                   
 									   alert('Anna arvo kaikki kenttiin!');
 									   return false;
@@ -119,45 +147,231 @@
                     draggable: false,
                     modal: true,
                     resizable: false
-            });
+				});
+
+				$("#dialogi_muokkaa").dialog({
+                    autoOpen: false,
+                    buttons: [
+                        {
+                            text: "Varaa",
+                            click: function() {
+                                if ($.trim($("#laite_muokkaus").val()) === "" ||
+									$.trim($("#asiakas_muokkaus").val()) === "" ||
+									$.trim($("#aloitus_muokkaus").val()) === "" ||
+									$.trim($("#lopetus_muokkaus").val()) === "" )
+
+								{                                   
+									   alert('Anna arvo kaikki kenttiin!');
+									   return false;
+								}
+								else if (Date.parse($("#aloitus_muokkaus").val()) >= Date.parse($("#lopetus_muokkaus").val())) 
+								{
+									alert('Alkamispvm ei voi olla sama tai suurempi kuin loppumispvm!');
+									return false;								
+                                } 
+								else 
+								{
+                                    var muokkauslauseke = $("#muokkauslomake").serialize();
+                                    console.log("muokkauslauseke: " + muokkauslauseke);
+                                    tallennaVaraus(muokkauslauseke);
+                                    //$("#lisayslomake")[0].reset();
+                                    //$("#asty_avain_lisays").prop('selectedIndex', 0);
+                                    $(this).dialog("close");
+                                }
+                            },
+                        },
+                        {
+                            text: "Peruuta",
+                            click: function() {
+                                //$("#lisayslomake")[0].reset();
+                                //$("#asty_avain_lisays").prop('selectedIndex', 0);
+                                $(this).dialog("close");
+                            },
+                        }
+                    ],
+                    closeOnEscape: false,
+                    draggable: false,
+                    modal: true,
+                    resizable: false
+				});
 		});
 
-		function lisaaVaraus(lisayslauseke) {
-            $.post(
-                "http://localhost:8081/pohjia/php/varausHandler.php?varaa",
-                varauslauseke
+		function muokkaaVaraus(avain)
+		{
+		$.get(
+			"http://localhost:8081/pohjia/php/varausHandler.php?muokkaa=" + avain
+			).done(function (data, textStatus, jqXHR) {
+					console.log(data);
+					var varaus = $.parseJSON(data);
+					document.getElementById("mvaraus_id").value=varaus['varaus_id'];
+					document.getElementById("mlaite_id").value=varaus['laite_id'];
+					document.getElementById("maloitus").value=varaus['aloituspvm'];
+					document.getElementById("mlopetus").value=varaus['lopetuspvm'];
+					console.log(laite[0]);
+					$("#dialogi_muokkaa").dialog("open");
+			}).fail(function (jqXHR, textStatus, errorThrown) {
+					console.log("muokkaaVaraus: status=" + textStatus + ", " + errorThrown);					
+			});
+		}
+
+		function tallennaVaraus(muokkauslauseke) 
+		{
+			$.post("http://localhost:8081/pohjia/php/varausHandler.php?tallenna",
+                muokkauslauseke
             ).done(function (data, textStatus, jqXHR) {
+                haeVaraukset();
             }).fail(function (jqXHR, textStatus, errorThrown) {
-                console.log("lisaaAsiakas: status=" + textStatus + ", " + errorThrown);
+                console.log("tallennaVaraus: status=" + textStatus + ", " + errorThrown);
             });
+
+		}
+
+		function lisaaVaraus(varauslauseke) {
+            $.post(
+                "http://localhost:8081/pohjia/php/varausHandler.php?teevaraus", varauslauseke)
+				.done(function (data, textStatus, jqXHR) 
+				{
+				haeVaraukset();
+				})
+			.fail(function (jqXHR, textStatus, errorThrown) 
+				{
+                console.log("lisaaAsiakas: status=" + textStatus + ", " + errorThrown);
+				});
         }
+
+		function haeVaraukset()
+		{
+			haku = laite_id;
+			console.log(haku);
+			$("#varaukset").load("http://localhost:8081/pohjia/php/varausHandler.php?hae", haku, function(){
+				$(".lainaa").button();
+				$(".palauta").button();
+				$(".poistaButton").button();	// Pakko laittaa t‰nne, koska poista-buttoneita ei ole selaimessa ennenkuin data on haettu
+			});
+		}
+
+		function poistaVaraus(varaus_id)
+		{
+			
+		    $.get(
+                "http://localhost:8081/pohjia/php/varausHandler.php?poista=" + varaus_id
+            )
+			.done(function (data, textStatus, jqXHR) {
+
+				haeVaraukset();
+            })
+			.fail(function (jqXHR, textStatus, errorThrown) {
+                console.log("poista_laite: status=" + textStatus + ", " + errorThrown);
+            });
 		
+		}
+
+		function lainaaVaraus(varaus_id)
+		{
+			
+		    $.get(
+                "http://localhost:8081/pohjia/php/varausHandler.php?lainaa=" + varaus_id
+            )
+			.done(function (data, textStatus, jqXHR) {
+
+				haeVaraukset();
+            })
+			.fail(function (jqXHR, textStatus, errorThrown) {
+                console.log("poista_laite: status=" + textStatus + ", " + errorThrown);
+            });
+		
+		}
+
+		function palautaLainaus(varaus_id)
+		{
+			
+		    $.get(
+                "http://localhost:8081/pohjia/php/varausHandler.php?palauta=" + varaus_id
+            )
+			.done(function (data, textStatus, jqXHR) {
+
+				haeVaraukset();
+            })
+			.fail(function (jqXHR, textStatus, errorThrown) {
+                console.log("poista_laite: status=" + textStatus + ", " + errorThrown);
+            });
+		
+		}
+
 
 
 	</script>
 </head>
 <body>
-	
-	
-	
+
+	<a href="http://localhost:8081/pohjia/php/asiakas.php">Tiedot</a>
+	<a href="http://localhost:8081/pohjia/php/laitehaku.php">Laitteet</a>
+	<a href="http://localhost:8081/pohjia/php/logout.php">Kirjaudu ulos</a>
+	<br/>
+	<br/>
+	<button id="hae">Hae varaukset</button>
 	<button id="varaa">Varaa laite</button>
 
+	<div id="varaukset"></div>
 
 	<div id="dialogi_varaa" title="Varaa laite">
 	
         <form id="varauslomake">			
             <input type="hidden" name="teevaraus" />
-			<input type="text" id="laite_lisays" name="laite" placeholder="Laite" readonly="readonly">
-			<input type="password" id="asiakas_lisays" name="asiakas" placeholder="Asiakas" readonly="readonly"> 
+			<input type="hidden" id="laite_lisays" name="vlaite" value="<?php echo $_SESSION['laite_id'] ?>">
+			
+			<input type="radio" name="tila" id="tila_varaus" value="0" checked="checked">Varaus<br>
+			<?php 
+			$kid = $_SESSION["kid"];
+			$nimi = $_SESSION["nimi"];
+			if ($_SESSION["asty"] == 0) {
+			echo "
+			<input type=\"radio\" name=\"tila\" id=\"tila_huolto\" value=\"3\">Huolto<br>
+			<input type=\"text\" id=\"asiakas_lisays\" name=\"asiakas\" placeholder=\"Asiakas\" value=\"$kid\">
+			";
+			}
+			else {
+			echo "<input type=\"hidden\" id=\"asiakas_lisays\" name=\"asiakas\" placeholder=\"Asiakas\" value=\"$kid\">
+				  <input type=\"text\" id=\"asiakas_lisays\" name=\"nimi\" placeholder=\"Asiakas\" value=\"$nimi\" readonly=\"readonly\">";} 
+			
+			?>
+
 			<input type="text" id="aloitus_lisays" name="aloitus" placeholder="Varauksen alkamispvm"> 
             <input type="text" id="lopetus_lisays" name="lopetus" placeholder="Varauksen loppumispvm">
-            <select id="tila_lisays" name="tila" readonly="readonly">
-                <option value="0"></option>
-            </select>
+            
 
 			
         </form>
     </div>
 	
+	<div id="dialogi_muokkaa" title="Varaa laite">
+	
+        <form id="muokkauslomake">			
+            <input type="hidden" name="tallenna" />
+			<input type="hidden" id="varaus_muokkaus" name="mvaraus_id" value="">
+			<input type="hidden" id="laite_muokkaus" name="mlaite_id" value="">
+			
+			<?php 
+			$kid = $_SESSION["kid"];
+			$nimi = $_SESSION["nimi"];
+			if ($_SESSION["asty"] == 0) {
+			echo "
+			<input type=\"text\" id=\"asiakas_muokkaus\" name=\"masiakas\" placeholder=\"Asiakas\" value=\"$kid\">
+			";
+			}
+			else {
+			echo "<input type=\"hidden\" id=\"asiakas_muokkaus\" name=\"masiakas\" placeholder=\"Asiakas\" value=\"$kid\">
+				  <input type=\"text\" id=\"asiakas_muokkaus\" name=\"nimi\" placeholder=\"Asiakas\" value=\"$nimi\" readonly=\"readonly\">";} 
+			
+			?>
+
+			<input type="text" id="aloitus_muokkaus" name="maloitus" placeholder="Varauksen alkamispvm"> 
+            <input type="text" id="lopetus_muokkaus" name="mlopetus" placeholder="Varauksen loppumispvm">
+            
+
+			
+        </form>
+    </div>
+
 </body>
 </html>

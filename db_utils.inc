@@ -422,7 +422,40 @@ function poistaLaite($laite_id)
 	
 	return $result;
 }
-
+function fetchUserVaraus($kayttaja_id)
+{
+	// $conn -muuttuja EI näy funktion sisällä jos sitä ei määritellä täällä global:ksi
+	global $conn;
+	$result = array();
+	try {
+		$stmt = $conn->prepare(
+			"SELECT 
+				laite.laite_id, 
+				laite.merkki, 
+				laite.malli, 
+				varaus.varaus_id, 
+				kayttaja.nimi, 
+				varaus.kayttaja_id, 
+				varaus.aloituspvm, 
+				varaus.lopetuspvm,
+				varaus.varaus_tila
+			FROM varaus 
+			JOIN laite ON varaus.laite_id = laite.laite_id 
+			JOIN kayttaja ON varaus.kayttaja_id = kayttaja.kayttaja_id 
+			WHERE varaus.kayttaja_id LIKE '%$kayttaja_id%'");
+		$stmt->execute();
+			
+		//käydään rivit läpi 
+		while ($rivi = $stmt->fetch(PDO::FETCH_ASSOC)) { 
+			$result[] = $rivi;
+		}
+	}
+	catch(PDOException $e) {
+		$result = array("status" => "not ok", "error" => $e->getMessage());
+		error_log("Error in fetchUserVaraus: " . $e->getMessage());
+	}
+		return $result;
+}
 function fetchVaraus($laite_id)
 {
 	// $conn -muuttuja EI näy funktion sisällä jos sitä ei määritellä täällä global:ksi

@@ -587,53 +587,31 @@ function palautaLainaus($varaus_id)
 	return $result;
 }
 
-function updateVaraus($laite)
+function updateVaraus($varaus)
 {
 	global $conn;
 	$result = array("status" => "ok");
+	$apm = date("Y-m-d", strtotime($varaus["aloituspvm"]));
+	$lpm = date("Y-m-d", strtotime($varaus["lopetuspvm"]));
 	try {
 
 				$stmt = $conn->prepare("UPDATE varaus
 	  		SET
-				Tila = 1,
-				Nimi = :n, 
-				Merkki = :me, 
-				Malli = :ma, 
-				Sarjanumero = :sn, 
-				Kategoria = :ka, 
-				Omistaja = :om, 
-				Osoite = :o, 
-				Postinro = :pn, 
-				Postitmp = :pt, 
-				Kuvaus = :ku 
-			WHERE 
-				laite_id = :id");	
+				varaus_Tila = :ti,
+				aloituspvm = :apm,
+				lopetuspvm = :lpm
 
-		$stmt->bindParam(":id", $id);		
-		//$stmt->bindParam(":ti", $ti);
-		$stmt->bindParam(":n", $n);
-		$stmt->bindParam(":me", $me);
-		$stmt->bindParam(":ma", $ma);
-		$stmt->bindParam(":sn", $sn);
-		$stmt->bindParam(":ka", $ka);
-		$stmt->bindParam(":om", $om);
-		$stmt->bindParam(":o", $o);
-		$stmt->bindParam(":pn", $pn);
-		$stmt->bindParam(":pt", $pt);
-		$stmt->bindParam(":ku", $ku);
+			WHERE 
+				varaus_id = :lid");	
+
+		$stmt->bindParam(":ti", $ti);
+		$stmt->bindParam(":lid", $lid);	
+		$stmt->bindParam(":apm", $apm);
+		$stmt->bindParam(":lpm", $lpm);
 		
-		$id = $laite["laite_id"];
-		//$ti = $laite["tila"];
-		$n = $laite["nimi"];
-		$me = $laite["merkki"];
-		$ma = $laite["malli"];
-		$sn = $laite["sarjanumero"];
-		$ka = $laite["kategoria"];
-		$om = $laite["omistaja"];
-		$o = $laite["osoite"];
-		$pn = $laite["postinro"];
-		$pt = $laite["postitmp"];
-		$ku = $laite["kuvaus"];
+		$ti = $varaus["tila"];
+		$lid = $varaus["varaus_id"];
+
 
 		$stmt->execute();          
 	}

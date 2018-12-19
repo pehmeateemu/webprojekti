@@ -27,10 +27,10 @@
 			echo "<td>". $row["aloituspvm"]. "</td>";
 			echo "<td>". $row["lopetuspvm"]. "</td>";
 			//tulostellaan tilan mukaiset tekstit ja napit
-			if ($row["varaus_tila"] == 0) {echo "<td> Varaus </td> <td> <button class=\"lainaaButton\" onclick=\"lainaaVaraus()\">Lainaa </button></td> <td> <button class=\"muokkaaButton\" onclick=\"muokkaaVaraus()\">Muokkaa</button></td>";}
-			if ($row["varaus_tila"] == 1) {echo "<td> Lainaus </td> <td> <button class=\"palautaButton\" onclick=\"palautaLainaus()\">Palauta </button></td>";}
+			if ($row["varaus_tila"] == 0) {echo "<td> Varaus </td> <td> <button class=\"lainaaButton\" onclick=\"lainaaVaraus($id)\">Lainaa </button></td> <td> <button class=\"muokkaaButton\" onclick=\"muokkaaVaraus($id)\">Muokkaa</button></td>";}
+			if ($row["varaus_tila"] == 1) {echo "<td> Lainaus </td> <td> <button class=\"palautaButton\" onclick=\"palautaLainaus($id)\">Palauta </button></td>";}
 			if ($row["varaus_tila"] == 2) {echo '<td> Palautettu </td>';}
-			if ($row["varaus_tila"] == 3) {echo "<td> Huolto </td>  </td> <td> <button class=\"palautaButton\" onclick=\"palautaLainaus()\">Palauta </button></td><td> <button class=\"muokkaaButton\" onclick=\"muokkaaVaraus()\">Muokkaa</button></td>";}
+			if ($row["varaus_tila"] == 3) {echo "<td> Huolto </td>  </td> <td> <button class=\"palautaButton\" onclick=\"palautaLainaus($id)\">Palauta </button></td><td> <button class=\"muokkaaButton\" onclick=\"muokkaaVaraus($id)\">Muokkaa</button></td>";}
 			if ($row["varaus_tila"] == 5) {echo '<td> Poistettu </td>';}
 			//varaus voidaan poistaa jos siitä ei ole tehty lainausta tai huoltoa eikä sitä ole poistettu
 			if ($_SESSION["asty"] == 0) {
@@ -92,9 +92,10 @@
 
 	if ( isset($_POST["tallenna"]))
 	{
+		$m["tila"] = parsePost("mtila");
 		$m["varaus_id"] = parsePost("mvaraus_id");
-		$m["aloituspvm"] = parsePost("maloituspvm");
-		$m["lopetuspvm"] = parsePost("mlopetuspvm");
+		$m["aloituspvm"] = parsePost("maloitus");
+		$m["lopetuspvm"] = parsePost("mlopetus");
 		$result = updateVaraus($m);
 		echo $result;
 	}

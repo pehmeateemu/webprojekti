@@ -203,11 +203,11 @@
 			).done(function (data, textStatus, jqXHR) {
 					console.log(data);
 					var varaus = $.parseJSON(data);
-					document.getElementById("mvaraus_id").value=varaus['varaus_id'];
-					document.getElementById("mlaite_id").value=varaus['laite_id'];
-					document.getElementById("maloitus").value=varaus['aloituspvm'];
-					document.getElementById("mlopetus").value=varaus['lopetuspvm'];
-					console.log(laite[0]);
+					document.getElementById("varaus_muokkaus").value=avain;
+					document.getElementById("laite_muokkaus").value=laite_id;
+					//document.getElementById("maloitus").value=varaus['aloituspvm'];
+					//document.getElementById("mlopetus").value=varaus['lopetuspvm'];
+					console.log(varaus[0]);
 					$("#dialogi_muokkaa").dialog("open");
 			}).fail(function (jqXHR, textStatus, errorThrown) {
 					console.log("muokkaaVaraus: status=" + textStatus + ", " + errorThrown);					
@@ -244,8 +244,9 @@
 			haku = laite_id;
 			console.log(haku);
 			$("#varaukset").load("http://localhost:8081/pohjia/php/varausHandler.php?hae", haku, function(){
-				$(".lainaa").button();
-				$(".palauta").button();
+				$(".lainaaButton").button();
+				$(".palautaButton").button();
+				$(".muokkaaButton").button();
 				$(".poistaButton").button();	// Pakko laittaa tänne, koska poista-buttoneita ei ole selaimessa ennenkuin data on haettu
 			});
 		}
@@ -277,7 +278,7 @@
 				haeVaraukset();
             })
 			.fail(function (jqXHR, textStatus, errorThrown) {
-                console.log("poista_laite: status=" + textStatus + ", " + errorThrown);
+                console.log("lainaavaraus: status=" + textStatus + ", " + errorThrown);
             });
 		
 		}
@@ -293,7 +294,7 @@
 				haeVaraukset();
             })
 			.fail(function (jqXHR, textStatus, errorThrown) {
-                console.log("poista_laite: status=" + textStatus + ", " + errorThrown);
+                console.log("palautalainaus: status=" + textStatus + ", " + errorThrown);
             });
 		
 		}
@@ -351,11 +352,13 @@
 			<input type="hidden" id="varaus_muokkaus" name="mvaraus_id" value="">
 			<input type="hidden" id="laite_muokkaus" name="mlaite_id" value="">
 			
+			<input type="radio" name="mtila" id="tila_varaus" value="0" checked="checked">Varaus<br>
 			<?php 
 			$kid = $_SESSION["kid"];
 			$nimi = $_SESSION["nimi"];
 			if ($_SESSION["asty"] == 0) {
 			echo "
+			<input type=\"radio\" name=\"mtila\" id=\"tila_huolto\" value=\"3\">Huolto<br>
 			<input type=\"text\" id=\"asiakas_muokkaus\" name=\"masiakas\" placeholder=\"Asiakas\" value=\"$kid\">
 			";
 			}

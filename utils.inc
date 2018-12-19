@@ -47,4 +47,15 @@ function writeLog($data, $source)
 	// itse loki löytyy 
 	error_log("Error in $source: $data");
 }
+
+function consoleDebug($data) {
+
+		if ( is_array( $data ) )
+			$output = "<script>console.log( 'Debug Objects: " . implode( ',', $data) . "' );</script>";
+		else
+			$output = "<script>console.log( 'Debug Objects: " . $data . "' );</script>";
+
+		echo $output;
+	}
+
 ?>

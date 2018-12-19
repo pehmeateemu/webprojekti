@@ -33,6 +33,7 @@
 			$("#lisaa").button();
 			$("#muokkaa").button();
 			$("#poista").button();
+			$("#varaa").button();
 		
 			$("#hae").click(function(){				
 				hae_laitteet();
@@ -46,6 +47,9 @@
 				$("#dialogi_muokkaa").dialog("open");	
 			});
 
+			$("#varaa").click(function(){
+				varaaLaite($(this).closest('tr').find('td:nth-child(1)').val());
+			});
 
 			$("#poista").click(function(){
 				poistaLaite($(this).closest('tr').find('td:nth-child(1)').val());
@@ -160,11 +164,26 @@
 		{
 			haku = $("#haku").serialize();
 			$("#laitteet").load("http://localhost:8081/pohjia/php/laiteHandler.php?hae", haku, function(){
+				$(".varaaButton").button();
 				$(".muokkaaButton").button();
 				$(".poistaButton").button();	// Pakko laittaa tänne, koska poista-buttoneita ei ole selaimessa ennenkuin data on haettu
 			});
 		}
 		
+		function varaaLaite(avain)
+		{
+			$.get(
+                "http://localhost:8081/pohjia/php/laiteHandler.php?varaa=" + avain
+            )
+			.done(function (data, textStatus, jqXHR) {
+			location.href = "varaus.php";
+				
+            })
+			.fail(function (jqXHR, textStatus, errorThrown) {
+                console.log("poista_laite: status=" + textStatus + ", " + errorThrown);
+            });
+		}
+
 		function poistaLaite(avain)
 		{
 		    $.get(

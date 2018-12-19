@@ -99,9 +99,9 @@ if ( isset($_GET["hae"]) )
 			echo "<td>". $row["Postitmp"]. "</td>";
 			echo "<td>". $row["Kuvaus"]. "</td>";
 			echo "<td>". $row["Tila"]. "</td>";
-			
-			if ($_SESSION["asty"] == 1) {
-			echo "<td> <button class=\"muokkaaButton\"onclick=\"muokkaaLaite($id)\">Muokkaa </button> </td>";
+			echo "<td> <button class=\"varaaButton\" onclick=\"window.location.href='varaus.php?laite=$id'\">Varaa </button> </td>";
+			if ($_SESSION["asty"] == 0) {
+			echo "<td> <button class=\"muokkaaButton\" onclick=\"muokkaaLaite($id)\">Muokkaa </button> </td>";
 			echo "<td> <button class=\"poistaButton\" onclick=\"poistaLaite($id)\">Poista </button> </td>";
 			};
 			echo "</tr>";
@@ -109,6 +109,14 @@ if ( isset($_GET["hae"]) )
 		
 		
 		echo "</table>";
+	}
+
+if ( isset($_GET["varaa"]))
+	{
+		$laite_id = parseGet("varaa");
+		//laitteen id vienti varaus-sivulle
+		$_SESSION["laite_id"] = json_encode($laite_id);
+		echo $_SESSION["laite_id"];
 	}
 
 	?>

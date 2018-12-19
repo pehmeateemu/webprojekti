@@ -9,14 +9,13 @@
 	$result = fetchLogin($tunnus, $ss);	
 	if($result == true){
 		$_SESSION["login"] = 1;		
-		$_SESSION["tunnus"] = $tunnus;
-		if ($tunnus == "admin") {
-			$_SESSION["asty"] = 1;
-		}
-		else {
-			$_SESSION["asty"] = 0;
-		}
+		$_SESSION["tunnus"] = $result["Tunnus"];
+		$_SESSION["kid"] = $result["kayttaja_id"];
+		$_SESSION["asty"] = $result["asty"];
+		$_SESSION["nimi"] = $result["nimi"];
 		header("Location: asiakas.php");
+		//print_r($result); print_r($_SESSION["tunnus"]); print_r($_SESSION["kid"]);
+		
 		exit();
 		
 	}

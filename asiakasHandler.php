@@ -1,5 +1,10 @@
 <?php
-	require_once("db_utils.inc");
+require_once("db_utils.inc");
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Methods: PUT, GET, POST");
+header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
+require_once("login_utils.inc");
+session_start();
 
 	if ( isset($_POST["lisaa"]))
 	{
@@ -30,6 +35,46 @@
 		echo($result);
 
 	}
+
+
+	if ( isset($_GET["haeVaraus"]))
+	{
+		$id = $_SESSION["kid"];
+		$data = fetchUserVaraus($id);
+		echo "<table id=\"varaukset\">";
+		echo "<tr><th>VarausID</th><th>LaiteID</th><th>Merkki</th><th>Malli</th><th>Varaaja</th><th>Aloituspvm</th><th>Lopetuspvm</th><th>Tila</th></tr>";
+		foreach($data as $row)
+		{
+			$id = $row["varaus_id"];
+			$kid = $row["kayttaja_id"];
+			echo "<tr>";
+			echo "<td>". $row["varaus_id"]. "</td>";
+			echo "<td>". $row["laite_id"]. "</td>";
+			echo "<td>". $row["merkki"]. "</td>";
+			echo "<td>". $row["malli"]. "</td>";
+			echo "<td>". $row["nimi"]. "</td>";
+			echo "<td>". $row["aloituspvm"]. "</td>";
+			echo "<td>". $row["lopetuspvm"]. "</td>";
+			//tulostellaan tilan mukaiset tekstit ja napit
+			if ($row["varaus_tila"] == 0) {echo "<td> Varaus </td> <td> <button class=\"lainaaButton\" onclick=\"lainaaVaraus($id)\">Lainaa </button></td> <td> <button class=\"muokkaaButton\" onclick=\"muokkaaVaraus($id)\">Muokkaa</button></td>";}
+			if ($row["varaus_tila"] == 1) {echo "<td> Lainaus </td> <td> <button class=\"palautaButton\" onclick=\"palautaLainaus($id)\">Palauta </button></td>";}
+			if ($row["varaus_tila"] == 2) {echo '<td> Palautettu </td>';}
+			if ($row["varaus_tila"] == 3) {echo "<td> Huolto </td>  </td> <td> <button class=\"palautaButton\" onclick=\"palautaLainaus($id)\">Palauta </button></td><td> <button class=\"muokkaaButton\" onclick=\"muokkaaVaraus($id)\">Muokkaa</button></td>";}
+			if ($row["varaus_tila"] == 5) {echo '<td> Poistettu </td>';}
+			//varaus voidaan poistaa jos siit� ei ole tehty lainausta tai huoltoa eik� sit� ole poistettu
+			if ($_SESSION["asty"] == 0) {
+			echo "<td> <button class=\"poistaButton\" onclick=\"poistaVaraus($id)\">Poista </button> </td>";
+			}
+			elseif ($row["varaus_tila"] == 0 && $_SESSION["kid"] == $kid) {
+			echo "<td> <button class=\"poistaButton\" onclick=\"poistaVaraus($id)\">Poista </button> </td>";
+			}
+			echo "</tr>";
+		}
+		
+		
+		echo "</table>";
+	}
+
 	if ( isset($_POST["tallenna"]))
 	{
 		$m["kayttaja_id"] = parsePost("mid");

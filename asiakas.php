@@ -32,14 +32,15 @@
 			$("#lisaa").button();
 			$("#muokkaa").button();
             $("#logout").button();
-		
+            $("#haeVaraukset").button();
             
             $("#logout").click(function(){
                 location.href="logout.php";
 			});
 		
-			$("#hae").click(function(){
-				hae_asiakkaat();
+			$("#haeVaraukset").click(function(){                
+                $id = "<?php echo $_SESSION['kid'];?>";
+				hae_varaukset($id);
 			});
 			
 			$("#lisaa").click(function(){
@@ -132,7 +133,19 @@
             });
 
 		});
-		
+
+        
+
+		function hae_varaukset(id)
+		{            
+			console.log(id);
+			$("#varaukset").load("http://localhost:8081/pohjia/php/asiakasHandler.php?haeVaraus", id, function(){
+				$(".lainaaButton").button();
+				$(".palautaButton").button();
+				$(".muokkaaButton").button();
+				$(".poistaButton").button();	// Pakko laittaa t�nne, koska poista-buttoneita ei ole selaimessa ennenkuin data on haettu
+			});
+		}
 		function hae_asiakkaat()
 		{
 		haku = $("#haku").serialize();
@@ -221,6 +234,7 @@
             });
         }
 
+
 	</script>
 </head>
 <body>	
@@ -229,8 +243,9 @@
 	<a href="http://localhost:8081/pohjia/php/logout.php">Kirjaudu ulos</a><br />
 
     <button id="muokkaa">Muokkaa omia tietoja</button>
+    <button id="haeVaraukset">Hae omat varaukset</button>
 	
-	<div id="asiakkaat"></div>
+	<div id="varaukset"></div>
 
     <div id="dialogi_lisaa" title="Lisää uusi asiakas">
         <form id="lisayslomake">			

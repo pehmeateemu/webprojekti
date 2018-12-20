@@ -14,8 +14,10 @@
 		echo "<table id=\"varaukset\">";
 		echo "<tr><th>VarausID</th><th>LaiteID</th><th>Merkki</th><th>Malli</th><th>Varaaja</th><th>Aloituspvm</th><th>Lopetuspvm</th><th>Tila</th></tr>";
 		//print_r($data);
+
 		foreach($data as $row)
 		{
+			if ($row["varaus_tila"] < 5){
 			$id = $row["varaus_id"];
 			$kid = $row["kayttaja_id"];
 			echo "<tr>";
@@ -27,11 +29,10 @@
 			echo "<td>". $row["aloituspvm"]. "</td>";
 			echo "<td>". $row["lopetuspvm"]. "</td>";
 			//tulostellaan tilan mukaiset tekstit ja napit
-			if ($row["varaus_tila"] == 0) {echo "<td> Varaus </td> <td> <button class=\"lainaaButton\" onclick=\"lainaaVaraus($id)\">Lainaa </button></td> <td> <button class=\"muokkaaButton\" onclick=\"muokkaaVaraus($id)\">Muokkaa</button></td>";}
-			if ($row["varaus_tila"] == 1)	{	echo "<td> Lainaus </td> <td> <button class=\"palautaButton\" onclick=\"palautaLainaus($id)\">Palauta </button></td>";
-				if ($_SESSION["asty"] == 0) {	echo "<td> <button class=\"muokkaaButton\" onclick=\"muokkaaVaraus($id)\">Muokkaa</button></td>";}}
+			if ($row["varaus_tila"] == 0) {echo "<td> Varaus </td>";if ($_SESSION["asty"] == 0){echo "<td> <button class=\"lainaaButton\" onclick=\"lainaaVaraus($id)\">Lainaa </button></td>";} echo "<td> <button class=\"muokkaaButton\" onclick=\"muokkaaVaraus($id)\">Muokkaa</button></td>";}
+			if ($row["varaus_tila"] == 1) {echo "<td> Lainaus </td>"; if ($_SESSION["asty"] == 0) { echo  "<td> <button class=\"palautaButton\" onclick=\"palautaLainaus($id)\" id=\"palauta\">Palauta </button></td> <td> <button class=\"muokkaaButton\" onclick=\"muokkaaVaraus($id)\">Muokkaa</button></td>";}}
 			if ($row["varaus_tila"] == 2) {echo '<td> Palautettu </td>';}
-			if ($row["varaus_tila"] == 3) {echo "<td> Huolto </td>  </td> <td> <button class=\"palautaButton\" onclick=\"palautaLainaus($id)\">Palauta </button></td><td> <button class=\"muokkaaButton\" onclick=\"muokkaaVaraus($id)\">Muokkaa</button></td>";}
+			if ($row["varaus_tila"] == 3) {echo "<td> Huolto </td>"; if ($_SESSION["asty"] == 0) { echo "<td> <button class=\"palautaButton\" onclick=\"palautaLainaus($id)\" id=\"palauta\">Palauta </button></td><td> <button class=\"muokkaaButton\" onclick=\"muokkaaVaraus($id)\">Muokkaa</button></td>";}}
 			if ($row["varaus_tila"] == 5) {echo '<td> Poistettu </td>';}
 			//varaus voidaan poistaa jos siitä ei ole tehty lainausta tai huoltoa eikä sitä ole poistettu
 			if ($_SESSION["asty"] == 0) {
@@ -41,6 +42,7 @@
 			echo "<td> <button class=\"poistaButton\" onclick=\"poistaVaraus($id)\">Poista </button> </td>";
 			}
 			echo "</tr>";
+			}
 		}
 		
 		
@@ -57,14 +59,25 @@
 	if ( isset($_GET["lainaa"]))
 	{
 		$varaus_id = parseGet("lainaa");
+		$laite_id = parseGet("laite");
 		$result = lainaaVaraus($varaus_id);
 		echo json_encode($result);
 	}
 
 	if ( isset($_GET["palauta"]))
+	{	
+		
+		$varaus_id = parseGet("muokkaa");
+		$data = editVaraus($varaus_id);
+			
+			print_r($data);
+	}
+
+	if ( isset($_POST["teepalautus"]))
 	{
-		$varaus_id = parseGet("palauta");
-		$result = palautaLainaus($varaus_id);
+		$a["varaus_id"] = parsePost("pvaraus_id");
+		$a["lopetuspvm"] = parsePost("plopetus");
+		palautaLainaus($a);
 		echo json_encode($result);
 	}
 

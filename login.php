@@ -84,7 +84,7 @@
 		<td><input type="text" name="tunnus" /></td> </tr>
 		<tr>
 		<td><label for="ss">Salasana</label></td>
-		<td><input type="text" name="ss" /> </td>
+		<td><input type="password" name="ss" /> </td>
 		<td><input type="submit" name="kirjaudu" value="Kirjaudu"/></td></tr>	
 		
 	</form>
@@ -102,8 +102,7 @@
             <input type="text" id="osoite_lisays" name="osoite" placeholder="Osoite">
             <input type="text" id="postinro_lisays" name="postinro" placeholder="Postinumero">
             <input type="text" id="postitmp_lisays" name="postitmp" placeholder="Postitoimipaikka">
-            <select id="asty_lisays" name="asty" readonly="readonly">
-                <option value="0"></option>
+            <input type="hidden" id="asty_lisays" name="asty" value="1">
             </select>
 
 			

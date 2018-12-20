@@ -134,7 +134,7 @@
 								else 
 								{
                                     var muokkauslauseke = $("#muokkauslomake").serialize();
-                                    console.log("muokkauslauseke: " + muokkauslauseke);
+                                    //console.log("muokkauslauseke: " + muokkauslauseke);
                                     tallennaAsiakas(muokkauslauseke);
                                     $(this).dialog("close");
                                 }
@@ -167,7 +167,7 @@
                                     return false;
                                 } else {
                                     var lisayslauseke = $("#lisayslomake").serialize();
-                                    console.log("Lisäyslauseke: " + lisayslauseke);
+                                    //console.log("Lisäyslauseke: " + lisayslauseke);
                                     lisaaAsiakas(lisayslauseke);
                                     //$("#lisayslomake")[0].reset();
                                     //$("#asty_avain_lisays").prop('selectedIndex', 0);
@@ -197,7 +197,7 @@
 
 		function hae_varaukset(id)
 		{            
-			console.log(id);
+			//console.log(id);
 			$("#varaukset").load("http://localhost:8081/pohjia/php/asiakasHandler.php?haeVaraus", id, function(){
 				$(".lainaaButton").button();
 				$(".palautaButton").button();
@@ -288,7 +288,7 @@
 		$.get(
 			"http://localhost:8081/pohjia/php/varausHandler.php?muokkaa=" + avain
 			).done(function (data, textStatus, jqXHR) {
-					console.log(data);
+					//console.log(data);
 					var varaus = $.parseJSON(data);
 					document.getElementById("varaus_muokkaus").value=avain;
 					//document.getElementById("laite_muokkaus").value=laite_id;
@@ -377,8 +377,8 @@
             <input type='text' id='postinro_muokkaus' name='mpostinro' placeholder='Postinumero'>
             <input type='text' id='postitmp_muokkaus' name='mpostitmp' placeholder='Postitoimipaikka'>
             <select id='asty_muokkaus' name='masty' readonly="readonly">
-                <option value="0">Admin</option>
-				<option value="1">Asiakas</option>
+                <?php if ($_SESSION["asty"] == 0) {echo	"<option value=\"0\">Admin</option>";} ?>
+			<option value="1">Asiakas</option>
             </select>
         </form>
     </div>
@@ -397,13 +397,11 @@
 			if ($_SESSION["asty"] == 0) {
 			echo "
 			<input type=\"radio\" name=\"mtila\" id=\"tila_huolto\" value=\"3\">Huolto<br>
-			<input type=\"text\" id=\"asiakas_muokkaus\" name=\"masiakas\" placeholder=\"Asiakas\" value=\"$kid\">
+			<input type=\"text\" id=\"asiakas_muokkaus\" name=\"masiakas\" placeholder=\"Asiakas_ID\" value=\"$kid\">
 			";
 			}
 			else {
-			echo "<input type=\"hidden\" id=\"asiakas_muokkaus\" name=\"masiakas\" placeholder=\"Asiakas\" value=\"$kid\">
-				  <input type=\"text\" id=\"asiakas_muokkaus\" name=\"nimi\" placeholder=\"Asiakas\" value=\"$nimi\" readonly=\"readonly\">";} 
-			
+			echo "<input type=\"hidden\" id=\"asiakas_muokkaus\" name=\"masiakas\" placeholder=\"Asiakas\" value=\"$kid\">" ;} 
 			?>
 
 			<input type="text" id="aloitus_muokkaus" name="maloitus" placeholder="Varauksen alkamispvm"> 

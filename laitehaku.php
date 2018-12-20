@@ -83,7 +83,7 @@
 								else 
 								{
                                     var lisayslauseke = $("#lisayslomake").serialize();
-                                    console.log("Lisäyslauseke: " + lisayslauseke);
+                                    //console.log("Lisäyslauseke: " + lisayslauseke);
                                     lisaaLaite(lisayslauseke);
                                     //$("#lisayslomake")[0].reset();
                                     //$("#asty_avain_lisays").prop('selectedIndex', 0);
@@ -135,7 +135,7 @@
 								else 
 								{
                                     var muokkauslauseke = $("#muokkauslomake").serialize();
-                                    console.log("muokkauslauseke: " + muokkauslauseke);
+                                    //console.log("muokkauslauseke: " + muokkauslauseke);
                                     tallennaLaite(muokkauslauseke);
                                     //$("#lisayslomake")[0].reset();
                                     //$("#asty_avain_lisays").prop('selectedIndex', 0);
@@ -228,7 +228,7 @@
 					document.getElementById("kuvaus_muokkaus").value=laite[0]['Kuvaus'];
 					document.getElementById("laite_id_muokkaus").value=laite[0]['laite_id'];
 					document.getElementById("tila_muokkaus").value=laite[0]['Tila'];
-					console.log(laite[0]);
+					//console.log(laite[0]);
 					$("#dialogi_muokkaa").dialog("open");
 			}).fail(function (jqXHR, textStatus, errorThrown) {
 					console.log("muokkaaLaite: status=" + textStatus + ", " + errorThrown);					

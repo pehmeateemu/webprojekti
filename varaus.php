@@ -163,7 +163,7 @@
 								else 
 								{
                                     var varauslauseke = $("#varauslomake").serialize();
-                                    console.log("Varauslauseke: " + varauslauseke);
+                                    //console.log("Varauslauseke: " + varauslauseke);
                                     lisaaVaraus(varauslauseke);
 									$(this).dialog("close");
                                     //$("#lisayslomake")[0].reset();
@@ -209,7 +209,7 @@
 								else 
 								{
                                     var muokkauslauseke = $("#muokkauslomake").serialize();
-                                    console.log("muokkauslauseke: " + muokkauslauseke);
+                                    //console.log("muokkauslauseke: " + muokkauslauseke);
                                     tallennaVaraus(muokkauslauseke);
 									$(this).dialog("close");
                                     //$("#lisayslomake")[0].reset();
@@ -239,13 +239,13 @@
 		$.get(
 			"http://localhost:8081/pohjia/php/varausHandler.php?muokkaa=" + avain
 			).done(function (data, textStatus, jqXHR) {
-					console.log(data);
+					//console.log(data);
 					var varaus = $.parseJSON(data);
 					document.getElementById("varaus_muokkaus").value=avain;
 					document.getElementById("laite_muokkaus").value=laite_id;
 					//document.getElementById("maloitus").value=varaus['aloituspvm'];
 					//document.getElementById("mlopetus").value=varaus['lopetuspvm'];
-					console.log(varaus[0]);
+					//console.log(varaus[0]);
 					$("#dialogi_muokkaa").dialog("open");
 			}).fail(function (jqXHR, textStatus, errorThrown) {
 					console.log("muokkaaVaraus: status=" + textStatus + ", " + errorThrown);					
@@ -275,7 +275,7 @@
 				alert(lisays[1]);
 				haeVaraukset();}
 				else {
-					alert(lisays);
+					alert(lisays[1]);
 				}
 				})
 			.fail(function (jqXHR, textStatus, errorThrown) 
@@ -287,7 +287,7 @@
 		function haeVaraukset()
 		{
 			haku = laite_id;
-			console.log(haku);
+			//console.log(haku);
 			$("#varaukset").load("http://localhost:8081/pohjia/php/varausHandler.php?hae", haku, function(){
 				$(".lainaaButton").button();
 				$(".palautaButton").button();
@@ -338,7 +338,7 @@
 					document.getElementById("varaus_palautus").value=avain;
 					//document.getElementById("maloitus").value=varaus['aloituspvm'];
 					//document.getElementById("mlopetus").value=varaus['lopetuspvm'];
-					console.log(varaus[0]);
+					//console.log(varaus[0]);
 					$("#dialogi_palauta").dialog("open");
 			}).fail(function (jqXHR, textStatus, errorThrown) {
 					console.log("muokkaaVaraus: status=" + textStatus + ", " + errorThrown);					

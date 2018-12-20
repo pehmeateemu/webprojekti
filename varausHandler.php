@@ -1,3 +1,4 @@
+
 <?php
 	require_once("db_utils.inc");
 	header("Access-Control-Allow-Origin: *");
@@ -29,7 +30,7 @@
 			echo "<td>". $row["aloituspvm"]. "</td>";
 			echo "<td>". $row["lopetuspvm"]. "</td>";
 			//tulostellaan tilan mukaiset tekstit ja napit
-			if ($row["varaus_tila"] == 0) {echo "<td> Varaus </td>";if ($_SESSION["asty"] == 0){echo "<td> <button class=\"lainaaButton\" onclick=\"lainaaVaraus($id)\">Lainaa </button></td>";} echo "<td> <button class=\"muokkaaButton\" onclick=\"muokkaaVaraus($id)\">Muokkaa</button></td>";}
+			if ($row["varaus_tila"] == 0) {echo "<td> Varaus </td>";if ($_SESSION["asty"] == 0){echo "<td> <button class=\"lainaaButton\" onclick=\"lainaaVaraus($id)\">Lainaa </button></td>";} if ($_SESSION["kid"] == $kid || $_SESSION["asty"] == 0) { echo "<td> <button class=\"muokkaaButton\" onclick=\"muokkaaVaraus($id)\">Muokkaa</button></td>";}}
 			if ($row["varaus_tila"] == 1) {echo "<td> Lainaus </td>"; if ($_SESSION["asty"] == 0) { echo  "<td> <button class=\"palautaButton\" onclick=\"palautaLainaus($id)\" id=\"palauta\">Palauta </button></td> <td> <button class=\"muokkaaButton\" onclick=\"muokkaaVaraus($id)\">Muokkaa</button></td>";}}
 			if ($row["varaus_tila"] == 2) {echo '<td> Palautettu </td>';}
 			if ($row["varaus_tila"] == 3) {echo "<td> Huolto </td>"; if ($_SESSION["asty"] == 0) { echo "<td> <button class=\"palautaButton\" onclick=\"palautaLainaus($id)\" id=\"palauta\">Palauta </button></td><td> <button class=\"muokkaaButton\" onclick=\"muokkaaVaraus($id)\">Muokkaa</button></td>";}}

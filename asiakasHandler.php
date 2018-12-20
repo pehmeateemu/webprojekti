@@ -58,16 +58,13 @@ session_start();
 			echo "<td>". $row["lopetuspvm"]. "</td>";
 			//tulostellaan tilan mukaiset tekstit ja napit
 
-			if ($row["varaus_tila"] == 0) {echo "<td> Varaus </td> <td> <button class=\"lainaaButton\" onclick=\"lainaaVaraus($id)\">Lainaa </button></td> <td> <button class=\"muokkaaButton\" onclick=\"muokkaaVaraus($id)\">Muokkaa</button></td>";}
-			if ($row["varaus_tila"] == 1) {echo "<td> Lainaus </td>"; if ($_SESSION["asty"] == 0) { echo  "<td> <button class=\"palautaButton\" onclick=\"palautaLainaus($id)\">Palauta </button></td> <td> <button class=\"muokkaaButton\" onclick=\"muokkaaVaraus($id)\">Muokkaa</button></td>";}}
+			if ($row["varaus_tila"] == 0) {echo "<td> Varaus </td> <td> <button class=\"muokkaaButton\" onclick=\"muokkaaVaraus($id)\">Muokkaa</button></td>";}
+			if ($row["varaus_tila"] == 1) {echo "<td> Lainaus </td>";}
 			if ($row["varaus_tila"] == 2) {echo '<td> Palautettu </td>';}
-			if ($row["varaus_tila"] == 3) {echo "<td> Huolto </td>"; if ($_SESSION["asty"] == 0) { echo "<td> <button class=\"palautaButton\" onclick=\"palautaLainaus($id)\">Palauta </button></td><td> <button class=\"muokkaaButton\" onclick=\"muokkaaVaraus($id)\">Muokkaa</button></td>";}}
-			if ($row["varaus_tila"] == 5) {echo '<td> Poistettu </td>';}
-			//varaus voidaan poistaa jos siitä ei ole tehty lainausta tai huoltoa eikä sitä ole poistettu
-			if ($_SESSION["asty"] == 0) {
-			echo "<td> <button class=\"poistaButton\" onclick=\"poistaVaraus($id)\">Poista </button> </td>";
-			}
-			elseif ($row["varaus_tila"] == 0 && $_SESSION["kid"] == $kid) {
+			if ($row["varaus_tila"] == 3) {echo "<td> Huolto </td>";}
+			//varaus voidaan poistaa jos siit� ei ole tehty lainausta tai huoltoa eik� sit� ole poistettu
+			
+			if ($row["varaus_tila"] == 0 && $_SESSION["kid"] == $kid) {
 			echo "<td> <button class=\"poistaButton\" onclick=\"poistaVaraus($id)\">Poista </button> </td>";
 			}
 			echo "</tr>";

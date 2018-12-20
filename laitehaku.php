@@ -213,7 +213,8 @@
 			$.get(
 			"http://localhost:8081/pohjia/php/laiteHandler.php?muokkaa=" + avain
 			).done(function (data, textStatus, jqXHR) {
-					console.log(data);
+					//console.log(data);
+					//alert(data);
 					var laite = $.parseJSON(data);
 					document.getElementById("nimi_muokkaus").value=laite[0]['Nimi'];
 					document.getElementById("merkki_muokkaus").value=laite[0]['Merkki'];
@@ -275,7 +276,7 @@
 		<br />
 	</form>
 	<button id="hae">Hae laitteet</button>
-	<?php if($_SESSION["asty"] == 1) { 
+	<?php if($_SESSION["asty"] == 0) { 
 	echo '<button id="lisaa">Lisää uusi laite</button>';
 	} ?>
 	

@@ -31,7 +31,7 @@ if ( isset($_POST["lisaa"]))
 		$laite_id = parseGet("muokkaa");
 		$data = editLaite($laite_id);
 			
-			print_r($data);
+			return $data;
 
 	}
 
@@ -85,6 +85,7 @@ if ( isset($_GET["hae"]) )
 		
 		foreach($data as $row)
 		{
+			if ($row["Tila"] < 5){
 			$id = $row["laite_id"];
 			echo "<tr>";
 			echo "<td>". $row["laite_id"]. "</td>";
@@ -105,6 +106,7 @@ if ( isset($_GET["hae"]) )
 			echo "<td> <button class=\"poistaButton\" onclick=\"poistaLaite($id)\">Poista </button> </td>";
 			};
 			echo "</tr>";
+			}
 		}
 		
 		

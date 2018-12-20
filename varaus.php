@@ -21,31 +21,31 @@
 
 	?>
 	
-    <title>Laitteiden kÔøΩsittely</title>
+    <title>Laitteiden k‰sittely</title>
 	
 	<script>
 		// 2-tason vaatimukset
-		// Laitteen voi varata kuka tahansa kirjautunut kÔøΩyttÔøΩjÔøΩ
-		// Laitteen varauksen voi PURKAA admin-kÔøΩyttÔøΩjÔøΩ tai laitteen varannut kÔøΩyttÔøΩjÔøΩ 
-		// Laitteen varausta voi MUUTTAA admin-kÔøΩyttÔøΩjÔøΩ tai laitteen varannut kÔøΩyttÔøΩjÔøΩ 
+		// Laitteen voi varata kuka tahansa kirjautunut k‰ytt‰j‰
+		// Laitteen varauksen voi PURKAA admin-k‰ytt‰j‰ tai laitteen varannut k‰ytt‰j‰ 
+		// Laitteen varausta voi MUUTTAA admin-k‰ytt‰j‰ tai laitteen varannut k‰ytt‰j‰ 
 
 		// 3-tason vaatimukset
 		// Laitetta ei voi varata, jos laite on jo varattu tai lainattu
 		// Laitteen varauksen voi poistaa vain, jos varauksesta ei ole tehty lainausta
 		// Laitteen varausta voi muuttaa vain, jos varauksesta ei ole tehty lainausta
-		// KÔøΩyttÔøΩjÔøΩn tÔøΩytyy nÔøΩhdÔøΩ helposti omat varaukset/lainat
+		// K‰ytt‰j‰n t‰ytyy n‰hd‰ helposti omat varaukset/lainat
 
 		// 4-tason vaatimukset
-		// Laitteen voi lainata vain jos siihen liittyy varaus. Lainaaminen voidaan hoitaa niin, ettÔøΩ varauksen tila muutetaan lainatuksi. 
-		// Vain admin-kÔøΩyttÔøΩjÔøΩ voi merkata laitteen lainatuksi (tyypillisesti silloin kun varaaja tulee noutamaan laitetta)
-		// Jos varattu laite merkataan vahingossa lainatuksi, on se voitava purkaa (vain admin-kÔøΩyttÔøΩjÔøΩ), jolloin laina muuttuu takaisin varaukseksi
-		// Lainattu laite palautetaan muuttamalla lainan tila palautetuksi. Vain admin-kÔøΩyttÔøΩjÔøΩ voi palauttaa laitteen
-		// Kustakin laitteesta tÔøΩytyy nÔøΩhdÔøΩ helposti ko. laitteen vanhat ja tulevat varaukset/lainaukset
+		// Laitteen voi lainata vain jos siihen liittyy varaus. Lainaaminen voidaan hoitaa niin, ett‰ varauksen tila muutetaan lainatuksi. 
+		// Vain admin-k‰ytt‰j‰ voi merkata laitteen lainatuksi (tyypillisesti silloin kun varaaja tulee noutamaan laitetta)
+		// Jos varattu laite merkataan vahingossa lainatuksi, on se voitava purkaa (vain admin-k‰ytt‰j‰), jolloin laina muuttuu takaisin varaukseksi
+		// Lainattu laite palautetaan muuttamalla lainan tila palautetuksi. Vain admin-k‰ytt‰j‰ voi palauttaa laitteen
+		// Kustakin laitteesta t‰ytyy n‰hd‰ helposti ko. laitteen vanhat ja tulevat varaukset/lainaukset
 
 		// 5-tason vaatimukset
-		// Kun laite palautetaan, antaa admin-kÔøΩyttÔøΩjÔøΩ pvm:n, jolloin laite palautettiin -> samalla muutetaan varauksen loppumispvm:ÔøΩÔøΩ, jolloin laite on taas varattavissa annetusta loppupvm:stÔøΩ alkaen. Eli jos kÔøΩyttÔøΩjÔøΩ palauttaakin laitteen ennen loppumispvm:ÔøΩÔøΩ
-		// Jos laite on lainattu, voi admin-kÔøΩyttÔøΩjÔøΩ muuttaa lainan loppumispvm:ÔøΩÔøΩ(varaaja soittaa admin:lleaiheesta). Lainaa voi muuttaa vain jos laitteelle ei ole varausta, joka menee uuden loppumispvm:npÔøΩÔøΩlle. 
-		// Admin-kÔøΩyttÔøΩjÔøΩ voi merkata laitteelle esim. huoltoja, jolloin laite ei ole varattavissa. TÔøΩmÔøΩ voidaan toteuttaa niin, ettÔøΩ admin-kÔøΩyttÔøΩjÔøΩ voi antaa varaukselle tyypin. Ota huomioon, ettÔøΩ admin-kÔøΩyttÔøΩjÔøΩn on voitava muuttaa/poistaa nÔøΩitÔøΩ varauksia.
+		// Kun laite palautetaan, antaa admin-k‰ytt‰j‰ pvm:n, jolloin laite palautettiin -> samalla muutetaan varauksen loppumispvm:‰‰, jolloin laite on taas varattavissa annetusta loppupvm:st‰ alkaen. Eli jos k‰ytt‰j‰ palauttaakin laitteen ennen loppumispvm:‰‰
+		// Jos laite on lainattu, voi admin-k‰ytt‰j‰ muuttaa lainan loppumispvm:‰‰(varaaja soittaa admin:lleaiheesta). Lainaa voi muuttaa vain jos laitteelle ei ole varausta, joka menee uuden loppumispvm:np‰‰lle. 
+		// Admin-k‰ytt‰j‰ voi merkata laitteelle esim. huoltoja, jolloin laite ei ole varattavissa. T‰m‰ voidaan toteuttaa niin, ett‰ admin-k‰ytt‰j‰ voi antaa varaukselle tyypin. Ota huomioon, ett‰ admin-k‰ytt‰j‰n on voitava muuttaa/poistaa n‰it‰ varauksia.
 
 		var laite_id = "<?php echo $_SESSION['laite_id'] ?>";
 
@@ -77,7 +77,8 @@
 			});
 
 			$("#palauta").click(function() {
-				palautaVaraus($(this).closest('tr').find('td:nth-child(1)').val());
+				palautaLainaus($(this).closest('tr').find('td:nth-child(1)').val());
+
 			});
 
 			$("#poista").click(function(){
@@ -100,7 +101,43 @@
 					$( "#lopetus_muokkaus" ).datepicker();
 			});
 
+			$( function() {
+					$( "#lopetus_palautus" ).datepicker();
+			});
 
+				$("#dialogi_palauta").dialog({
+                    autoOpen: false,
+                    buttons: [
+                        {
+                            text: "Palauta",
+                            click: function() {
+                                if ($.trim($("#lopetus_palautus").val()) === "" )
+
+								{                                   
+									   alert('Anna palautusp‰iv‰m‰‰r‰!');
+									   return false;
+								}
+								else 
+								{
+                                    var palautuslauseke = $("#palautuslomake").serialize();
+                                    console.log("Palautuslauseke: " + palautuslauseke);
+                                    tallennaPalautus(palautuslauseke);
+									$(this).dialog("close");
+                                }
+                            },
+                        },
+                        {
+                            text: "Peruuta",
+                            click: function() {
+                                $(this).dialog("close");
+                            },
+                        }
+                    ],
+                    closeOnEscape: false,
+                    draggable: false,
+                    modal: true,
+                    resizable: false
+				});
 		
 
 				$("#dialogi_varaa").dialog({
@@ -128,9 +165,9 @@
                                     var varauslauseke = $("#varauslomake").serialize();
                                     console.log("Varauslauseke: " + varauslauseke);
                                     lisaaVaraus(varauslauseke);
+									$(this).dialog("close");
                                     //$("#lisayslomake")[0].reset();
                                     //$("#asty_avain_lisays").prop('selectedIndex', 0);
-                                    $(this).dialog("close");
                                 }
                             },
                         },
@@ -174,9 +211,10 @@
                                     var muokkauslauseke = $("#muokkauslomake").serialize();
                                     console.log("muokkauslauseke: " + muokkauslauseke);
                                     tallennaVaraus(muokkauslauseke);
+									$(this).dialog("close");
                                     //$("#lisayslomake")[0].reset();
                                     //$("#asty_avain_lisays").prop('selectedIndex', 0);
-                                    $(this).dialog("close");
+                                    
                                 }
                             },
                         },
@@ -231,7 +269,14 @@
                 "http://localhost:8081/pohjia/php/varausHandler.php?teevaraus", varauslauseke)
 				.done(function (data, textStatus, jqXHR) 
 				{
-				haeVaraukset();
+
+				var lisays = $.parseJSON(data);
+				if (lisays[0] = false) {
+				alert(lisays[1]);
+				haeVaraukset();}
+				else {
+					alert(lisays);
+				}
 				})
 			.fail(function (jqXHR, textStatus, errorThrown) 
 				{
@@ -247,7 +292,7 @@
 				$(".lainaaButton").button();
 				$(".palautaButton").button();
 				$(".muokkaaButton").button();
-				$(".poistaButton").button();	// Pakko laittaa tÔøΩnne, koska poista-buttoneita ei ole selaimessa ennenkuin data on haettu
+				$(".poistaButton").button();	// Pakko laittaa t‰nne, koska poista-buttoneita ei ole selaimessa ennenkuin data on haettu
 			});
 		}
 
@@ -283,11 +328,26 @@
 		
 		}
 
-		function palautaLainaus(varaus_id)
+		function palautaLainaus(avain)
 		{
-			
-		    $.get(
-                "http://localhost:8081/pohjia/php/varausHandler.php?palauta=" + varaus_id
+			$.get(
+			"http://localhost:8081/pohjia/php/varausHandler.php?palauta=" + avain
+			).done(function (data, textStatus, jqXHR) {
+					console.log(data);
+					var varaus = $.parseJSON(data);
+					document.getElementById("varaus_palautus").value=avain;
+					//document.getElementById("maloitus").value=varaus['aloituspvm'];
+					//document.getElementById("mlopetus").value=varaus['lopetuspvm'];
+					console.log(varaus[0]);
+					$("#dialogi_palauta").dialog("open");
+			}).fail(function (jqXHR, textStatus, errorThrown) {
+					console.log("muokkaaVaraus: status=" + textStatus + ", " + errorThrown);					
+			});	
+		}
+		function tallennaPalautus(palautuslauseke)
+		{
+			$.post(
+                "http://localhost:8081/pohjia/php/varausHandler.php?teepalautus", palautuslauseke
             )
 			.done(function (data, textStatus, jqXHR) {
 
@@ -296,7 +356,6 @@
 			.fail(function (jqXHR, textStatus, errorThrown) {
                 console.log("palautalainaus: status=" + textStatus + ", " + errorThrown);
             });
-		
 		}
 
 
@@ -322,18 +381,19 @@
 			<input type="hidden" id="laite_lisays" name="vlaite" value="<?php echo $_SESSION['laite_id'] ?>">
 			
 			<input type="radio" name="tila" id="tila_varaus" value="0" checked="checked">Varaus<br>
+			
 			<?php 
 			$kid = $_SESSION["kid"];
 			$nimi = $_SESSION["nimi"];
 			if ($_SESSION["asty"] == 0) {
 			echo "
+			<input type=\"radio\" name=\"tila\" id=\"tila_lainaus\" value=\"1\">Lainaus<br>
 			<input type=\"radio\" name=\"tila\" id=\"tila_huolto\" value=\"3\">Huolto<br>
 			<input type=\"text\" id=\"asiakas_lisays\" name=\"asiakas\" placeholder=\"Asiakas\" value=\"$kid\">
 			";
 			}
 			else {
-			echo "<input type=\"hidden\" id=\"asiakas_lisays\" name=\"asiakas\" placeholder=\"Asiakas\" value=\"$kid\">
-				  <input type=\"text\" id=\"asiakas_lisays\" name=\"nimi\" placeholder=\"Asiakas\" value=\"$nimi\" readonly=\"readonly\">";} 
+			echo "<input type=\"hidden\" id=\"asiakas_lisays\" name=\"asiakas\" placeholder=\"Asiakas\" value=\"$kid\">";} 
 			
 			?>
 
@@ -353,11 +413,13 @@
 			<input type="hidden" id="laite_muokkaus" name="mlaite_id" value="">
 			
 			<input type="radio" name="mtila" id="tila_varaus" value="0" checked="checked">Varaus<br>
+			
 			<?php 
 			$kid = $_SESSION["kid"];
 			$nimi = $_SESSION["nimi"];
 			if ($_SESSION["asty"] == 0) {
 			echo "
+			<input type=\"radio\" name=\"mtila\" id=\"tila_lainaus\" value=\"1\">Lainaus<br>
 			<input type=\"radio\" name=\"mtila\" id=\"tila_huolto\" value=\"3\">Huolto<br>
 			<input type=\"text\" id=\"asiakas_muokkaus\" name=\"masiakas\" placeholder=\"Asiakas\" value=\"$kid\">
 			";
@@ -370,11 +432,18 @@
 
 			<input type="text" id="aloitus_muokkaus" name="maloitus" placeholder="Varauksen alkamispvm"> 
             <input type="text" id="lopetus_muokkaus" name="mlopetus" placeholder="Varauksen loppumispvm">
-            
 
-			
         </form>
     </div>
+	<div id="dialogi_palauta" title="Palauta laite">
+
+		<form id="palautuslomake">
+		<input type="hidden" name="teepalautus" />
+		<input type="hidden" id="varaus_palautus" name="pvaraus_id" value="">
+		<input type="text" id="lopetus_palautus" name="plopetus" placeholder="Palautusp‰iv‰m‰‰r‰">
+		
+	</form>
+	</div>
 
 </body>
 </html>
